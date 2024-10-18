@@ -68,44 +68,49 @@
   weight = 11
 
 [[subnavigation]]
+  name = "SMPL-X"
+  pageRef = "tags/smplx"
+  weight = 12
+
+[[subnavigation]]
   name = "Skeleton"
   pageRef = "tags/skeleton"
-  weight = 12
+  weight = 13
 
 [[subnavigation]]
   name = "GHUM"
   pageRef = "tags/ghum"
-  weight = 13
+  weight = 14
 
 [[subnavigation]]
   name = "Generalized"
   pageRef = "tags/generalized"
-  weight = 14
+  weight = 15
 
 [[subnavigation]]
   name = "SDF"
   pageRef = "tags/sdf"
-  weight = 15
+  weight = 16
 
 [[subnavigation]]
   name = "Texture"
   pageRef = "tags/texture"
-  weight = 16
+  weight = 17
 
 [[subnavigation]]
   name = "Deformation"
   pageRef = "tags/deformation"
-  weight = 17
+  weight = 18
 
 [[subnavigation]]
   name = "Monocular"
   pageRef = "tags/monocular"
-  weight = 18
+  weight = 19
 
 [[subnavigation]]
   name = "Multiperson"
   pageRef = "tags/multiperson"
-  weight = 19
+  weight = 20
 
 # [[subnavigation]]
   # name = "My Awesome Category"
@@ -176,12 +181,18 @@
   pageRef = "tags/siggraph_asia22"
   weight = 52
 
+
+[[main]]
+  name = "TPAMI 22"
+  parent = "Venues"
+  pageRef = "tags/tpami22"
+  weight = 53
+
 [[main]]
   name = "arXiv22"
   parent = "Venues"
   pageRef = "tags/arxiv22"
-  weight = 53
-
+  weight = 54
 
 [[main]]
   name = "CVPR 23"
