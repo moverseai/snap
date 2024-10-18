@@ -23,7 +23,7 @@ jobs:
   build-page:
     runs-on: ubuntu-latest
     env: 
-      HUGO_VERSION: 0.127.0
+      HUGO_VERSION: 0.127.0      
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
@@ -36,7 +36,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: "latest"
+          hugo-version: ${{ env.HUGO_VERSION }} # "latest"
           extended: true
 
       - name: Setup Pages
