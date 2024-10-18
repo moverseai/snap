@@ -1,0 +1,17 @@
+title = "SNAP" # "SNAP"
+
+[params.author]
+name = "SNAP"
+# image = "img/moverse_logo.png"
+image = "img/moverse_logo_white.png"
+headline = "Solving Neural Articulated Performances"
+bio = "3D Animations at scale."
+links = [
+  { linkedin = "https://linkedin.com/company/moverseai" },
+  { x-twitter = "https://twitter.com/moverseai" },
+  { youtube = "https://www.youtube.com/@moverseaimocap" },
+  { instagram = "https://www.instagram.com/moverseai/" },
+  { discord = "https://discord.gg/bQc7B6qSPd" },
+  { github = "https://www.github.com/moverseai" },
+  { link = "https://www.moverse.ai" },
+]

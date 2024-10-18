@@ -1,0 +1,120 @@
+
+colorScheme = "congo" # https://blowfish.page/docs/getting-started/#colour-schemes
+defaultAppearance = "light"
+autoSwitchAppearance = true
+enableSearch = true
+enableCodeCopy = true
+replyByEmail = true
+robots = "all"
+disableImageZoom = false
+backgroundImageWidth = 1200
+disableTextInHeader = false
+defaultBackgroundImage = "img/sebastian-svenson-LpbyDENbQQg-unsplash"
+highlightCurrentMenuArea = true
+smartTOC = true
+smartTOCHideUnfocusedChildren = false
+
+header.layout =	"fixed-fill-blur"	# Defines the header for the entire site, supported values are basic, fixed, fixed-fill, and fixed-fill-blur
+# header.layout =	"fixed-fill"	# Defines the header for the entire site, supported values are basic, fixed, fixed-fill, and fixed-fill-blur
+
+footer.showMenu = true
+footer.showCopyright = true
+footer.showThemeAttribution = true
+footer.showAppearanceSwitcher = true
+footer.showScrollToTop = true
+
+homepage.layout = "hero" # The layout of the homepage. Valid values are page, profile, hero, card, background, or custom. When set to custom
+# homepage.homepageImage = "img/sebastian-svenson-LpbyDENbQQg-unsplash.jpg"
+# homepage.homepageImage = "img/ahmad-odeh-JhqhGfX_Wd8-unsplash.jpg"
+# homepage.homepageImage = "img/shubham-dhage-5Za8lloGtCg-unsplash.jpg"
+# homepage.homepageImage = "img/shubham-dhage-Jkloa4CKWZs-unsplash.jpg"
+# homepage.homepageImage = "img/shubham-dhage-L7UGyxX7dyY-unsplash.jpg"
+# homepage.homepageImage = "img/shubham-dhage-nG1LnDkt3HA-unsplash.jpg"
+# homepage.homepageImage = "img/shubham-dhage-vMutd64TPkE-unsplash.jpg"
+# homepage.homepageImage = "img/ahmad-odeh-TK_WT3dl2tw-unsplash.jpg"
+homepage.homepageImage = "img/javier-miranda-mIg0GL63lFk-unsplash.jpg"
+# homepage.homepageImage = "img/mario-verduzco-vua8NbYusGE-unsplash.jpg"
+# homepage.homepageImage = "img/milad-fakurian-DjjaZybYx4I-unsplash.jpg"
+
+homepage.showRecent = true
+homepage.showRecentItems = 5
+homepage.showMoreLink = true
+homepage.showMoreLinkDest = "papers" # "categories/papers"
+homepage.cardView = true
+homepage.cardViewScreenWidth = true
+homepage.layoutBackgroundBlur = true
+
+article.showDate = true # Whether or not article dates are displayed.
+# article.showViews = false # Whether or not article views are displayed. This requires firebase integrations to be enabled, look below.
+# article.showLikes = false # Whether or not article likes are displayed. This requires firebase integrations to be enabled, look below.
+article.showDateOnlyInArticle =	true # Show date within article even if not displayed in article listings/cards.
+article.showDateUpdated = true # Whether or not the dates articles were updated are displayed.
+article.showAuthor = true # Whether or not the author box is displayed in the article footer.
+article.showAuthorBottom = false # Author boxes are displayed at the bottom of each page instead of the top.
+article.showHero = true # Whether the thumbnail image will be shown as a hero image within each article page.
+article.heroStyle = "basic" # Not set	Style to display the hero image, valid options are: basic, big, background, thumbAndBackground.
+article.layoutBackgroundBlur = true # Makes the background image in the background article heroStyle blur with the scroll
+article.layoutBackgroundHeaderSpace = true # Add space between the header and the body.
+article.showBreadcrumbs = true  # Whether or not breadcrumbs are displayed in the article header.
+article.showDraftLabel = true # Whether or not the draft indicator is shown next to articles when site is built with --buildDrafts.
+article.showEdit = true	# Whether or not the link to edit the article content should be displayed.
+# article.editURL = # Not set	When article.showEdit is active, the URL for the edit link.
+article.editAppendPath = true # When article.showEdit is active, whether or not the path to the current article should be appended to the URL set at article.editURL.
+article.seriesOpened = true # Whether or not the series module will be displayed open by default or not.
+article.showHeadingAnchors = true # Whether or not heading anchor links are displayed alongside headings within articles.
+article.showPagination = true # Whether or not the next/previous article links are displayed in the article footer.
+article.invertPagination = false # Whether or not to flip the direction of the next/previous article links.
+article.showReadingTime	= true # Whether or not article reading times are displayed.
+article.showTableOfContents = true # Whether or not the table of contents is displayed on articles.
+article.showRelatedContent = true # Display related content for each post. Might required additional configuration to your config.toml. Please check the theme config.toml if you want to enable this feature and copy all the relevant related entries. Also check Hugo’s docs on related content.
+article.relatedContentLimit	= 3 # Limit of related articles to display if showRelatedContent is turned on.
+article.showTaxonomies = true # Whether or not the taxonomies related to this article are displayed.
+article.showAuthorsBadges = true # Whether the authors taxonomies are are displayed in the article or list header. This requires the setup of multiple authors and the authors taxonomy. Check this page for more details on how to configure that feature.
+article.showWordCount = true # Whether or not article word counts are displayed.
+article.showComments = true # Whether or not the comments partial is included after the article footer.
+article.sharingLinks = ["linkedin", "twitter", "reddit", "email"] # Which sharing links to display at the end of each article. When not provided, or set to false no links will be displayed. Available values are: “linkedin”, “twitter”, “reddit”, “pinterest”, “facebook”, “email”, “whatsapp”, and “telegram”
+article.showZenMode = true # Flag to activate Zen Mode reading feature for articles.
+
+
+list.showHero = true # Whether the thumbnail image will be shown as a hero image within each list page.
+list.heroStyle = "basic" # Style to display the hero image, valid options are: basic, big, background, thumbAndBackground.
+list.showBreadcrumbs = true # Whether or not breadcrumbs are displayed in the header on list pages.
+list.layoutBackgroundBlur = true # Makes the background image in the background list heroStyle blur with the scroll
+list.layoutBackgroundHeaderSpace = true # Add space between the header and the body.
+list.showTableOfContents = true # Whether or not the table of contents is displayed on list pages.
+list.showSummary = false # Whether or not article summaries are displayed on list pages. If a summary is not provided in the front matter, one will be auto generated using the summaryLength parameter in the site configuration.
+# list.showViews = true # Whether or not list views are displayed. This requires firebase integrations to be enabled, look below.
+# list.showLikes = false # Whether or not list likes are displayed. This requires firebase integrations to be enabled, look below.
+list.showCards = true # Whether or not each article is displayed as a card or as simple inline text.
+list.orderByWeight = true #	Whether or not articles are sorted by weights.
+list.groupByYear = false # Whether or not articles are grouped by year on list pages.
+list.cardView = true # Display lists as a gallery of cards.
+list.cardViewScreenWidth = true # Enhance the width of card galleries in lists to take the full width available.
+list.constrainItemsWidth = true # Limit item width to prose to increase readability. Useful when no feature images are available.
+
+sitemap.excludedKinds = ["taxonomy", "term"] # Kinds of content that should be excluded from the generated /sitemap.xml file. Refer to the Hugo docs for acceptable values.
+
+taxonomy.showTermCount = true # Whether or not the number of articles within a taxonomy term is displayed on the taxonomy listing.
+taxonomy.showHero = false # Whether the thumbnail image will be shown as a hero image within each taxonomy page.
+taxonomy.heroStyle	= "basic" # Style to display the hero image, valid options are: basic, big, background, thumbAndBackground.
+taxonomy.showBreadcrumbs = true # Whether or not breadcrumbs are displayed in the taxonomy header.
+# taxonomy.showViews = false # Whether or not article views are displayed. This requires firebase integrations to be enabled, look below.
+# taxonomy.showLikes = false # Whether or not article likes are displayed. This requires firebase integrations to be enabled, look below.
+taxonomy.showTableOfContents = true # Whether or not the table of contents is displayed on taxonomies.
+taxonomy.cardView = true # Display lists as a gallery of cards.
+
+term.showHero = true # Whether the thumbnail image will be shown as a hero image within each term page.
+term.heroStyle = "basic" # Style to display the hero image, valid options are: basic, big, background, thumbAndBackground.
+term.showBreadcrumbs = true # Whether or not breadcrumbs are displayed in the term header.
+# term.showViews = false # Whether or not article views are displayed. This requires firebase integrations to be enabled, look below.
+# term.showLikes = false # Whether or not article likes are displayed. This requires firebase integrations to be enabled, look below.
+term.showTableOfContents = true # Whether or not the table of contents is displayed on terms.
+term.groupByYear = true # Whether or not articles are grouped by year on term pages.
+term.cardView = true # Display lists as a gallery of cards.
+term.cardViewScreenWidth = false # Enhance the width of card galleries in lists to take the full width available.
+
+verification.google = true # The site verification string provided by Google to be included in the site metadata.
+verification.bing = true # The site verification string provided by Bing to be included in the site metadata.
+verification.pinterest = true # The site verification string provided by Pinterest to be included in the site metadata.
+verification.yandex	= false # The site verification string provided by Yandex to be included in the site metadata.
+

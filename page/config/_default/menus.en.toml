@@ -1,0 +1,208 @@
+# config/_default/menus.toml
+
+[[main]]
+  name = "Articles"
+  pageRef = "articles"
+  weight = 10
+
+[[main]]
+  name = "Papers"
+  pageRef = "papers"
+  weight = 20
+
+# [[main]]
+  # name = "About"
+  # pageRef = "about"
+  # weight = 25
+
+[[main]]
+  pre = "github"
+  name = "GitHub"
+  url = "https://github.com/moverseai/snap"
+  weight = 30
+
+# [[main]]
+  # name = "Parent"
+  # weight = 35
+
+# [[main]]
+  # name = "sub-menu 1"
+  # parent = "Parent"
+  # pageRef = "samples"
+  # weight = 36
+
+# [[main]]
+  # name = "sub-menu 2"
+  # parent = "Parent"
+  # pageRef = "samples"
+  # weight = 37
+
+# [[main]]
+  # name = "sub-menu 3"
+  # parent = "Parent"
+  # pre = "github"
+  # pageRef = "samples"
+  # weight = 38
+
+
+# [[main]]
+  # identifier = "github2"
+  # pre = "github"
+  # url = "https://github.com/"
+  # weight = 40
+
+# [[footer]]
+  # name = "Privacy"
+  # url = "https://external-link"
+
+# config/_default/menus.toml
+
+[[subnavigation]]
+  name = "NeRF"
+  pageRef = "tags/nerf"
+  weight = 10
+
+[[subnavigation]]
+  name = "SMPL"
+  pageRef = "tags/smpl"
+  weight = 11
+
+[[subnavigation]]
+  name = "Skeleton"
+  pageRef = "tags/skeleton"
+  weight = 12
+
+[[subnavigation]]
+  name = "GHUM"
+  pageRef = "tags/ghum"
+  weight = 13
+
+[[subnavigation]]
+  name = "Generalized"
+  pageRef = "tags/generalized"
+  weight = 14
+
+[[subnavigation]]
+  name = "SDF"
+  pageRef = "tags/sdf"
+  weight = 15
+
+[[subnavigation]]
+  name = "Texture"
+  pageRef = "tags/texture"
+  weight = 16
+
+[[subnavigation]]
+  name = "Deformation"
+  pageRef = "tags/deformation"
+  weight = 17
+
+[[subnavigation]]
+  name = "Monocular"
+  pageRef = "tags/monocular"
+  weight = 18
+
+[[subnavigation]]
+  name = "Multiperson"
+  pageRef = "tags/multiperson"
+  weight = 19
+
+# [[subnavigation]]
+  # name = "My Awesome Category"
+  # pageRef = "categories/awesome"
+  # weight = 20
+
+[[main]]
+  name = "Venues"
+  weight = 45
+
+[[main]]
+  name = "ICCV21"
+  parent = "Venues"
+  pageRef = "tags/iccv21"
+  weight = 46
+
+[[main]]
+  name = "CVPR21"
+  parent = "Venues"
+  pageRef = "tags/cvpr21"
+  weight = 47
+
+[[main]]
+  name = "NeurIPS21"
+  parent = "Venues"
+  pageRef = "tags/neurips21"
+  weight = 48
+
+[[main]]
+  name = "arXiv21"
+  parent = "Venues"
+  pageRef = "tags/arxiv21"
+  weight = 49
+
+[[main]]
+  name = "SIGGRAPH Asia 21"
+  parent = "Venues"
+  pageRef = "tags/siggraph_asia21"
+  weight = 48
+
+[[main]]
+  name = "CVPR22"
+  parent = "Venues"
+  pageRef = "tags/cvpr22"
+  weight = 48
+
+[[main]]
+  name = "SIGGRAPH22"
+  parent = "Venues"
+  pageRef = "tags/siggraph22"
+  weight = 49
+
+[[main]]
+  name = "3DV22"
+  parent = "Venues"
+  pageRef = "tags/3dv22"
+  weight = 50
+
+[[main]]
+  name = "ECCV22"
+  parent = "Venues"
+  pageRef = "tags/eccv22"
+  weight = 51
+
+[[main]]
+  name = "SIGGRAPH Asia 22"
+  parent = "Venues"
+  pageRef = "tags/siggraph_asia22"
+  weight = 52
+
+[[main]]
+  name = "arXiv22"
+  parent = "Venues"
+  pageRef = "tags/arxiv22"
+  weight = 53
+
+
+[[main]]
+  name = "CVPR 23"
+  parent = "Venues"
+  pageRef = "tags/cvpr23"
+  weight = 56
+
+[[main]]
+  name = "TPAMI 23"
+  parent = "Venues"
+  pageRef = "tags/tpami23"
+  weight = 57
+
+[[main]]
+  name = "TVCG 23"
+  parent = "Venues"
+  pageRef = "tags/tvcg23"
+  weight = 58
+
+[[main]]
+  name = "TPAMI 24"
+  parent = "Venues"
+  pageRef = "tags/tpami24"
+  weight = 59

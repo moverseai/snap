@@ -1,0 +1,19 @@
+
+defaultContentLanguage = "en"
+enableRobotsTXT = "true"
+pagination.pagerSize =	10
+summaryLength = 80
+outputs.home = ["HTML", "RSS", "JSON"]
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  author = "authors"
+  series = "series"
+  article = "articles"
+  paper = "papers"
+
+[markup]
+  [markup.tableOfContents]
+    endLevel = 4
+    startLevel = 1  

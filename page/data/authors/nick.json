@@ -1,0 +1,11 @@
+{
+    "name": "Nikolaos Zioulis",
+    "image" : "img/avatar.png",
+    "headline": "mocap🔹volcap 🔹AI",
+    "bio": "mocap🔹volcap 🔹AI | CTO @ Moverse",
+    "social": [
+        { "linkedin": "https://www.linkedin.com/in/nikolaos-zioulis/" },
+        { "github": "https://www.github.com/zokin" },
+        { "link": "https://zokin.github.io" }
+    ]
+}

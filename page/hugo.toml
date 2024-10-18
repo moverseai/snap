@@ -1,0 +1,3 @@
+baseURL = 'https://moverseai.github.io/snap/'
+languageCode = 'en-us'
+title = 'Solving Neural Articulated Performances' # SNAP
