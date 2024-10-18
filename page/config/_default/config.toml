@@ -4,6 +4,7 @@ enableRobotsTXT = "true"
 pagination.pagerSize =	10
 summaryLength = 80
 outputs.home = ["HTML", "RSS", "JSON"]
+paginate = 36
 
 [taxonomies]
   tag = "tags"

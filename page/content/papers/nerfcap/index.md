@@ -1,5 +1,5 @@
 ---
-date: 2024-10-12T04:14:54-08:00
+date: 2022-08-30T04:14:54-08:00
 draft: false
 params:
   author: Nikolaos Zioulis
@@ -12,8 +12,7 @@ robots: all
 # sharingLinks: #
 weight: 10
 showHero: true
-description: "NerfCap: Human Performance Capture with
-Dynamic Neural Radiance Fields"
+description: "NerfCap: Human Performance Capture with Dynamic Neural Radiance Fields"
 summary: TODO
 keywords: #
 type: '2022' # we use year as a type to list papers in the list view

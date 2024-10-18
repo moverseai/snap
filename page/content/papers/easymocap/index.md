@@ -1,5 +1,5 @@
 ---
-date: 2024-10-12T04:14:54-08:00
+date: 2022-08-08T04:14:54-08:00
 draft: false
 params:
   author: Nikolaos Zioulis
@@ -27,7 +27,7 @@ series_order: 13
 {{< keywordList >}}
 {{< keyword icon="tag" >}} NeRF {{< /keyword >}}
 {{< keyword icon="tag" >}} SMPL {{< /keyword >}}
-{{< keyword icon="email" >}} *SIGGRAPH* 2021 {{< /keyword >}}
+{{< keyword icon="email" >}} *SIGGRAPH* 2022 {{< /keyword >}}
 {{< /keywordList >}}
 
 {{< github repo="zju3dv/EasyMocap" >}}
