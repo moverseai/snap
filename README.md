@@ -1,5 +1,7 @@
 # snap
 
+[![GitHub Pages](https://github.com/moverseai/snap/actions/workflows/gh-pages.yaml/badge.svg?branch=page&event=page_build)](https://github.com/moverseai/snap/actions/workflows/gh-pages.yaml)
+
 1. `hugo.exe new site page`
 2. `cd page`
 3. `hugo.exe mod init github.com/moverserai/snap`
