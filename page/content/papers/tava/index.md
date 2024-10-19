@@ -17,7 +17,7 @@ summary: TODO
 keywords: #
 type: '2022' # we use year as a type to list papers in the list view
 series: ["Papers Published @ 2022"]
-series_order: 5
+series_order: 7
 ---
 
 ## `TAVA`: Template-free Animatable Volumetric Actors

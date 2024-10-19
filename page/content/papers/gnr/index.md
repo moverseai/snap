@@ -17,7 +17,7 @@ summary: TODO
 keywords: #
 type: '2022' # we use year as a type to list papers in the list view
 series: ["Papers Published @ 2022"]
-series_order: 4
+series_order: 12
 ---
 
 ## `Generalizable Neural Performer`: Learning Robust Radiance Fields for Human Novel View Synthesis

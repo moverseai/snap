@@ -17,7 +17,7 @@ summary: TODO
 keywords: #
 type: '2022' # we use year as a type to list papers in the list view
 series: ["Papers Published @ 2022"]
-series_order: 5
+series_order: 21
 ---
 
 ## `DRaCoN` – Differentiable Rasterization Conditioned Neural Radiance Fields for Articulated Avatars
