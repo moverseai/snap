@@ -18,7 +18,7 @@ summary: TODO
 keywords: #
 type: '2023' # we use year as a type to list papers in the list view
 series: ["Papers Published @ 2023"]
-series_order: 6
+series_order: 4
 ---
 
 ## `IntrinsicNGP`: Intrinsic Coordinate based Hash Encoding for Human NeRF

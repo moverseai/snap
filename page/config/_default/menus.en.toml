@@ -112,6 +112,11 @@
   pageRef = "tags/multiperson"
   weight = 20
 
+[[subnavigation]]
+  name = "Relight"
+  pageRef = "tags/relight"
+  weight = 21
+
 # [[subnavigation]]
   # name = "My Awesome Category"
   # pageRef = "categories/awesome"
@@ -119,28 +124,34 @@
 
 [[main]]
   name = "Venues"
+  weight = 35
+
+[[main]]
+  name = "ICCV 21"
+  parent = "Venues"
+  pageRef = "tags/iccv21"
   weight = 45
 
 [[main]]
-  name = "ICCV21"
+  name = "SIGGRAPH 21"
   parent = "Venues"
-  pageRef = "tags/iccv21"
+  pageRef = "tags/siggraph21"
   weight = 46
 
 [[main]]
-  name = "CVPR21"
+  name = "CVPR 21"
   parent = "Venues"
   pageRef = "tags/cvpr21"
   weight = 47
 
 [[main]]
-  name = "NeurIPS21"
+  name = "NeurIPS 21"
   parent = "Venues"
   pageRef = "tags/neurips21"
   weight = 48
 
 [[main]]
-  name = "arXiv21"
+  name = "arXiv 21"
   parent = "Venues"
   pageRef = "tags/arxiv21"
   weight = 49
@@ -152,25 +163,25 @@
   weight = 48
 
 [[main]]
-  name = "CVPR22"
+  name = "CVPR 22"
   parent = "Venues"
   pageRef = "tags/cvpr22"
   weight = 48
 
 [[main]]
-  name = "SIGGRAPH22"
+  name = "SIGGRAPH 22"
   parent = "Venues"
   pageRef = "tags/siggraph22"
   weight = 49
 
 [[main]]
-  name = "3DV22"
+  name = "3DV 22"
   parent = "Venues"
   pageRef = "tags/3dv22"
   weight = 50
 
 [[main]]
-  name = "ECCV22"
+  name = "ECCV 22"
   parent = "Venues"
   pageRef = "tags/eccv22"
   weight = 51
@@ -189,31 +200,55 @@
   weight = 53
 
 [[main]]
-  name = "arXiv22"
+  name = "arXiv 22"
   parent = "Venues"
   pageRef = "tags/arxiv22"
   weight = 54
 
 [[main]]
+  name = "ACM Multimedia 23"
+  parent = "Venues"
+  pageRef = "tags/acmmm23"
+  weight = 56
+
+[[main]]
+  name = "SCA 23"
+  parent = "Venues"
+  pageRef = "tags/sca23"
+  weight = 57
+
+[[main]]
   name = "CVPR 23"
   parent = "Venues"
   pageRef = "tags/cvpr23"
-  weight = 56
+  weight = 58
+
+[[main]]
+  name = "ICCV 23"
+  parent = "Venues"
+  pageRef = "tags/iccv23"
+  weight = 59
 
 [[main]]
   name = "TPAMI 23"
   parent = "Venues"
   pageRef = "tags/tpami23"
-  weight = 57
+  weight = 60
 
 [[main]]
   name = "TVCG 23"
   parent = "Venues"
   pageRef = "tags/tvcg23"
-  weight = 58
+  weight = 61
+
+[[main]]
+  name = "ToG 24"
+  parent = "Venues"
+  pageRef = "tags/tog24"
+  weight = 62
 
 [[main]]
   name = "TPAMI 24"
   parent = "Venues"
   pageRef = "tags/tpami24"
-  weight = 59
+  weight = 63

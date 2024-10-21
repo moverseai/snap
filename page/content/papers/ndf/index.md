@@ -12,8 +12,7 @@ robots: all
 # sharingLinks: #
 weight: 10
 showHero: true
-description: "NDF: Neural Deformable Fields for Dynamic
-Human Modelling"
+description: "NDF: Neural Deformable Fields for Dynamic Human Modelling"
 summary: TODO
 keywords: #
 type: '2022' # we use year as a type to list papers in the list view

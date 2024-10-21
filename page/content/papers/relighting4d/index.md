@@ -5,7 +5,7 @@ params:
   author: Nikolaos Zioulis
 title: Relighting4D
 categories: ["papers"]
-tags: ["nerf", "smpl", "monocular", "eccv22"]
+tags: ["nerf", "smpl", "monocular", "relight", "eccv22"]
 layout: simple
 menu: #
 robots: all
@@ -31,6 +31,7 @@ series_order: 19
 {{< keyword icon="tag" >}} NeRF {{< /keyword >}}
 {{< keyword icon="tag" >}} SMPL  {{< /keyword >}}
 {{< keyword icon="tag" >}} Monocular {{< /keyword >}}
+{{< keyword icon="tag" >}} Relight {{< /keyword >}}
 {{< keyword icon="email" >}} *ECCV* 2022 {{< /keyword >}}
 {{< /keywordList >}}
 
