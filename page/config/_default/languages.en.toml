@@ -1,4 +1,6 @@
 title = "SNAP" # "SNAP"
+logo = "img/moverse_logo_white.png"
+copyright = "Moverse P.C."
 
 [params.author]
 name = "SNAP"
