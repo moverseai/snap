@@ -25,7 +25,6 @@ series_order: 20
 
 ## `RelightHuman`: Neural Reconstruction of Relightable Human Model from Monocular Video
 
-
 > Wenzhang Sun, Yunlong Che, Han Huang, Yandong Guo
 
 {{< keywordList >}}
@@ -35,6 +34,8 @@ series_order: 20
 {{< keyword icon="tag" >}} Monocular {{< /keyword >}}
 {{< keyword icon="email" >}} *ICCV* 2023 {{< /keyword >}}
 {{< /keywordList >}}
+
+{{< github repo="sunwenzhang1996/RelightHuman" >}}
 
 ### Abstract
 {{< lead >}}

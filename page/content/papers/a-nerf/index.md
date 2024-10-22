@@ -1,5 +1,5 @@
 ---
-date: 2021-10-11T04:14:54-08:00
+date: 2021-12-06T04:14:54-08:00
 draft: false
 params:
   author: Nikolaos Zioulis
@@ -12,7 +12,7 @@ robots: all
 # sharingLinks: #
 weight: 10
 showHero: true
-description: "Animatable Neural Radiance Fields for Modeling Dynamic Human Bodies"
+description: "A-NeRF: Articulated Neural Radiance Fields for Learning Human Shape, Appearance, and Pose"
 summary: TODO
 keywords: #
 type: '2021' # we use year as a type to list papers in the list view
@@ -20,7 +20,7 @@ series: ["Papers Published @ 2021"]
 series_order: 1
 ---
 
-## `A-NeRF`: Animatable Neural Radiance Fields for Modeling Dynamic Human Bodies
+## `A-NeRF`: Articulated Neural Radiance Fields for Learning Human Shape, Appearance, and Pose
 
 > Shih-Yang Su, Frank Yu, Michael Zollhöfer, Helge Rhodin
 

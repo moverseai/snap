@@ -1,55 +1,180 @@
 # config/_default/menus.toml
 
 [[main]]
-  name = "Articles"
-  pageRef = "articles"
-  weight = 10
+  pre = "github"
+  name = "GitHub"
+  url = "https://github.com/moverseai/snap"
+  weight = 1
+
+
+# [[main]]
+  # name = "Articles"
+  # pageRef = "articles"
+  # weight = 10
+
+# [[main]]
+  # name = "Papers"
+  # pageRef = "papers"
+  # weight = 20
 
 [[main]]
-  name = "Papers"
-  pageRef = "papers"
+  name = "2021"
+  pageRef = "papers2021"
   weight = 20
+
+[[main]]
+  name = "ICCV 2021"
+  parent = "2021"
+  pageRef = "tags/iccv21"
+  weight = 21
+
+[[main]]
+  name = "SIGGRAPH 2021"
+  parent = "2021"
+  pageRef = "tags/siggraph21"
+  weight = 22
+
+[[main]]
+  name = "CVPR 2021"
+  parent = "2021"
+  pageRef = "tags/cvpr21"
+  weight = 23
+
+[[main]]
+  name = "NeurIPS 2021"
+  parent = "2021"
+  pageRef = "tags/neurips21"
+  weight = 24
+
+[[main]]
+  name = "SIGGRAPH Asia 2021"
+  parent = "2021"
+  pageRef = "tags/siggraph_asia21"
+  weight = 25
+
+[[main]]
+  name = "arXiv 2021"
+  parent = "2021"
+  pageRef = "tags/arxiv21"
+  weight = 26
+
+
+[[main]]
+  name = "2022"
+  pageRef = "papers2022"
+  weight = 30
+
+[[main]]
+  name = "CVPR 2022"
+  parent = "2022"
+  pageRef = "tags/cvpr22"
+  weight = 31
+
+[[main]]
+  name = "SIGGRAPH 2022"
+  parent = "2022"
+  pageRef = "tags/siggraph22"
+  weight = 32
+
+[[main]]
+  name = "3DV 2022"
+  parent = "2022"
+  pageRef = "tags/3dv22"
+  weight = 33
+
+[[main]]
+  name = "ECCV 2022"
+  parent = "2022"
+  pageRef = "tags/eccv22"
+  weight = 34
+
+[[main]]
+  name = "SIGGRAPH Asia 2022"
+  parent = "2022"
+  pageRef = "tags/siggraph_asia22"
+  weight = 35
+
+[[main]]
+  name = "TPAMI 2022"
+  parent = "2022"
+  pageRef = "tags/tpami22"
+  weight = 36
+
+[[main]]
+  name = "arXiv 2022"
+  parent = "2022"
+  pageRef = "tags/arxiv22"
+  weight = 37
+
+
+[[main]]
+  name = "2023"
+  pageRef = "papers2023"
+  weight = 40
+
+[[main]]
+  name = "ACM Multimedia 2023"
+  parent = "2023"
+  pageRef = "tags/acmmm23"
+  weight = 41
+
+[[main]]
+  name = "SCA 2023"
+  parent = "2023"
+  pageRef = "tags/sca23"
+  weight = 42
+
+[[main]]
+  name = "CVPR 2023"
+  parent = "2023"
+  pageRef = "tags/cvpr23"
+  weight = 43
+
+[[main]]
+  name = "SIGGRAPH 2023"
+  parent = "2023"
+  pageRef = "tags/siggraph23"
+  weight = 44
+
+[[main]]
+  name = "ICCV 2023"
+  parent = "2023"
+  pageRef = "tags/iccv23"
+  weight = 45
+
+[[main]]
+  name = "TPAMI 2023"
+  parent = "2023"
+  pageRef = "tags/tpami23"
+  weight = 46
+
+[[main]]
+  name = "TVCG 2023"
+  parent = "2023"
+  pageRef = "tags/tvcg23"
+  weight = 47
+
+[[main]]
+  name = "2024"
+  pageRef = "papers2024"
+  weight = 50
+
+[[main]]
+  name = "ToG 2024"
+  parent = "2024"
+  pageRef = "tags/tog24"
+  weight = 51
+
+[[main]]
+  name = "TPAMI 2024"
+  parent = "2024"
+  pageRef = "tags/tpami24"
+  weight = 52
 
 # [[main]]
   # name = "About"
   # pageRef = "about"
   # weight = 25
-
-[[main]]
-  pre = "github"
-  name = "GitHub"
-  url = "https://github.com/moverseai/snap"
-  weight = 30
-
-# [[main]]
-  # name = "Parent"
-  # weight = 35
-
-# [[main]]
-  # name = "sub-menu 1"
-  # parent = "Parent"
-  # pageRef = "samples"
-  # weight = 36
-
-# [[main]]
-  # name = "sub-menu 2"
-  # parent = "Parent"
-  # pageRef = "samples"
-  # weight = 37
-
-# [[main]]
-  # name = "sub-menu 3"
-  # parent = "Parent"
-  # pre = "github"
-  # pageRef = "samples"
-  # weight = 38
-
-
-# [[main]]
-  # identifier = "github2"
-  # pre = "github"
-  # url = "https://github.com/"
-  # weight = 40
 
 # [[footer]]
   # name = "Privacy"
@@ -116,139 +241,3 @@
   name = "Relight"
   pageRef = "tags/relight"
   weight = 21
-
-# [[subnavigation]]
-  # name = "My Awesome Category"
-  # pageRef = "categories/awesome"
-  # weight = 20
-
-[[main]]
-  name = "Venues"
-  weight = 35
-
-[[main]]
-  name = "ICCV 21"
-  parent = "Venues"
-  pageRef = "tags/iccv21"
-  weight = 45
-
-[[main]]
-  name = "SIGGRAPH 21"
-  parent = "Venues"
-  pageRef = "tags/siggraph21"
-  weight = 46
-
-[[main]]
-  name = "CVPR 21"
-  parent = "Venues"
-  pageRef = "tags/cvpr21"
-  weight = 47
-
-[[main]]
-  name = "NeurIPS 21"
-  parent = "Venues"
-  pageRef = "tags/neurips21"
-  weight = 48
-
-[[main]]
-  name = "arXiv 21"
-  parent = "Venues"
-  pageRef = "tags/arxiv21"
-  weight = 49
-
-[[main]]
-  name = "SIGGRAPH Asia 21"
-  parent = "Venues"
-  pageRef = "tags/siggraph_asia21"
-  weight = 48
-
-[[main]]
-  name = "CVPR 22"
-  parent = "Venues"
-  pageRef = "tags/cvpr22"
-  weight = 48
-
-[[main]]
-  name = "SIGGRAPH 22"
-  parent = "Venues"
-  pageRef = "tags/siggraph22"
-  weight = 49
-
-[[main]]
-  name = "3DV 22"
-  parent = "Venues"
-  pageRef = "tags/3dv22"
-  weight = 50
-
-[[main]]
-  name = "ECCV 22"
-  parent = "Venues"
-  pageRef = "tags/eccv22"
-  weight = 51
-
-[[main]]
-  name = "SIGGRAPH Asia 22"
-  parent = "Venues"
-  pageRef = "tags/siggraph_asia22"
-  weight = 52
-
-
-[[main]]
-  name = "TPAMI 22"
-  parent = "Venues"
-  pageRef = "tags/tpami22"
-  weight = 53
-
-[[main]]
-  name = "arXiv 22"
-  parent = "Venues"
-  pageRef = "tags/arxiv22"
-  weight = 54
-
-[[main]]
-  name = "ACM Multimedia 23"
-  parent = "Venues"
-  pageRef = "tags/acmmm23"
-  weight = 56
-
-[[main]]
-  name = "SCA 23"
-  parent = "Venues"
-  pageRef = "tags/sca23"
-  weight = 57
-
-[[main]]
-  name = "CVPR 23"
-  parent = "Venues"
-  pageRef = "tags/cvpr23"
-  weight = 58
-
-[[main]]
-  name = "ICCV 23"
-  parent = "Venues"
-  pageRef = "tags/iccv23"
-  weight = 59
-
-[[main]]
-  name = "TPAMI 23"
-  parent = "Venues"
-  pageRef = "tags/tpami23"
-  weight = 60
-
-[[main]]
-  name = "TVCG 23"
-  parent = "Venues"
-  pageRef = "tags/tvcg23"
-  weight = 61
-
-[[main]]
-  name = "ToG 24"
-  parent = "Venues"
-  pageRef = "tags/tog24"
-  weight = 62
-
-[[main]]
-  name = "TPAMI 24"
-  parent = "Venues"
-  pageRef = "tags/tpami24"
-  weight = 63
