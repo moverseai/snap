@@ -1,1 +1,1 @@
-# snap
+# SNAP: Solving Neural Articulated Performances
