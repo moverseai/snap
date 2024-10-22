@@ -13,6 +13,7 @@ defaultBackgroundImage = "img/sebastian-svenson-LpbyDENbQQg-unsplash"
 highlightCurrentMenuArea = true
 smartTOC = true
 smartTOCHideUnfocusedChildren = false
+mainSections = ["papers"]
 
 header.layout =	"fixed-fill-blur"	# Defines the header for the entire site, supported values are basic, fixed, fixed-fill, and fixed-fill-blur
 # header.layout =	"fixed-fill"	# Defines the header for the entire site, supported values are basic, fixed, fixed-fill, and fixed-fill-blur
@@ -36,10 +37,10 @@ homepage.homepageImage = "img/javier-miranda-mIg0GL63lFk-unsplash.jpg"
 # homepage.homepageImage = "img/mario-verduzco-vua8NbYusGE-unsplash.jpg"
 # homepage.homepageImage = "img/milad-fakurian-DjjaZybYx4I-unsplash.jpg"
 
-homepage.showRecent = true
-homepage.showRecentItems = 5
-homepage.showMoreLink = true
-homepage.showMoreLinkDest = "categories/papers" # "categories/papers"
+homepage.showRecent = false
+homepage.showRecentItems = 15
+homepage.showMoreLink = false
+homepage.showMoreLinkDest = "papers" # "categories/papers"
 homepage.cardView = true
 homepage.cardViewScreenWidth = true
 homepage.layoutBackgroundBlur = true
@@ -72,12 +73,12 @@ article.showTaxonomies = true # Whether or not the taxonomies related to this ar
 article.showAuthorsBadges = true # Whether the authors taxonomies are are displayed in the article or list header. This requires the setup of multiple authors and the authors taxonomy. Check this page for more details on how to configure that feature.
 article.showWordCount = true # Whether or not article word counts are displayed.
 article.showComments = true # Whether or not the comments partial is included after the article footer.
-article.sharingLinks = ["linkedin", "twitter", "reddit", "email"] # Which sharing links to display at the end of each article. When not provided, or set to false no links will be displayed. Available values are: “linkedin”, “twitter”, “reddit”, “pinterest”, “facebook”, “email”, “whatsapp”, and “telegram”
+article.sharingLinks = ["linkedin", "twitter", "email"] # Which sharing links to display at the end of each article. When not provided, or set to false no links will be displayed. Available values are: “linkedin”, “twitter”, “reddit”, “pinterest”, “facebook”, “email”, “whatsapp”, and “telegram”
 article.showZenMode = true # Flag to activate Zen Mode reading feature for articles.
 
 
 list.showHero = true # Whether the thumbnail image will be shown as a hero image within each list page.
-list.heroStyle = "basic" # Style to display the hero image, valid options are: basic, big, background, thumbAndBackground.
+list.heroStyle = "background" # Style to display the hero image, valid options are: basic, big, background, thumbAndBackground.
 list.showBreadcrumbs = true # Whether or not breadcrumbs are displayed in the header on list pages.
 list.layoutBackgroundBlur = true # Makes the background image in the background list heroStyle blur with the scroll
 list.layoutBackgroundHeaderSpace = true # Add space between the header and the body.
@@ -87,16 +88,17 @@ list.showSummary = false # Whether or not article summaries are displayed on lis
 # list.showLikes = false # Whether or not list likes are displayed. This requires firebase integrations to be enabled, look below.
 list.showCards = true # Whether or not each article is displayed as a card or as simple inline text.
 list.orderByWeight = true #	Whether or not articles are sorted by weights.
-list.groupByYear = false # Whether or not articles are grouped by year on list pages.
+list.groupByYear = true # Whether or not articles are grouped by year on list pages.
 list.cardView = true # Display lists as a gallery of cards.
 list.cardViewScreenWidth = true # Enhance the width of card galleries in lists to take the full width available.
 list.constrainItemsWidth = true # Limit item width to prose to increase readability. Useful when no feature images are available.
 
-sitemap.excludedKinds = ["taxonomy", "term"] # Kinds of content that should be excluded from the generated /sitemap.xml file. Refer to the Hugo docs for acceptable values.
+# sitemap.excludedKinds = ["taxonomy", "term"] # Kinds of content that should be excluded from the generated /sitemap.xml file. Refer to the Hugo docs for acceptable values.
+sitemap.excludedKinds = [] # Kinds of content that should be excluded from the generated /sitemap.xml file. Refer to the Hugo docs for acceptable values.
 
 taxonomy.showTermCount = true # Whether or not the number of articles within a taxonomy term is displayed on the taxonomy listing.
-taxonomy.showHero = false # Whether the thumbnail image will be shown as a hero image within each taxonomy page.
-taxonomy.heroStyle	= "basic" # Style to display the hero image, valid options are: basic, big, background, thumbAndBackground.
+taxonomy.showHero = true # Whether the thumbnail image will be shown as a hero image within each taxonomy page.
+taxonomy.heroStyle	= "thumbAndBackground" # Style to display the hero image, valid options are: basic, big, background, thumbAndBackground.
 taxonomy.showBreadcrumbs = true # Whether or not breadcrumbs are displayed in the taxonomy header.
 # taxonomy.showViews = false # Whether or not article views are displayed. This requires firebase integrations to be enabled, look below.
 # taxonomy.showLikes = false # Whether or not article likes are displayed. This requires firebase integrations to be enabled, look below.
@@ -104,14 +106,14 @@ taxonomy.showTableOfContents = true # Whether or not the table of contents is di
 taxonomy.cardView = true # Display lists as a gallery of cards.
 
 term.showHero = true # Whether the thumbnail image will be shown as a hero image within each term page.
-term.heroStyle = "basic" # Style to display the hero image, valid options are: basic, big, background, thumbAndBackground.
+term.heroStyle = "thumbAndBackground" # Style to display the hero image, valid options are: basic, big, background, thumbAndBackground.
 term.showBreadcrumbs = true # Whether or not breadcrumbs are displayed in the term header.
 # term.showViews = false # Whether or not article views are displayed. This requires firebase integrations to be enabled, look below.
 # term.showLikes = false # Whether or not article likes are displayed. This requires firebase integrations to be enabled, look below.
 term.showTableOfContents = true # Whether or not the table of contents is displayed on terms.
 term.groupByYear = true # Whether or not articles are grouped by year on term pages.
 term.cardView = true # Display lists as a gallery of cards.
-term.cardViewScreenWidth = false # Enhance the width of card galleries in lists to take the full width available.
+term.cardViewScreenWidth = true # Enhance the width of card galleries in lists to take the full width available.
 
 verification.google = true # The site verification string provided by Google to be included in the site metadata.
 verification.bing = true # The site verification string provided by Bing to be included in the site metadata.

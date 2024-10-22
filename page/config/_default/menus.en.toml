@@ -1,12 +1,76 @@
 # config/_default/menus.toml
 
 [[main]]
-  pre = "github"
-  name = "GitHub"
-  url = "https://github.com/moverseai/snap"
+  identifier = "twitter"
+  pre = "x-twitter"
+  name = ""
+  url = "https://twitter.com/moverseai"
   weight = 1
 
+[[main]]
+  identifier = "linkedin"
+  pre = "linkedin"
+  name = ""
+  url = "https://linkedin.com/company/moverseai"
+  weight = 2
 
+[[main]]
+  identifier = "discord"
+  pre = "discord"
+  name = ""
+  url = "https://discord.gg/bQc7B6qSPd"
+  weight = 3
+
+[[main]]
+  identifier = "instagram"
+  pre = "instagram"
+  name = ""
+  url = "https://www.instagram.com/moverseai/"
+  weight = 4
+
+[[main]]
+  identifier = "website"
+  pre = "link"
+  name = ""
+  url = "https://www.moverse.ai"
+  weight = 5
+
+[[main]]
+  identifier = "youtube"
+  pre = "youtube"
+  name = ""
+  url = "https://www.youtube.com/@moverseaimocap"
+  weight = 6
+
+  
+[[footer]]
+  identifier = "twitter"
+  pre = "x-twitter"
+  name = ""
+  url = "https://twitter.com/moverseai"
+  weight = 1
+
+[[footer]]
+  identifier = "linkedin"
+  pre = "linkedin"
+  name = ""
+  url = "https://linkedin.com/company/moverseai"
+  weight = 2
+
+[[footer]]
+  identifier = "discord"
+  pre = "discord"
+  name = ""
+  url = "https://discord.gg/bQc7B6qSPd"
+  weight = 3
+
+[[footer]]
+  identifier = "github"
+  pre = "github"
+  name = ""
+  url = "https://github.com/moverseai/snap"
+  weight = 4
+  
 # [[main]]
   # name = "Articles"
   # pageRef = "articles"
@@ -241,3 +305,10 @@
   name = "Relight"
   pageRef = "tags/relight"
   weight = 21
+
+[[main]]
+  identifier = "github"
+  pre = "github"
+  name = ""
+  url = "https://github.com/moverseai/snap"
+  weight = 100

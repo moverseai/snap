@@ -2,6 +2,7 @@ title = "SNAP" # "SNAP"
 
 [params.author]
 name = "SNAP"
+email = "info@moverse.ai"
 # image = "img/moverse_logo.png"
 image = "img/moverse_logo_white.png"
 headline = "Solving Neural Articulated Performances"
