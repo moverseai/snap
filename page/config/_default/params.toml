@@ -14,6 +14,8 @@ highlightCurrentMenuArea = true
 smartTOC = true
 smartTOCHideUnfocusedChildren = false
 mainSections = ["papers"]
+og_image = "img/hero_screenshot.png"
+og_description = "SNAP: Solving Neural Articulated Performances"
 
 header.layout =	"fixed-fill-blur"	# Defines the header for the entire site, supported values are basic, fixed, fixed-fill, and fixed-fill-blur
 # header.layout =	"fixed-fill"	# Defines the header for the entire site, supported values are basic, fixed, fixed-fill, and fixed-fill-blur
