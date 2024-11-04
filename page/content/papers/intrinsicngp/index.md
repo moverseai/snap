@@ -31,6 +31,8 @@ series_order: 4
 {{< keyword icon="email" >}} *TVCG* 2023 {{< /keyword >}}
 {{< /keywordList >}}
 
+{{< github repo="USTC3DV/IntrinsicNGP-code" >}}
+
 ### Abstract
 {{< lead >}}
 Recently, many works have been proposed to use the neural radiance field for novel view synthesis of human performers. However, most of these methods require hours of training, making them difficult for practical use. To address this challenging problem, we propose IntrinsicNGP, which can be trained from scratch and achieve high-fidelity results in a few minutes with videos of a human performer. To achieve this goal, we introduce a continuous and optimizable intrinsic coordinate instead of the original explicit Euclidean coordinate in the hash encoding module of InstantNGP. With this novel intrinsic coordinate, IntrinsicNGP can aggregate interframe information for dynamic objects using proxy geometry shapes. Moreover, the results trained with the given rough geometry shapes can be further refined with an optimizable offset field based on the intrinsic coordinate. Extensive experimental results on several datasets demonstrate the effectiveness and efficiency of IntrinsicNGP. We also illustrate the ability of our approach to edit the shape of reconstructed objects.
@@ -57,3 +59,9 @@ Paper
 {{<badge label="body--NeRF" message="NeuralBody" color="coral" logo="github" link="https://github.com/zju3dv/neuralbody" target="_blank">}}
 {{<badge label="body--NeRF" message="HumanNeRF" color="purple" logo="github" link="https://github.com/chungyiweng/HumanNeRF" target="_blank">}}
 {{<badge label="body--NeRF" message="AnimatableNeRF" color="cyan" logo="github" link="https://github.com/zju3dv/animatable_nerf" target="_blank">}}
+
+
+#### Performance
+{{<badge label="train" message="12--20mins" color="informational" logo="link" >}}
+{{<badge label="train" message="1080_x_1080" color="informational" logo="link" >}}
+{{<badge label="train" message="RTX3090" color="informational" logo="link" >}}

@@ -45,7 +45,7 @@ Paper
 ### Approach
 
 {{< figure
-    src="overview.jpg "
+    src="overview.jpg"
     alt="UV Volumes overview"
     caption="`UV Volumes` overview."
     >}}

@@ -47,6 +47,12 @@ Paper
     alt="NES overview"
     caption="`NES` overview."
     >}}
+{{< figure
+    src="details.jpg"
+    alt="NES details"
+    caption="`NES` details."
+    >}}
+
 
 ### Results
 
