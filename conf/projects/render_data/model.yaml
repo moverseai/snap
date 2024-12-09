@@ -1,0 +1,25 @@
+# @package _global_
+
+model:
+  monads:
+    smpl:
+      use_translation: false
+      use_pose: false
+      use_betas: false
+      use_global_orientation: false
+      gender: ${oc.env:SMPL_GENDER}
+      model_path: ${oc.env:SMPL_ROOT}
+      num_betas: 10
+      # batch_size: 1
+    opengl:
+      width: 1920
+      height: 1080
+    mesh_silhouette:
+      width: 1920
+      height: 1080
+    rotation3d:
+      rotations: [180@z] # [180@y, 180@z]
+    transform:
+      transpose: true
+      xyz_in_at: row
+      xyz_out_at: row

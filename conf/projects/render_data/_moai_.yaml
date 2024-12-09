@@ -1,0 +1,19 @@
+# @package _global_
+
+_moai_:
+  _execution_:
+    _lightning_step_:
+      _fit_:
+        _refresh_optimizers_: false # check this
+        _stages_:
+          init:
+            # _iterations_: 
+            # _optimizer_: 
+            _flows_: [visualisation]
+            # _assign_:
+            # _objective_: 
+      # _test_:
+      #   _datasets_:
+      #     zipped:
+      #       _flows_: # [visualisation]
+

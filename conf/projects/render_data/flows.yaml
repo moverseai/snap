@@ -1,0 +1,77 @@
+# @package _global_
+
+_moai_:
+  _definitions_:
+    _flows_:
+      visualisation:
+        smpl:
+          pose:
+            - ${mi:"flatten(pose, 1)"}
+          shape:
+            - betas
+          rotation:
+            - global_orient
+          translation:
+            - transl
+          _out_:
+            - body
+        _mi_:
+          expression:
+            - ${mi:"sq(extrinsics,0)"}
+            # - ${mi:"transpose(extrinsics,0, 2, 1)"}
+            - ${mi:"sq(intrinsics,0)"}            
+            - ${mi:"sq(color,0)"}
+            - ${mi:"extrinsics[:, 0:3, 0:3]"}
+            - ${mi:"extrinsics[:, 0:3, 3]"}
+            - ${mi:"transpose(rotation, 0, 2, 1)"}
+            # - ${mi:"zeros(6, 3, 1080, 1920)"}            
+          _out_:
+            - extrinsics
+            # - extrinsics
+            - intrinsics
+            - color
+            - rotation
+            - translation
+            - rotation_t
+        inverse:
+          # x: [extrinsics]
+          x: 
+            - ${mi:"transpose(extrinsics, 0, 2, 1)"}
+          _out_: [inv_extrinsics]
+        # rotation3d:
+        #   tensor: [body.vertices]
+        #   _out_: [rotated_vertices]        
+        transform:
+          points: [body.vertices]
+          # transform: [extrinsics] # DRAFT
+          rotation: [rotation_t]
+          translation: [translation]
+          _out_: [transformed_vertices]
+        # rotation3d:
+        #   tensor: [transformed_vertices]
+        #   _out_: [transformed_vertices]
+        opengl:
+          intrinsics: [intrinsics]
+          # DRAFT
+          # points: [transformed_vertices] # [body.vertices] # [rotated_vertices]
+          # rotation: [null] # [rotation]
+          # translation: [null] # [translation]
+
+          points: [transformed_vertices] # [body.vertices] # [rotated_vertices]
+          rotation: [null] # [rotation]
+            # - ${mi:"inv_extrinsics[:, 0:3, 0:3]"}
+            # - ${mi:"inv_extrinsics[:, 0:3, 0:3]"}
+          translation: [null] # [translation]
+            # - ${mi:"inv_extrinsics[:, 0:3, 3]"}
+            # - ${mi:"extrinsics[:, 0:3, 3]"}
+            # - ${mi:"inv_extrinsics[:, 0:3, 3]"}
+            # - ${mi:"inv_extrinsics[:, 3, 0:3]"}
+          _out_: [ndc]
+        mesh_silhouette:
+          ndc_vertices: [ndc]
+          indices: [body.faces]          
+          _out_: [silhouette]
+        _mi_mask:
+          expression:
+            - ${mi:"silhouette * color"}
+          _out_: [mask]

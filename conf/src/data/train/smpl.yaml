@@ -1,0 +1,4 @@
+# @package data.train.iterator.datasets.smpl
+
+_target_: src.data.smpl.SMPL
+path: ???
