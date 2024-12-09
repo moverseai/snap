@@ -45,7 +45,8 @@ _moai_:
           points: [body.vertices]
           # transform: [extrinsics] # DRAFT
           rotation: [rotation_t]
-          translation: [translation]
+          translation: # [translation]
+            - ${mi:"zeros(translation)"}
           _out_: [transformed_vertices]
         # rotation3d:
         #   tensor: [transformed_vertices]
@@ -61,7 +62,7 @@ _moai_:
           rotation: [null] # [rotation]
             # - ${mi:"inv_extrinsics[:, 0:3, 0:3]"}
             # - ${mi:"inv_extrinsics[:, 0:3, 0:3]"}
-          translation: [null] # [translation]
+          translation: [translation] # [null] # [translation]
             # - ${mi:"inv_extrinsics[:, 0:3, 3]"}
             # - ${mi:"extrinsics[:, 0:3, 3]"}
             # - ${mi:"inv_extrinsics[:, 0:3, 3]"}
