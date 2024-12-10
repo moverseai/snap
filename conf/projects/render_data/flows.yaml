@@ -15,6 +15,10 @@ _moai_:
             - transl
           _out_:
             - body
+        int32:
+          tensor: 
+            - ${mi:"sq(body.faces, 0)"}
+          _out_: [faces]
         _mi_:
           expression:
             - ${mi:"sq(extrinsics,0)"}
@@ -74,9 +78,27 @@ _moai_:
             # - ${mi:"inv_extrinsics[:, 0:3, 3]"}
             # - ${mi:"inv_extrinsics[:, 3, 0:3]"}
           _out_: [ndc]
-        mesh_silhouette:
+        # mesh_silhouette:
+        #   ndc_vertices: [ndc]
+        #   indices: [body.faces]          
+        #   _out_: [silhouette]
+        rasterize:
           ndc_vertices: [ndc]
-          indices: [body.faces]          
+          indices: [faces]
+          resolution_image: [color]
+          _out_: [rasterized]
+        attribute_interpolation:
+          attributes: 
+            - ${mi:"ones(body.vertices)"}
+          rasterized: [rasterized.image]
+          indices: [faces]
+          derivatives: [rasterized.derivatives]
+          _out_: [interpolated]
+        antialias:
+          attributes: [interpolated.image]
+          rasterized: [rasterized.image]
+          ndc_vertices: [ndc]
+          indices: [faces]
           _out_: [silhouette]
         _mi_mask:
           expression:

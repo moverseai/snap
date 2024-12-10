@@ -13,11 +13,13 @@ defaults:
   - model: moai
   - model/monads/human/body: [smpl]
   - model/monads/geometry/projection: [opengl]
-  - model/monads/render/nvdiffrast: [mesh_silhouette]
+  - model/monads/render/nvdiffrast:
+      [mesh_silhouette, rasterize, attribute_interpolation, antialias]
   - model/monads/geometry/transformation: [inverse]
   - model/monads/generation/matrix: [rotation3d]
   - model/monads/geometry/transformation: [transform, rotate]
-
+  - model/monads/tensor: [int32]
+  
   # MONITORING
   - model/monitors/visualization/rerun: [mesh3d, multicam_posed_images]
 

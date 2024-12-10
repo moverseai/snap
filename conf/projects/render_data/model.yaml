@@ -16,7 +16,7 @@ model:
       height: 1080
     mesh_silhouette:
       width: 1920
-      height: 1080
+      height: 1080      
     rotation3d:
       rotations: [180@y, 180@z] # [180@z] # [180@y, 180@z]
     transform:
