@@ -51,13 +51,19 @@ _moai_:
         # rotation3d:
         #   tensor: [transformed_vertices]
         #   _out_: [transformed_vertices]
+        rotation3d:
+          tensor: [transformed_vertices]
+          _out_: [rot3d]
+        rotate:
+          points: [transformed_vertices]
+          rotation: [rot3d]
+          _out_: [transformed_vertices]
         opengl:
           intrinsics: [intrinsics]
           # DRAFT
           # points: [transformed_vertices] # [body.vertices] # [rotated_vertices]
           # rotation: [null] # [rotation]
           # translation: [null] # [translation]
-
           points: [transformed_vertices] # [body.vertices] # [rotated_vertices]
           rotation: [null] # [rotation]
             # - ${mi:"inv_extrinsics[:, 0:3, 0:3]"}

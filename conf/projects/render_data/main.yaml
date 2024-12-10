@@ -16,7 +16,7 @@ defaults:
   - model/monads/render/nvdiffrast: [mesh_silhouette]
   - model/monads/geometry/transformation: [inverse]
   - model/monads/generation/matrix: [rotation3d]
-  - model/monads/geometry/transformation: [transform]
+  - model/monads/geometry/transformation: [transform, rotate]
 
   # MONITORING
   - model/monitors/visualization/rerun: [mesh3d, multicam_posed_images]
