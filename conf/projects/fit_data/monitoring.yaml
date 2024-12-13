@@ -1,0 +1,37 @@
+# @package _global_
+
+_moai_:
+  _definitions_:
+    _collections_:
+      _monitors_:
+        optimization:
+          optimization_losses:
+            _params_:
+              path: /plots
+              keys: [L2]
+        visualisation:
+          multicam_posed_images:
+            poses: [extrinsics, extrinsics, extrinsics]
+            intrinsics: [intrinsics, intrinsics, intrinsics]
+            images: [color, mask, reconstructed_color] # silhouette]
+            path: [/body/image, /body/mask, /body/pred]
+          mesh3d:
+            vertices: [body.vertices]
+            faces: [body.faces]
+            color: [red]
+            path: [/body/mesh]
+  _execution_:
+    _monitoring_:
+      _fit_:
+        # _optimization_step_:
+        _stages_:
+          nerf_step:
+            _frequency_: 1
+            _monitors_: [optimization]        
+          # init:
+            # _frequency_: 1
+        _batch_:          
+          _frequency_: 100
+          _monitors_: [visualisation]
+      _test_:
+        # _datasets_:

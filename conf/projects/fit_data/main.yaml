@@ -1,0 +1,52 @@
+defaults:
+  ###### ENGINE
+  - engine/runner: lightning
+  - engine/modules: [import, manual_seed, rerun, numpy, precision]
+  - engine/loggers: tabular
+
+  # ###### DATA TEST
+  - data/train/loader: torch
+  - data/train/iterator: zipped # indexed
+  - src/data/train: [smpl, multiview_video]
+
+  # ###### MODEL
+  - model: moai
+  - model/components/tcnn: [encoding_mlp]
+  - model/monads/human/body: [smpl]
+  - model/monads/geometry/projection: [opengl]
+  - model/monads/render/nvdiffrast:
+      [
+        mesh_silhouette,
+        rasterize,
+        attribute_interpolation,
+        antialias,
+        rasterized_foreground,
+        foreground_remap,
+      ]
+  - model/monads/geometry/transformation: [inverse]
+  - model/monads/generation/matrix: [rotation3d]
+  - model/monads/geometry/transformation: [transform, rotate]
+  - model/monads/tensor: [int32]
+  # - model/monads/math: [minmax_normalization]
+
+  # OPTIMIZATION
+  - model/parameters/groups: model
+  - model/parameters/optimizers: [adam, adamw]
+  - model/objectives/regression: L2
+
+  # MONITORING
+  - model/monitors/visualization/rerun:
+      [mesh3d, multicam_posed_images, optimization_losses]
+
+  # ###### EXTRA FILES
+  - data
+  - options
+  - model
+  - monitoring
+  - flows
+  - optim
+  - _moai_
+
+  ###### HYDRA
+  - override hydra/hydra_logging: moai
+  - override hydra/job_logging: moai

@@ -27,7 +27,9 @@ _moai_:
             - ${mi:"sq(color,0)"}
             - ${mi:"extrinsics[:, 0:3, 0:3]"}
             - ${mi:"extrinsics[:, 0:3, 3]"}
-            - ${mi:"transpose(rotation, 0, 2, 1)"}     
+            - ${mi:"transpose(rotation, 0, 2, 1)"}
+            - ${mi:"zeros(color)"}
+            - ${mi:"transpose(reconstructed_color, 0, 2, 3, 1)"}
           _out_:
             - extrinsics
             # - extrinsics
@@ -36,6 +38,8 @@ _moai_:
             - rotation
             - translation
             - rotation_t 
+            - reconstructed_color
+            - reconstructed_color
         transform:
           points: [body.vertices]
           rotation: [rotation_t]
@@ -77,3 +81,38 @@ _moai_:
           expression:
             - ${mi:"silhouette * color"}
           _out_: [mask]
+        rasterized_foreground:
+          triangle_ids: [rasterized.triangles.id]
+          barycentric: [rasterized.triangles.barycentric]
+          normalized_depth: [rasterized.normalized_depth]
+          _out_: [foreground]
+        # minmax_normalization:
+        #   x: [foreground.triangles.id]
+        #   _out_: [normalized_ids]
+        _mi_normalize:
+          expression:
+            - ${mi:"foreground.triangles.id / 13776.0"}
+          _out_: [normalized_ids]
+      tcnn_encoding_mlp:
+        # tensor: [rasterized.image]
+        tensor: 
+          # - ${mi:"cat(foreground.triangles.barycentric, foreground.triangles.id, 1)"}
+          - ${mi:"cat(foreground.triangles.barycentric, normalized_ids, 1)"}
+        _out_: [predicted_color]
+      postproc:
+        foreground_remap:
+          raster: [reconstructed_color]
+          indices: [foreground.indices]
+          foreground: [predicted_color]
+            # - ${mi:"cat(foreground.triangles.barycentric, foreground.triangles.id, 1)"}
+          _out_: [fg_reconstructed_color]
+        antialias:
+          attributes: [fg_reconstructed_color]
+          rasterized: [rasterized.image]
+          ndc_vertices: [ndc]
+          indices: [faces]
+          _out_: [reconstructed_color]
+        # _mi_postproc:
+        #   expression:
+        #     - ${mi:"transpose(reconstructed_color, 0, 3, 1, 2)"}
+        #   _out_: [reconstructed_color]

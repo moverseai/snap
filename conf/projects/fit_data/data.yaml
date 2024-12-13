@@ -1,0 +1,14 @@
+# @package _global_
+
+DATA_ROOT: ???
+
+data:
+  train:
+    loader:
+      shuffle: false
+    iterator:
+      datasets:
+        smpl:
+          path: ${DATA_ROOT}
+        multiview_video:
+          path: ${DATA_ROOT}
