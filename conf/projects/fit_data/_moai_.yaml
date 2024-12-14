@@ -17,7 +17,7 @@ _moai_:
             _optimizer_: optim_nerf
             # _iterations_: 1
             _objective_: color_loss
-            _flows_: [visualisation,  tcnn_encoding_mlp, postproc]
+            _flows_: [preproc,  tcnn_encoding_mlp, postproc]
       # _test_:
       #   _datasets_:
       #     zipped:

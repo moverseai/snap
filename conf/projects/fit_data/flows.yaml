@@ -3,7 +3,11 @@
 _moai_:
   _definitions_:
     _flows_:
-      visualisation:
+      preproc:
+        parameter:
+          void:
+            - betas
+          _out_: [offsets]
         smpl:
           pose:
             - ${mi:"flatten(pose, 1)"}
@@ -15,6 +19,10 @@ _moai_:
             - transl
           _out_:
             - body
+        mesh_vertex_normals:
+          vertices: [body.vertices]
+          faces: [body.faces]
+          _out_: [vertex_normals]
         int32:
           tensor: 
             - ${mi:"sq(body.faces, 0)"}
@@ -30,6 +38,8 @@ _moai_:
             - ${mi:"transpose(rotation, 0, 2, 1)"}
             - ${mi:"zeros(color)"}
             - ${mi:"transpose(reconstructed_color, 0, 2, 3, 1)"}
+            - ${mi:"vertex_normals * offsets"}
+            - ${mi:"body.vertices + oriented_offsets"}
           _out_:
             - extrinsics
             # - extrinsics
@@ -40,8 +50,11 @@ _moai_:
             - rotation_t 
             - reconstructed_color
             - reconstructed_color
+            - oriented_offsets
+            - deformed_vertices
         transform:
-          points: [body.vertices]
+          points: [deformed_vertices] # [body.vertices]
+            # - ${mi:"body.vertices + offsets"}
           rotation: [rotation_t]
           translation: # [translation]
             - ${mi:"zeros(translation)"}

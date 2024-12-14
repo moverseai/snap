@@ -24,7 +24,9 @@ defaults:
         foreground_remap,
       ]
   - model/monads/geometry/transformation: [inverse]
+  - model/monads/geometry/mesh: [mesh_vertex_normals, mesh_face_normals]
   - model/monads/generation/matrix: [rotation3d]
+  - model/monads/generation/tensor: [parameter]
   - model/monads/geometry/transformation: [transform, rotate]
   - model/monads/tensor: [int32]
   # - model/monads/math: [minmax_normalization]
@@ -33,10 +35,11 @@ defaults:
   - model/parameters/groups: model
   - model/parameters/optimizers: [adam, adamw]
   - model/objectives/regression: L2
+  - model/objectives/mesh: surface_normal_consistency
 
   # MONITORING
   - model/monitors/visualization/rerun:
-      [mesh3d, multicam_posed_images, optimization_losses]
+      [triangle_mesh3d, multicam_posed_images, optimization_losses]
 
   # ###### EXTRA FILES
   - data

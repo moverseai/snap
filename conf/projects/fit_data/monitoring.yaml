@@ -8,15 +8,16 @@ _moai_:
           optimization_losses:
             _params_:
               path: /plots
-              keys: [L2]
+              keys: [recon, geom_reg, norm_reg]
         visualisation:
           multicam_posed_images:
             poses: [extrinsics, extrinsics, extrinsics]
             intrinsics: [intrinsics, intrinsics, intrinsics]
             images: [color, mask, reconstructed_color] # silhouette]
             path: [/body/image, /body/mask, /body/pred]
-          mesh3d:
-            vertices: [body.vertices]
+          triangle_mesh3d:
+            vertices: [deformed_vertices] # [body.vertices]
+            normals: [vertex_normals]
             faces: [body.faces]
             color: [red]
             path: [/body/mesh]

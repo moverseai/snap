@@ -5,25 +5,38 @@ _moai_:
     _collections_:
       _optimizers_:
         optim_nerf: &optim_nerf
-          _type_: adam
-          _params_:
-            lr: 1e-3          
-          # _type_: adamw # adam
+          # _type_: adam
           # _params_:
           #   lr: 1e-3
           #   amsgrad: true
-          #   eps: 1e-12
-          #   weight_decay: 1e-5 # 0.1 # 1e-6
+          #   eps: 1e-9
+          #   weight_decay: 0.0
           #   foreach: true # false
           #   capturable: false
           #   differentiable: false
-          #   fused: false # true
+          #   fused: false # true                  
+          _type_: adamw # adam
+          _params_:
+            lr: 1e-3
+            amsgrad: true
+            eps: 1e-12
+            weight_decay: 1e-5 # 0.1 # 1e-6
+            foreach: true # false
+            capturable: false
+            differentiable: false
+            fused: false # true
           _groups_: [model]
       _objectives_:
         color_loss:
           L2:
-           gt: [mask]
-           pred: [reconstructed_color]
-           _weight_: [1.0]              
-           _reduction_: [sum]
-           _out_: [L2]
+           gt: [mask, null]
+           pred: [reconstructed_color, offsets] # [color] # [reconstructed_color]
+           _weight_: [1.0, 1000.0]
+           _reduction_: [sum, sum]
+           _out_: [recon, geom_reg]
+          # surface_normal_consistency:
+          #   vertex_normals: [vertex_normals]
+          #   faces: [faces]
+          #   _weight_: [10.0]
+          #   _reduction_: [sum]
+          #   _out_: [norm_reg]
