@@ -42,6 +42,13 @@
   url = "https://www.youtube.com/@moverseaimocap"
   weight = 6
 
+[[main]]
+  identifier = "about"
+  pre = ""
+  name = "About"
+  url = "https://moverseai.github.io/snap/about"
+  weight = 7
+
   
 [[footer]]
   identifier = "twitter"
@@ -305,6 +312,11 @@
   name = "Relight"
   pageRef = "tags/relight"
   weight = 21
+
+[[subnavigation]]
+  name = "Clothing"
+  pageRef = "tags/clothing"
+  weight = 22
 
 [[main]]
   identifier = "github"
