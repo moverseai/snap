@@ -46,7 +46,8 @@
   identifier = "about"
   pre = ""
   name = "About"
-  url = "https://moverseai.github.io/snap/about"
+  pageRef = "about"
+  # url = "https://moverseai.github.io/snap/about"
   weight = 7
 
   
