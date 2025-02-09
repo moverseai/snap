@@ -1,6 +1,6 @@
 ---
 title: Solving Neural Articulated Performances
-date: 2025-02-10
+# date: 2025-02-10
 draft: false
 logo_path: 
 website: 

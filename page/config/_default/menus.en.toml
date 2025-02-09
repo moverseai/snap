@@ -43,8 +43,8 @@
   weight = 6
 
 [[main]]
-  identifier = "about"
-  pre = ""
+  # identifier = "about"
+  # pre = ""
   name = "About"
   pageRef = "about"
   # url = "https://moverseai.github.io/snap/about"
