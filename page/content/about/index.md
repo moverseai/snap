@@ -3,11 +3,14 @@ title: Solving Neural Articulated Performances
 # date: 2025-02-10
 draft: false
 logo_path: 
-website: 
+website: https://moverseai.github.io/snap/about
+summary: Solving Neural Articulated Performances. Animatable human digital representations consolidate human reconstruction and simulation. They can jointly serve as the technical backbone for holistic performance capture, rich 3D human assets and efficient tele-presence. SNAP is a project that seeks to explore the synergies between human motion capture and appearance reconstruction as enabled by the neural graphics and vision continuum.
 description: Solving Neural Articulated Performances. Animatable human digital representations consolidate human reconstruction and simulation. They can jointly serve as the technical backbone for holistic performance capture, rich 3D human assets and efficient tele-presence. SNAP is a project that seeks to explore the synergies between human motion capture and appearance reconstruction as enabled by the neural graphics and vision continuum.
 layout: article # simple # single # article
 showAuthor: false
 showZenMode: true
+robots: all
+keywords: [motion capture, MoCap, NeRF, splats, Gaussian Splatting, Human Avatar, radiance fields, animated radiance field, volumetric capture, volcap, AI]
 # tags: []
 authors:
   - "nick"
