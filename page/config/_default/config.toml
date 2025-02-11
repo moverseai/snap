@@ -27,7 +27,6 @@ paginate = 36
   filename = 'sitemap.xml'
   priority = 0.5
 
-
 [related]
   threshold = 0
   toLower = false

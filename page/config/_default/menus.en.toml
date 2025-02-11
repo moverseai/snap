@@ -248,10 +248,6 @@
   # pageRef = "about"
   # weight = 25
 
-# [[footer]]
-  # name = "Privacy"
-  # url = "https://external-link"
-
 # config/_default/menus.toml
 
 [[subnavigation]]
@@ -325,3 +321,7 @@
   name = ""
   url = "https://github.com/moverseai/snap"
   weight = 100
+
+[[footer]]
+  name = "Supported by the SPIRIT project"
+  url = "https://spirit-project.eu/"

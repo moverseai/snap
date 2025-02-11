@@ -186,7 +186,7 @@ Evidently, we are reaching a critical point where the combined progress driven b
 Assets that disentangle the various appearance, geometry, deformation and animation layers, maximizing editability and control. More importantly, this should be possible while simultaneously `downscaling` the capturing requirements from hundreds of cameras and controlled environments, to portable and/or mobile systems deployed in-the-wild.
 
 <!-- ## ***S***calable ***R***epresentations -->
-## ***L***ive ***R***epresentations
+## Live Representations
 
 {{< lead >}}
 <!-- > real-time holograms -->
