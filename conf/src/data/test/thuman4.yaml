@@ -1,0 +1,9 @@
+# @package data.test.iterator.datasets.thuman4
+
+_target_: src.data.thuman4.THuman4
+path: ???
+subject: ???
+models_path: ???
+level: 1
+views: [0, 6, 12, 18]
+# offsets_path: null

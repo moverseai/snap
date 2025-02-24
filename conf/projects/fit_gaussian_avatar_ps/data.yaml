@@ -1,0 +1,29 @@
+# @package _global_
+
+SUBJECT: null
+DATA_ROOT: ???
+SUBDIV: one
+SUBDIV_LEVELS:
+  zero: 0
+  one: 1
+  two: 2
+SUBDIV_LEVELS_INDEX:
+  zero: '0'
+  one: '1'
+  two: '2'
+SUBDIV_INDEX: ${SUBDIV_LEVELS_INDEX.${SUBDIV}}
+
+data:
+  train:
+    loader:
+      shuffle: true
+    iterator:
+      start: 0
+      step: 1 # 1
+      end: 900 # 50 # 500
+      datasets:
+        people_snapshot:
+          path: ${DATA_ROOT}
+          subject: ${SUBJECT}
+          models_path: ${oc.env:SMPL_ROOT}
+          level: ${SUBDIV_LEVELS.${SUBDIV}} # ${SUBDIV} # ${SUBDIV_LEVELS.${SUBDIV}}

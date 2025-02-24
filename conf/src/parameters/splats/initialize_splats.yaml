@@ -1,0 +1,4 @@
+# @package model.parameters.initializers.initialize_splats
+
+_target_: src.parameters.splats.pcloud_init.InitializeSplats
+data_path: ???

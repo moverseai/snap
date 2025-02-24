@@ -1,0 +1,11 @@
+# @package data.train.iterator.datasets.people_snapshot
+
+_target_: src.data.people_snapshot.PeopleSnapshot
+path: ???
+subject: ???
+split: train
+models_path: ???
+level: 1
+batch: 2
+offsets_path: ???
+downscale: 1

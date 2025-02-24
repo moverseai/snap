@@ -1,0 +1,58 @@
+# @package _global_
+
+SUBJECT: ???
+TAKE: ???
+DATA_ROOT: ???
+VIEWS: ???
+SUBDIV: one
+SUBDIV_LEVELS:
+  zero: 0
+  one: 1
+  two: 2
+SUBDIV_LEVELS_INDEX:
+  zero: '0'
+  one: '1'
+  two: '2'
+SUBDIV_INDEX: ${SUBDIV_LEVELS_INDEX.${SUBDIV}}
+OFFSETS: ???
+
+data:
+  train:
+    loader:
+      shuffle: false
+      prefetch_factor: 4
+      persistent_workers: true
+      num_workers: 4
+    iterator:
+      start: 0
+      step: 1 # 1
+      end: 900 # 50 # 500
+      datasets:
+        xhuman:
+          path: ${DATA_ROOT}
+          subject: ${SUBJECT}
+          take: ${TAKE}
+          models_path: ${oc.env:SMPL_ROOT}
+          level: ${SUBDIV_LEVELS.${SUBDIV}} # ${SUBDIV} # ${SUBDIV_LEVELS.${SUBDIV}}
+          batch: ${VIEWS}
+          offsets_path: ${oc.select:OFFSETS,null}
+  
+  test:
+    loader:
+      shuffle: false
+      prefetch_factor: 2
+      persistent_workers: true
+      num_workers: 2
+    iterator:
+      start: 0
+      step: 1 # 1
+      end: 900 # 50 # 500
+      datasets:
+        xhuman:
+          path: ${DATA_ROOT}
+          subject: ${SUBJECT}
+          take: ${TAKE}
+          models_path: ${oc.env:SMPL_ROOT}
+          level: ${SUBDIV_LEVELS.${SUBDIV}} # ${SUBDIV} # ${SUBDIV_LEVELS.${SUBDIV}}
+          batch: ${VIEWS}
+          offsets_path: ${oc.select:OFFSETS,null}

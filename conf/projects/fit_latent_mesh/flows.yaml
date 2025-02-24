@@ -1,0 +1,199 @@
+# @package _global_
+
+_moai_:
+  _definitions_:
+    _flows_:
+      preproc:
+        named_params: # parameter:
+          void:
+            - betas
+          _out_: [params]
+        smpl:
+          pose:
+            - ${mi:"flatten(pose, 1)"}
+          shape:
+            - betas
+          rotation:
+            - global_orient
+          translation:
+            - transl
+          _out_:
+            - body
+        mesh_vertex_normals:
+          vertices: [body.vertices]
+          faces: [body.faces]
+          _out_: [vertex_normals]
+        int32:
+          tensor:
+            - ${mi:"sq(body.faces, 0)"}
+          _out_: [faces]        
+        _mi_:
+          expression:
+            # - ${mi:"params[:, 0:1]"}
+            # - ${mi:"params[:, 1:4]"}
+            - params.offsets
+            - params.latent
+            - ${mi:"sq(extrinsics,0)"}
+            # - ${mi:"transpose(extrinsics,0, 2, 1)"}
+            - ${mi:"sq(intrinsics,0)"}
+            - ${mi:"sq(mask,0)"}
+            - ${mi:"extrinsics[:, 0:3, 0:3]"} # BATCHED
+            - ${mi:"extrinsics[:, 0:3, 3]"} # BATCHED
+            - ${mi:"transpose(rotation, 0, 2, 1)"} # BATCHED
+            - ${mi:"vertex_normals.vectors * offsets"}
+            - ${mi:"body.vertices + oriented_offsets"}
+            - ${mi:"sq(color,0)"}            
+          _out_:
+            - offsets
+            - latent
+            - extrinsics
+            # - extrinsics
+            - intrinsics
+            - mask
+            - rotation
+            - translation
+            - rotation_t
+            - oriented_offsets
+            - deformed_vertices
+            - color
+        transform:
+          points:
+            [deformed_vertices] # [deformed_vertices] # [body.vertices]
+            # - ${mi:"body.vertices + offsets"}
+          rotation: [rotation_t]
+          translation: # [translation]
+            - ${mi:"zeros(translation)"}
+          _out_: [transformed_vertices]
+        rotation3d:
+          tensor: [transformed_vertices]
+          _out_: [rot3d]
+        rotate:
+          points: [transformed_vertices]
+          rotation: [rot3d]
+          _out_: [transformed_vertices]
+        opengl:
+          intrinsics: [intrinsics]
+          points: [transformed_vertices] # [body.vertices] # [rotated_vertices]
+          rotation: [null] # [rotation]
+          translation: [translation] # [null] # [translation]
+          _out_: [ndc]
+        rasterize:
+          ndc_vertices: [ndc]
+          indices: [faces]
+          resolution_image: [color]
+          _out_: [rasterized]
+      geom_preproc:
+        attribute_interpolation:
+          attributes:
+            - ${mi:"ones(body.vertices)"}
+          rasterized: [rasterized.image]
+          indices: [faces]
+          derivatives: [rasterized.derivatives]
+          _out_: [interpolated]
+        antialias:
+          attributes: [interpolated.image]
+          rasterized: [rasterized.image]
+          ndc_vertices: [ndc]
+          indices: [faces]
+          _out_: [silhouette]
+      nerf_preproc:                    
+        random:
+          tensor: [color]
+          _out_: [random_color]
+        _mi_nerf:
+          expression:
+            - ${mi:"mask * color"}            
+            - ${mi:"zeros(color)"}
+            - ${mi:"transpose(reconstructed_color, 0, 2, 3, 1)"}
+            # - ${mi:"0.5 * (1.0 + tanh(latent))"}
+            - ${mi:"tanh(latent)"}
+            - ${mi:"ones(color)"}
+            - ${mi:"background * random_color"}
+            - ${mi:"masked_color + (1.0 - mask) * random_background"}
+          _out_:
+            - masked_color
+            - reconstructed_color
+            - reconstructed_color
+            - latent
+            - background
+            - random_background
+            - masked_color
+        attribute_interpolation:
+          attributes: [latent]
+          rasterized: [rasterized.image]
+          indices: [faces]
+          derivatives: [rasterized.derivatives]
+          _out_: [rendered_features]
+        # antialias:
+        #   attributes: [rendered_features.image]
+        #   rasterized: [rasterized.image]
+        #   ndc_vertices: [ndc]
+        #   indices: [faces]
+        #   _out_: [rendered_features]
+        rasterized_foreground:
+          triangle_ids: [rasterized.triangles.id]
+          barycentric: [rasterized.triangles.barycentric]
+          normalized_depth: [rasterized.normalized_depth]
+          # attributes: [rendered_features.image] # [features]
+          attributes: [rendered_features.image] # [features]
+          _out_: [foreground]
+        # vertex_barycentric_interpolation:
+        #   attributes: [latent]
+        #   faces: [faces]
+        #   triangles: [foreground.triangles.id]
+        #   # indices: [foreground.indices]
+        #   weights: [foreground.triangles.barycentric]
+        #   _out_: [interpolated_latent]
+        
+        # antialias: #NOTE: is this necessary?
+        #   attributes: [rendered_features.image]
+        #   rasterized: [rasterized.image]
+        #   ndc_vertices: [ndc]
+        #   indices: [faces]
+        #   _out_: [features]
+        # _mi_norm:
+        #   expression:
+        #     - ${mi:"tanh(foreground.attributes)"}
+        #   _out_: [fg_features]
+
+      tcnn_encoding_fully_fused_mlp: # tcnn_encoding_mlp:
+        # tensor: [rasterized.image]
+        tensor: [foreground.attributes] # [fg_features] # [foreground.attributes]
+        # tensor: [interpolated_latent]
+        _out_: [predicted_color]
+      geom_postproc:
+        #TODO: 1-channel silhouette?
+        _mi_sil:
+          expression:
+            - ${mi:"silhouette[:, 0:1, :, :]"}
+          _out_:
+            - silhouette
+        mesh_vertex_normals:
+          vertices: [deformed_vertices, body.vertices]
+          faces: [body.faces, body.faces]
+          _out_: [deformed_vertex_normals, original_vertex_normals]
+      nerf_postproc:
+        mesh_vertex_normals:
+          vertices: [deformed_vertices]
+          faces: [body.faces]
+          _out_: [deformed_vertex_normals]
+        foreground_remap:
+          raster: [reconstructed_color]
+          indices: [foreground.indices]
+          foreground: [predicted_color]
+          _out_: [fg_reconstructed_color]
+          # _out_: [reconstructed_color]
+        antialias:
+          attributes: [fg_reconstructed_color]
+          rasterized: [rasterized.image]
+          ndc_vertices: [ndc]
+          indices: [faces]
+          _out_: [reconstructed_color]
+        # _mi_permute:
+        #   expression:
+        #     - ${mi:"transpose(reconstructed_color, 0, 3, 1, 2)"}
+        #   _out_: [reconstructed_color]
+        # clamp: #NOTE: buggy
+        #   x: [reconstructed_color]
+        #     # - ${mi:"transpose(reconstructed_color, 0, 3, 1, 2)"}
+        #   _out_: [reconstructed_color]

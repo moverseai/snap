@@ -1,0 +1,147 @@
+# @package _global_
+
+_moai_:
+  _definitions_:
+    _flows_:
+      preproc:
+        parameter:
+          void:
+            - betas
+          _out_: [offsets]
+        smpl:
+          pose:
+            - ${mi:"flatten(pose, 1)"}
+          shape:
+            - betas
+          rotation:
+            - global_orient
+          translation:
+            - transl
+          _out_:
+            - body
+        mesh_vertex_normals:
+          vertices: [body.vertices]
+          faces: [body.faces]
+          _out_: [vertex_normals]
+        int32:
+          tensor: 
+            - ${mi:"sq(body.faces, 0)"}
+          _out_: [faces]
+        _mi_:
+          expression:
+            - ${mi:"sq(extrinsics,0)"}
+            # - ${mi:"transpose(extrinsics,0, 2, 1)"}
+            - ${mi:"sq(intrinsics,0)"}
+            - ${mi:"sq(mask,0)"}
+            - ${mi:"extrinsics[:, 0:3, 0:3]"} # BATCHED
+            - ${mi:"extrinsics[:, 0:3, 3]"} # BATCHED
+            - ${mi:"transpose(rotation, 0, 2, 1)"} # BATCHED            
+            - ${mi:"vertex_normals.vectors * offsets"}
+            - ${mi:"body.vertices + oriented_offsets"}
+            - ${mi:"sq(color,0)"}
+          _out_:
+            - extrinsics
+            # - extrinsics
+            - intrinsics            
+            - mask
+            - rotation
+            - translation
+            - rotation_t 
+            - oriented_offsets
+            - deformed_vertices
+            - color
+        transform:
+          points: [deformed_vertices] # [deformed_vertices] # [body.vertices]
+            # - ${mi:"body.vertices + offsets"}
+          rotation: [rotation_t]
+          translation: # [translation]
+            - ${mi:"zeros(translation)"}
+          _out_: [transformed_vertices]
+        rotation3d:
+          tensor: [transformed_vertices]
+          _out_: [rot3d]
+        rotate:
+          points: [transformed_vertices]
+          rotation: [rot3d]
+          _out_: [transformed_vertices]
+        opengl:
+          intrinsics: [intrinsics]
+          points: [transformed_vertices] # [body.vertices] # [rotated_vertices]
+          rotation: [null] # [rotation]
+          translation: [translation] # [null] # [translation]
+          _out_: [ndc]
+        rasterize:
+          ndc_vertices: [ndc]
+          indices: [faces]
+          resolution_image: [color]
+          _out_: [rasterized]
+      geom_preproc:
+        attribute_interpolation:
+          attributes: 
+            - ${mi:"ones(body.vertices)"}
+          rasterized: [rasterized.image]
+          indices: [faces]
+          derivatives: [rasterized.derivatives]
+          _out_: [interpolated]
+        antialias:
+          attributes: [interpolated.image]
+          rasterized: [rasterized.image]
+          ndc_vertices: [ndc]
+          indices: [faces]
+          _out_: [silhouette]
+      nerf_preproc:        
+        _mi_nerf:
+          expression:            
+            - ${mi:"mask * color"}
+            - ${mi:"zeros(color)"}
+            - ${mi:"transpose(reconstructed_color, 0, 2, 3, 1)"}
+          _out_:
+            - masked_color
+            - reconstructed_color
+            - reconstructed_color            
+        rasterized_foreground:
+          triangle_ids: [rasterized.triangles.id]
+          barycentric: [rasterized.triangles.barycentric]
+          normalized_depth: [rasterized.normalized_depth]
+          _out_: [foreground]
+        # minmax_normalization:
+        #   x: [foreground.triangles.id]
+        #   _out_: [normalized_ids]
+        _mi_normalize:
+          expression:
+            - ${mi:"foreground.triangles.id / 13776.0"}
+          _out_: [normalized_ids]
+      tcnn_encoding_mlp:
+        # tensor: [rasterized.image]
+        tensor: 
+          # - ${mi:"cat(foreground.triangles.barycentric, foreground.triangles.id, 1)"}
+          - ${mi:"cat(foreground.triangles.barycentric, normalized_ids, 1)"}
+        _out_: [predicted_color]
+      geom_postproc:
+        #TODO: 1-channel silhouette?
+        _mi_sil:
+          expression:
+            - ${mi:"silhouette[:, 0:1, :, :]"}
+          _out_:
+            - silhouette
+        mesh_vertex_normals:
+          vertices: [deformed_vertices, body.vertices]
+          faces: [body.faces, body.faces]
+          _out_: [deformed_vertex_normals, original_vertex_normals]        
+      nerf_postproc:
+        mesh_vertex_normals:
+          vertices: [deformed_vertices]
+          faces: [body.faces]
+          _out_: [deformed_vertex_normals]
+        foreground_remap:
+          raster: [reconstructed_color]
+          indices: [foreground.indices]
+          foreground: [predicted_color]
+            # - ${mi:"cat(foreground.triangles.barycentric, foreground.triangles.id, 1)"}
+          _out_: [fg_reconstructed_color]
+        antialias:
+          attributes: [fg_reconstructed_color]
+          rasterized: [rasterized.image]
+          ndc_vertices: [ndc]
+          indices: [faces]
+          _out_: [reconstructed_color]        

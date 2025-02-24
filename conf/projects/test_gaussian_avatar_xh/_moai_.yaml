@@ -1,0 +1,39 @@
+# @package _global_
+
+METHOD: ???
+METHOD_FLOWS:
+  none:
+    - preproc
+    - postproc
+    - geom_preproc
+    - geom_postproc
+    - nerf_preproc
+    - splats_none
+    - nerf_postproc    
+  lbs:
+    - preproc
+    - postproc
+    - geom_preproc
+    - geom_postproc
+    - nerf_preproc
+    - splats_lbs
+    - nerf_postproc
+  qlbs:
+    - preproc
+    - postproc
+    - geom_preproc
+    - geom_postproc
+    - nerf_preproc
+    - splats_qlbs
+    - nerf_postproc
+
+_moai_:
+  _execution_:
+    _initialize_:
+      _test_:
+        _setup_: [initialize_splats]
+    _lightning_step_:
+      _test_:
+        _datasets_:
+          zipped: # xhuman:
+            _flows_: ${METHOD_FLOWS.${METHOD}}

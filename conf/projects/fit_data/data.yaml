@@ -1,5 +1,6 @@
 # @package _global_
 
+SUBSET: [6, 7] # null # [1, 2] # [0, 1, 2]
 DATA_ROOT: ???
 
 data:
@@ -10,5 +11,7 @@ data:
       datasets:
         smpl:
           path: ${DATA_ROOT}
+          subset: ${SUBSET}
         multiview_video:
           path: ${DATA_ROOT}
+          subset: ${SUBSET}

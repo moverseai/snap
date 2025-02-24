@@ -1,0 +1,214 @@
+# @package _global_
+
+_moai_:
+  _definitions_:
+    _flows_:
+      preproc:
+        named_params: # parameter:
+          void:
+            - betas
+          _out_: [params]
+        _mi_index:
+          expression:
+            - ${mi:"sq(vertices, 0)"}
+          _out_: [vertices]
+        mesh_vertex_normals: #TODO: animated normals
+          vertices: [vertices]
+          faces: [faces]
+          _out_: [original_vertex_normals]
+        int32:
+          tensor:
+            - ${mi:"sq(faces, 0)"}
+          _out_: [faces_i32]
+        _mi_:
+          expression:
+            # - ${mi:"params[:, 0:1]"}
+            # - ${mi:"params[:, 1:4]"}
+            - params.offsets
+            # - params.latent
+            - ${mi:"sq(extrinsics,0)"}
+            # - ${mi:"transpose(extrinsics,0, 2, 1)"}
+            - ${mi:"sq(intrinsics,0)"}
+            - ${mi:"sq(mask,0)"}
+            - ${mi:"extrinsics[:, 0:3, 0:3]"} # BATCHED
+            - ${mi:"extrinsics[:, 0:3, 3]"} # BATCHED
+            - ${mi:"transpose(rotation, 0, 2, 1)"} # BATCHED
+            - ${mi:"original_vertex_normals.vectors * offsets"}
+            - ${mi:"vertices + oriented_offsets"}
+            # - ${mi:"vertices + offsets"}
+            - ${mi:"sq(color,0)"}
+            - ${mi:"sq(camera_position,0)"}
+            - ${mi:"sq(view_projection_matrix,0)"}
+            - ${mi:"sq(view_matrix,0)"}
+            - ${mi:"unsq(offsets, 0)"}
+          _out_:
+            - offsets
+            # - latent
+            - extrinsics
+            # - extrinsics
+            - intrinsics
+            - mask
+            - rotation
+            - translation
+            - rotation_t
+            - oriented_offsets
+            - deformed_vertices
+            - color
+            - camera_position
+            - view_projection_matrix
+            - view_matrix
+            - vertex_offsets
+        transform:
+          points:
+            [deformed_vertices] # [deformed_vertices] # [body.vertices]
+            # - ${mi:"body.vertices + offsets"}
+          rotation: [rotation_t]
+          translation: # [translation]
+            - ${mi:"zeros(translation)"}
+          _out_: [transformed_vertices]
+        rotation3d:
+          tensor: [transformed_vertices]
+          _out_: [rot3d]
+        rotate:
+          points: [transformed_vertices]
+          rotation: [rot3d]
+          _out_: [transformed_vertices]
+        opengl:
+          intrinsics: [intrinsics]
+          points: [transformed_vertices] # [body.vertices] # [rotated_vertices]
+          rotation: [null] # [rotation]
+          translation: [translation] # [null] # [translation]
+          _out_: [ndc]
+        rasterize:
+          ndc_vertices: [ndc]
+          indices: [faces_i32]
+          resolution_image: [color]
+          _out_: [rasterized]
+      postproc:
+        mesh_vertex_normals:
+          vertices: [deformed_vertices] #,  body.vertices]
+          faces: [faces] # [body.faces, body.faces]
+          _out_: [deformed_vertex_normals] # , original_vertex_normals]
+      geom_preproc:
+        attribute_interpolation:
+          attributes:
+            # - ${mi:"ones(body.vertices)"}
+            - ${mi:"ones(vertices)"}
+          rasterized: [rasterized.image]
+          indices: [faces_i32]
+          derivatives: [rasterized.derivatives]
+          _out_: [interpolated]
+        antialias:
+          attributes: [interpolated.image]
+          rasterized: [rasterized.image]
+          ndc_vertices: [ndc]
+          indices: [faces_i32]
+          _out_: [silhouette]
+      nerf_preproc:
+        gaussian_splat_parameters:
+          tensor: [deformed_vertices]
+          _out_: [gaussian_params]
+        ones:
+          tensor: [color]
+          _out_: [random_color]
+        _mi_nerf:
+          expression:
+            - ${mi:"mask * color"}            
+            - ${mi:"zeros(color)"}
+            - ${mi:"transpose(reconstructed_color, 0, 2, 3, 1)"}
+            # - ${mi:"0.5 * (1.0 + tanh(latent))"}
+            # - ${mi:"tanh(latent)"}
+            - ${mi:"ones(color)"}
+            - ${mi:"background * random_color"}
+            - ${mi:"masked_color + ((1.0 - mask) * random_background)"}
+            - ${mi:"gaussian_params.rotation"}
+            - ${mi:"gaussian_params.scaling"}
+          _out_:
+            - masked_color
+            - reconstructed_color
+            - reconstructed_color
+            # - latent
+            - background
+            - random_background
+            - masked_color
+            - gaussian_quats
+            - gaussian_scales        
+      
+      geom_postproc:
+        #TODO: 1-channel silhouette?
+        _mi_sil:
+          expression:
+            - ${mi:"silhouette[:, 0:1, :, :]"}
+          _out_:
+            - silhouette
+        # mesh_vertex_normals:
+        #   vertices: [deformed_vertices, vertices] #,  body.vertices]
+        #   faces: [faces, faces] # [body.faces, body.faces]
+        #   _out_: [deformed_vertex_normals, original_vertex_normals] # , original_vertex_normals]
+      splats_none:
+        _mi_expand:
+          expression:
+            - ${mi:"expand_batch_as(gaussian_quats, deformed_vertices)"}
+          _out_: [gaussian_quats]
+      splats_lbs:
+        _mi_roll:
+          expression:
+            - ${mi:"roll(gaussian_quats, -1, -1)"}
+            # - ${mi:"unsq(blended_transforms, 0)"}
+          _out_: [gaussian_quats] # , blended_transforms]
+        rotmat_to_unitquat:
+          rotation:
+            - ${mi:"blended_transforms[0, :, :, 0:3, 0:3]"}
+          _out_: [blended_quats]
+        quaternion_composition:
+          x: [blended_quats]
+          y: [gaussian_quats]
+          _out_: [gaussian_quats]
+        _mi_unroll:
+          expression:
+            - ${mi:"roll(gaussian_quats, 1, -1)"}
+          _out_: [gaussian_quats]
+      splats_qlbs:
+        quaternion_composition:
+          x: 
+            - ${mi:"sq(blended_rotations_quat,0)"}
+          y: [gaussian_quats]
+          _out_: [gaussian_quats]
+        _mi_scaling:
+          expression: #NOTE: need to update vertex/face areas used in objectives and here
+            # - ${mi:"sqrt(unsq(deformed_vertex_normals.areas, 2) * gaussian_scales)"}
+            - ${mi:"gaussian_scales"}
+          _out_: [gaussian_scales]
+      nerf_postproc:
+        # mesh_vertex_normals:
+        #   vertices: [deformed_vertices, vertices] #,  body.vertices]
+        #   faces: [faces, faces] # [body.faces, body.faces]
+        #   _out_: [deformed_vertex_normals, original_vertex_normals] # , original_vertex_normals]
+        # gaussian_splat_parameters:
+        #   tensor: [deformed_vertices]
+        #   _out_: [gaussian_params]
+        _mi_gaussian:
+          expression:
+            - ${mi:"-gaussian_params.opacity"}
+            - ${mi:"unsq(offsets, 0)"}
+            - ${mi:"expand_batch_as(gaussian_params.opacity, deformed_vertices)"}
+            - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics, deformed_vertices)"}
+            # - ${mi:"expand_batch_as(gaussian_quats, deformed_vertices)"}
+            - ${mi:"expand_batch_as(gaussian_scales, deformed_vertices)"}            
+          _out_: [neg_opacity, offsets_b, opacities, spherical_harmonics, gaussian_scales]
+        detach:
+          tensor: [deformed_vertices]
+          _out_: [deformed_vertices_d]
+        gaussian_splat_rasterizer:
+          view_matrix: [view_matrix]  # [B, 4, 4]
+          view_projection_matrix: [view_projection_matrix]  # [B, 4, 4]
+          camera_position: [camera_position]  # [B, 3]
+          positions: [deformed_vertices_d] # [deformed_vertices] # [deformed_vertices_d]  # [B, V, 3]
+          sh_coeffs: [spherical_harmonics] # [gaussian_params.spherical_harmonics]  # [B, SH, 3]
+          opacities: [opacities] # [gaussian_params.opacity]  # [B, V, 1]
+          rotations: [gaussian_quats] # [gaussian_params.rotation]  # [B, V, 4]          
+          scales: [gaussian_scales] # [gaussian_params.scaling]  # [B, V, 3]
+          intrinsics: [intrinsics]  # [B, 3, 3]
+          image: [color] # [silhouette]  # [B, C, H, W]
+          background_color: [random_background]  # [B, 3]
+          _out_: [splatted]        

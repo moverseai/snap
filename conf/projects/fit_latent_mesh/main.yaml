@@ -1,0 +1,62 @@
+defaults:
+  ###### ENGINE
+  - engine/runner: lightning
+  - engine/modules: [import, manual_seed, rerun, numpy, precision]
+  - engine/loggers: tabular
+
+  # ###### DATA TEST
+  - data/train/loader: torch
+  - data/train/iterator: subset_zipped # indexed
+  # - data/train/augmentation/albumentations: compose
+  # - src/data/train/aug: euclidean_distance_transform
+  - src/data/train: [smpl, multiview_video, multiview_mask_video]
+
+  # ###### MODEL
+  - model: moai
+  - model/components/tcnn: [encoding_fully_fused_mlp] # [encoding_mlp]
+  - model/monads/human/body: [smpl]
+  - model/monads/geometry/projection: [opengl]
+  - model/monads/render/nvdiffrast:
+      [
+        mesh_silhouette,
+        rasterize,
+        attribute_interpolation,
+        antialias,
+        rasterized_foreground,
+        foreground_remap,
+      ]
+  - model/monads/geometry/transformation: [inverse]
+  - model/monads/geometry/mesh: [mesh_vertex_normals, mesh_face_normals]
+  - model/monads/generation/matrix: [rotation3d]
+  - model/monads/generation/tensor: [named_params, random] # [parameter]
+  - model/monads/geometry/transformation: [transform, rotate]
+  - model/monads/tensor: [int32]
+  # - model/monads/filter/highpass: [sobel2d]
+  - model/monads/math: [clamp] # [minmax_normalization]
+  - src/monads: [vertex_barycentric_interpolation]
+
+  # OPTIMIZATION
+  - model/parameters/groups: [model1, model2, model3]
+  - model/parameters/optimizers: [adam, adamw, lbfgsls]
+  - model/objectives/regression: [L2, L1, cosine_distance]
+  - model/objectives/mesh:
+      [surface_normal_consistency, laplacian_smoothness, face_area_consistency]
+  - model/objectives/image: [intersection_over_union, structural_dissimilarity]
+
+  # MONITORING
+  - model/monitors/visualization/rerun:
+      [triangle_mesh3d, multicam_posed_images, optimization_losses]
+  - model/monitors/exporting/local: [mesh]
+
+  # ###### EXTRA FILES
+  - data
+  - options
+  - model
+  - monitoring
+  - flows
+  - optim
+  - _moai_
+
+  ###### HYDRA
+  - override hydra/hydra_logging: moai
+  - override hydra/job_logging: moai

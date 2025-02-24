@@ -1,0 +1,139 @@
+# @package _global_
+
+model:
+  parameters:
+    groups:
+      model3:
+        modules:
+          - error_correction_field          
+        # parameters:
+        #   - preproc.named_params.latent # NOTE: required
+      model2:
+        modules:
+          - tcnn_encoding_fully_fused_mlp # tcnn_encoding_mlp
+          # - error_correction_field
+        # monads:
+          # - preproc.parameter
+        parameters:
+          - preproc.named_params.latent # NOTE: required
+      model1:
+        # monads:
+          # - preproc.parameter
+        parameters:
+          - preproc.named_params.offsets
+  components:
+    error_correction_field:
+      input_dims: 3
+      encoding_config:
+        # otype: "Frequency"
+        # n_frequencies: 24
+        otype: "HashGrid"
+        n_levels: 16 # 16 # 8 # 16
+        n_features_per_level: 2 # 4 # 8 # 2
+        log2_hashmap_size: 19 # 19
+        base_resolution: 16 # 2 # 16
+        per_level_scale: 1.5
+      # hidden_dims: [32, 64, 128, 32] # NOTE: size required  
+      network_config:
+        activation: "ReLU" # "None" # "ReLU"
+        output_activation: "None" # "ReLU" # "Sigmoid" # "None"
+        n_neurons: 64 # 64
+        n_hidden_layers: 5 # 2
+    tcnn_encoding_fully_fused_mlp: # tcnn_encoding_mlp:
+      input_dims: 3
+      output_dims: 3
+      encoding_config:
+        # otype: "Frequency"
+        # n_frequencies: 24
+        otype: "HashGrid"
+        # otype: "Grid"
+        # type: "Hash"
+        n_levels: 16 # 16 # 8 # 16
+        n_features_per_level: 2 # 4 # 8 # 2
+        log2_hashmap_size: 19 # 19
+        base_resolution: 16 # 2 # 16
+        per_level_scale: 1.5
+
+  #       # otype: "Composite"
+  #       # nested: 
+  #       #   - n_dims_to_encode: 2
+  #       #     otype: "TriangleWave"
+  #       #     n_frequencies: 6
+  #       #   - n_dims_to_encode: 1
+  #       #     otype: "Grid"
+  #       #     type: "Hash"
+  #       #     n_levels: 16 # 8 # 16
+  #       #     n_features_per_level: 8 # 8 # 2
+  #       #     log2_hashmap_size: 15 # 19
+  #       #     base_resolution: 2 # 2 # 16
+  #       #     per_level_scale: 1.5 
+
+      # hidden_dims: [32, 64, 128, 32] # NOTE: size required
+      # [64, 64, 128, 64, 32] # [64, 64, 128, 128, 64, 32] # [64, 64, 128, 32]
+  
+      network_config:
+        otype: "FullyFusedMLP" # "CutlassMLP" # "FullyFusedMLP"
+        activation: "ReLU" # "None" # "ReLU"
+        output_activation: "ReLU" # "ReLU" # "Sigmoid" # "None"
+        n_neurons: 64 # 64
+        n_hidden_layers: 5 # 2
+  monads:
+    grid:
+      mode: ndc
+      width: 1920
+      height: 1080
+      depth: 1
+      inclusive: true
+      order: xy
+      persistent: true
+    random:
+      shape: [3, 1, 1]
+      mode: unit
+      scale: 1.0
+      includes_batch: false
+    # parameter:
+    #   shape: [6890, 4] # [6890, 3] # [6890, 1]
+    #   init: zeros # randn
+    named_params:
+      parameters:
+        offsets:
+          shape: [6890, 1] # [6890, 3] # [6890, 1]
+          init: zeros # randn
+        latent:
+          shape: [6890, 3] # [6890, 3] # [6890, 1]
+          init: rand # randn
+    smpl:
+      use_translation: false
+      use_pose: false
+      use_betas: false
+      use_global_orientation: false
+      gender: ${oc.env:SMPL_GENDER}
+      model_path: ${oc.env:SMPL_ROOT}
+      num_betas: 10
+      # batch_size: 1
+    opengl:
+      width: 1920
+      height: 1080
+    mesh_silhouette:
+      width: 1920
+      height: 1080      
+    rotation3d:
+      rotations: [180@y, 180@z] # [180@z] # [180@y, 180@z]
+    transform:
+      transpose: true
+      xyz_in_at: row
+      xyz_out_at: row
+    rasterize:
+      decomposed: true
+    # minmax_normalization:
+    #   min_value: 1
+    #   max_value: 13776
+  objectives:
+    laplacian_smoothness:
+      method: cotcurv
+    cosine_distance:
+      normalized: true
+      epsilon: 1.0e-4
+      dim: -1
+    intersection_over_union:
+      reduce: false

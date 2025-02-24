@@ -16,8 +16,8 @@ _moai_:
             images: [color, mask, reconstructed_color] # silhouette]
             path: [/body/image, /body/mask, /body/pred]
           triangle_mesh3d:
-            vertices: [deformed_vertices] # [body.vertices]
-            normals: [vertex_normals]
+            vertices: [deformed_vertices] # [deformed_vertices] # [body.vertices]
+            normals: [deformed_vertex_normals] # [deformed_vertex_normals] # [vertex_normals]
             faces: [body.faces]
             color: [red]
             path: [/body/mesh]
@@ -32,7 +32,7 @@ _moai_:
           # init:
             # _frequency_: 1
         _batch_:          
-          _frequency_: 100
+          _frequency_: 50
           _monitors_: [visualisation]
       _test_:
         # _datasets_:

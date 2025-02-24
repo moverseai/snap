@@ -33,8 +33,8 @@ defaults:
 
   # OPTIMIZATION
   - model/parameters/groups: model
-  - model/parameters/optimizers: [adam, adamw]
-  - model/objectives/regression: L2
+  - model/parameters/optimizers: [adam, adamw, lbfgsls]
+  - model/objectives/regression: [L2, L1]
   - model/objectives/mesh: surface_normal_consistency
 
   # MONITORING

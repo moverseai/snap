@@ -1,0 +1,87 @@
+# @package _global_
+
+SPLATS_PATH: ???
+NUM_SPLATS:
+  - 10475
+  - 41853
+  - 167333
+
+model:
+  parameters:
+    initializers:
+      initialize_splats:
+        data_path: ${SPLATS_PATH}
+    
+  monads:
+    # grid:
+    #   mode: ndc
+    #   width: 1920
+    #   height: 1080
+    #   depth: 1
+    #   inclusive: true
+    #   order: xy
+    #   persistent: true
+    ones:
+      shape: [3, 1, 1]
+      includes_batch: false
+    # parameter:
+    #   shape: [6890, 4] # [6890, 3] # [6890, 1]
+    #   init: zeros # randn
+    named_params:
+      parameters:
+        offsets:
+          shape: # [110210, 1] # [27554, 1] # [6890, 3] # [6890, 1]
+            - ${NUM_SPLATS[${SUBDIV_INDEX}]} # ${NUM_SPLATS[1]} # ${NUM_SPLATS[${SUBDIV}]}
+            - 1
+          init: zeros # randn
+        # latent:
+        #   shape: [6890, 3] # [6890, 3] # [6890, 1]
+        #   init: rand # randn
+    # smpl:
+    #   use_translation: false
+    #   use_pose: false
+    #   use_betas: false
+    #   use_global_orientation: false
+    #   gender: ${oc.env:SMPL_GENDER}
+    #   model_path: ${oc.env:SMPL_ROOT}
+    #   num_betas: 10
+    #   # batch_size: 1
+    opengl:
+      width: 800 # 1920
+      height: 1200
+    # mesh_silhouette:
+    #   width: 1920
+    #   height: 1080 
+    rotation3d:
+      rotations: [180@y, 180@z] # [180@y, 180@z] # [180@z] # [180@y, 180@z]
+    transform:
+      transpose: true
+      xyz_in_at: row
+      xyz_out_at: row
+    rasterize:
+      decomposed: true
+    # minmax_normalization:
+    #   min_value: 1
+    #   max_value: 13776
+    gaussian_splat_parameters:
+      num_splats: ${NUM_SPLATS[${SUBDIV_INDEX}]} # ${NUM_SPLATS[1]} # ${NUM_SPLATS[${SUBDIV}]} # 110210 # 27554
+      skip_positions: true
+      scale: 0.025 # 0.1 # 0.025 # 1.0
+      opacity: 0.9 # 0.1 # null
+      # sh_degree: 0
+    gaussian_splat_rasterizer:
+      # prefiltered: false
+      debug: false # true
+      # scale_modifier: 1.0
+      # width: null
+      # height: null
+      # background_color: black
+  objectives:
+    laplacian_smoothness:
+      method: cotcurv
+    cosine_distance:
+      normalized: true
+      epsilon: 1.0e-4
+      dim: -1
+    intersection_over_union:
+      reduce: false

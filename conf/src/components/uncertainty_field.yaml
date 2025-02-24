@@ -1,0 +1,22 @@
+# @package model.components.uncertainty_field
+
+_target_: moai.components.tcnn.modules.EncodingFullyFusedMLP
+input_dims: ???
+output_dims: 1
+encoding_config:
+  # otype: "Frequency"
+  # n_frequencies: 24
+  otype: "HashGrid"
+  n_levels: 16 # 16 # 8 # 16
+  n_features_per_level: 2 # 4 # 8 # 2
+  log2_hashmap_size: 19 # 19
+  base_resolution: 16 # 2 # 16
+  per_level_scale: 1.5
+# hidden_dims: [32, 64, 128, 32] # NOTE: size required  
+network_config:
+  otype: "FullyFusedMLP" # "CutlassMLP" # "FullyFusedMLP"
+  activation: "ReLU" # "None" # "ReLU"
+  output_activation: "ReLU" # "ReLU" # "Sigmoid" # "None"
+  n_neurons: 64 # 64
+  n_hidden_layers: 5 # 2
+seed: ${oc.select:engine.modules.manual_seed.seed,1337}

@@ -1,0 +1,25 @@
+# @package _global_
+
+experiment:
+  name: fit_gaussian_avatar_ps
+  batch_size: 1
+  workers: 0
+
+engine:
+  runner:
+    deterministic: false # required for index add ops
+    devices: 1
+    num_sanity_val_steps: 0
+    max_epochs: 20
+
+  modules:
+    precision:
+      precision: highest # highest
+    rerun:
+      memory_limit: 4GB
+      world_coordinates: RDD # RUF
+      # export: './rerun.rrd'
+      # annotations:
+      #   plots:
+      #     - key: # 
+      #       color: green

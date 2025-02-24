@@ -1,0 +1,3 @@
+# @package model.monads.rotate_spherical_harmonics
+
+_target_: src.monads.splats.rotate_spherical_harmonics.RotateSphericalHarmonics

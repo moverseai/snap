@@ -33,27 +33,37 @@ _moai_:
             # - ${mi:"transpose(extrinsics,0, 2, 1)"}
             - ${mi:"sq(intrinsics,0)"}            
             - ${mi:"sq(color,0)"}
-            - ${mi:"extrinsics[:, 0:3, 0:3]"}
-            - ${mi:"extrinsics[:, 0:3, 3]"}
-            - ${mi:"transpose(rotation, 0, 2, 1)"}
+            - ${mi:"extrinsics[:, 0:3, 0:3]"} # BATCHED
+            - ${mi:"extrinsics[:, 0:3, 3]"} # BATCHED
+            # - ${mi:"extrinsics[0:3, 0:3]"} # ONE
+            # - ${mi:"extrinsics[0:3, 3]"} # ONE
+            - ${mi:"transpose(rotation, 0, 2, 1)"} # BATCHED
+            # - ${mi:"transpose(rotation, 1, 0)"} # ONE
+            # - ${mi:"unsq(rotation,0)"} # ONE
             - ${mi:"zeros(color)"}
             - ${mi:"transpose(reconstructed_color, 0, 2, 3, 1)"}
             - ${mi:"vertex_normals * offsets"}
             - ${mi:"body.vertices + oriented_offsets"}
+            # - ${mi:"body.vertices + offsets"}
           _out_:
             - extrinsics
             # - extrinsics
             - intrinsics
             - color
             - rotation
+            # - rotation # ONE
             - translation
             - rotation_t 
             - reconstructed_color
             - reconstructed_color
             - oriented_offsets
             - deformed_vertices
+        # mesh_vertex_normals:
+        #   vertices: [body.vertices] # [deformed_vertices]
+        #   faces: [body.faces]
+        #   _out_: [vertex_normals]
         transform:
-          points: [deformed_vertices] # [body.vertices]
+          points: [deformed_vertices] # [deformed_vertices] # [body.vertices]
             # - ${mi:"body.vertices + offsets"}
           rotation: [rotation_t]
           translation: # [translation]
@@ -113,6 +123,10 @@ _moai_:
           - ${mi:"cat(foreground.triangles.barycentric, normalized_ids, 1)"}
         _out_: [predicted_color]
       postproc:
+        mesh_vertex_normals:
+          vertices: [deformed_vertices]
+          faces: [body.faces]
+          _out_: [deformed_vertex_normals]
         foreground_remap:
           raster: [reconstructed_color]
           indices: [foreground.indices]

@@ -1,0 +1,25 @@
+# @package _global_
+
+SUBSET: null # [1, 3, 2, 5, 6, 7] # [6, 7] # null # [0, 3] # null # [6, 7] # null # [1, 2] # [0, 1, 2]
+DATA_ROOT: ???
+
+data:
+  train:
+    loader:
+      shuffle: false
+    iterator:
+      start: 0
+      step: 2
+      end: 500
+      datasets:
+        smpl:
+          path: ${DATA_ROOT}
+          subset: ${SUBSET}
+        multiview_video:
+          path: ${DATA_ROOT}
+          subset: ${SUBSET}
+          suffix: '_color' # '' # '_mask'
+        multiview_mask_video:
+          path: ${DATA_ROOT} #/masks
+          subset: ${SUBSET}
+          suffix: '_mask' # '' # '_mask'

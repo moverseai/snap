@@ -1,0 +1,57 @@
+# @package _global_
+
+SAVE_MESH_FREQ: 240
+MONITORING_MODES:
+  single: 
+    frequency: 10
+    proc: [visualisation]
+  multi: 
+    frequency: ${SAVE_MESH_FREQ} # 280
+    proc: [visualisation, save_mesh]
+
+_moai_:
+  _definitions_:
+    _collections_:
+      _monitors_:
+        optimization:
+          optimization_losses:
+            _params_:
+              path: /plots
+              keys: [recon, geom_reg, norm_reg, mesh_smooth, face_area, surf_reg, color_loss, ssim_loss]
+        visualisation:
+          multicam_posed_images:
+            poses: [extrinsics, extrinsics, extrinsics, extrinsics]
+            intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics]
+            images: [masked_color, mask, silhouette, reconstructed_color]
+            path: [/body/image, /body/mask, /body/pred/mask, /body/pred/color]
+          triangle_mesh3d:
+            vertices: [deformed_vertices] # [deformed_vertices] # [body.vertices]
+            normals: [deformed_vertex_normals.vectors] # [deformed_vertex_normals] # [vertex_normals]
+            faces: [body.faces]
+            color: [red]
+            path: [/body/mesh]
+        save_mesh:
+          mesh:
+            _params_:
+              path: '.'
+              extension: ply # obj
+            vertices: [deformed_vertices]
+            faces: [body.faces]
+
+  _execution_:
+    _monitoring_:
+      _fit_:
+        # _optimization_step_:
+        _stages_:
+          nerf_step:
+            _frequency_: 1
+            _monitors_: [optimization]
+          # init:
+            # _frequency_: 1
+        _batch_:
+          # _frequency_: 280
+          # _monitors_: [visualisation, save_mesh]
+          _frequency_: ${MONITORING_MODES.${monitoring_mode}.frequency}
+          _monitors_: ${MONITORING_MODES.${monitoring_mode}.proc}
+      _test_:
+        # _datasets_:

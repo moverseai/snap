@@ -1,0 +1,55 @@
+# @package _global_
+
+_moai_:
+  _execution_:
+    _lightning_step_:
+      _fit_:
+        _refresh_optimizers_: false # check this
+        _stages_:
+          #   init:
+          #     # _iterations_:
+          #     # _optimizer_:
+          #     _flows_: [visualisation,  tcnn_encoding_mlp, postproc]
+          #     # _assign_:
+          #     # _objective_:
+          # _batch_:
+          mesh_step:
+            _optimizer_: optim_mesh
+            _iterations_: 5
+            _objective_: silhouette_loss
+            _flows_: [preproc, geom_preproc, geom_postproc]
+          nerf_step:
+            _optimizer_: optim_nerf
+            _iterations_: 5 # 5 # 10
+            _objective_: reconstruction_loss
+            # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
+            _flows_:
+              [
+                preproc,
+                nerf_preproc,
+                tcnn_encoding_fully_fused_mlp,
+                nerf_postproc,
+                # ecf_preproc,
+                # error_correction_field,
+                # ecf_postproc,
+              ]
+
+          ecf_step:
+            _optimizer_: optim_ecf
+            _iterations_: 5
+            _objective_: reconstruction_loss_ecf
+            _flows_:
+              [
+                preproc,
+                nerf_preproc,
+                tcnn_encoding_fully_fused_mlp,
+                nerf_postproc,
+                ecf_preproc,
+                error_correction_field,
+                ecf_postproc,
+              ]
+
+      # _test_:
+      #   _datasets_:
+      #     zipped:
+      #       _flows_: # [visualisation]

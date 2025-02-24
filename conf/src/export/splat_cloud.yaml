@@ -1,0 +1,4 @@
+# @package model.monitors.splat_cloud
+
+_target_: src.export.splat_cloud.SplatCloud
+path: ???
