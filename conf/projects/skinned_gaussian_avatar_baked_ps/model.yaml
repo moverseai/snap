@@ -1,0 +1,163 @@
+# @package _global_
+
+SH_DEGREE: ???
+NUM_SPLATS:
+  - 6890
+  - 27554
+  - 110210
+  - 440834
+SPLATS_PATH: ???
+
+model:
+  parameters:
+    initializers:
+      initialize_splats:
+        data_path: ${SPLATS_PATH}
+    groups:
+      model1:
+        parameters:
+          - init.named_params.offsets # NOTE: required
+      model2:
+        modules:
+          - encoding_mlp1
+          - encoding_mlp2
+        # modules:
+        #   - encoding_mlp
+        #   - tcnn_encoding_mlp
+          # - tcnn_encoding_fully_fused_mlp # tcnn_encoding_mlp
+        # parameters:          
+        #   - init.named_params.latent_cov # NOTE: required
+        #   - init.named_params.latent_app # NOTE: required
+        # monads:
+          # - preproc.parameter
+        # parameters:
+        #   - init.named_params.latent # NOTE: required
+      model3:
+        modules:
+          - encoding_mlp
+          - tcnn_encoding_mlp
+        # parameters:          
+        #   - init.named_params.latent_cov # NOTE: required
+        #   - init.named_params.latent_app # NOTE: required
+  components:
+    tcnn_encoding_mlp: # sh
+      input_dims: 4
+      # output_dims: 12 # offset (1) + scale (3) + rotation (4) + sh_dc (3) + opacity (1)
+      output_dims: 3 # sh_dc (3) + opacity (1)
+      hidden_dims: [32, 64, 128, 128, 64, 32]
+      encoding_config:
+        otype: "Frequency"
+        n_frequencies: 18
+    encoding_mlp: # opacity
+      input_dims: 4
+      # output_dims: 12 # offset (1) + scale (3) + rotation (4) + sh_dc (3) + opacity (1)
+      output_dims: 1 # scale (3) + rotation (4)
+      hidden_dims: [32, 64, 128, 128, 64, 32]
+      encoding_config:
+        otype: "Frequency"
+        n_frequencies: 18
+    encoding_mlp1: # scale
+      input_dims: 4
+      # output_dims: 12 # offset (1) + scale (3) + rotation (4) + sh_dc (3) + opacity (1)
+      output_dims: 3 # scale (3) + rotation (4)
+      hidden_dims: [32, 64, 128, 128, 64, 32]
+      encoding_config:
+        otype: "Frequency"
+        n_frequencies: 18
+    encoding_mlp2: # rotation
+      input_dims: 4
+      # output_dims: 12 # offset (1) + scale (3) + rotation (4) + sh_dc (3) + opacity (1)
+      output_dims: 4 # scale (3) + rotation (4)
+      hidden_dims: [32, 64, 128, 128, 64, 32]
+      encoding_config:
+        otype: "Frequency"
+        n_frequencies: 18
+    # tcnn_encoding_fully_fused_mlp: # tcnn_encoding_mlp:
+    #   input_dims: 4
+    #   output_dims: 7 # scale (3) + rotation (4)
+    #   # output_dims: 12 # offset (1) + scale (3) + rotation (4) + sh_dc (3) + opacity (1)
+    #   encoding_config:
+    #     otype: "Frequency"
+    #     n_frequencies: 24
+    #     # otype: "HashGrid"
+    #     # # otype: "Grid"
+    #     # # type: "Hash"
+    #     # n_levels: 16 # 16 # 8 # 16
+    #     # n_features_per_level: 2 # 4 # 8 # 2
+    #     # log2_hashmap_size: 19 # 19
+    #     # base_resolution: 16 # 2 # 16
+    #     # per_level_scale: 1.5
+    #   network_config:
+    #     otype: "FullyFusedMLP" # "CutlassMLP" # "FullyFusedMLP"
+    #     activation: "ReLU" # "None" # "ReLU"
+    #     output_activation: "None" # "ReLU" # "Sigmoid" # "None"
+    #     n_neurons: 64 # 64
+    #     n_hidden_layers: 5 # 2
+  monads:
+    ones:
+      shape: [3, 1, 1]
+      includes_batch: false
+    random:
+      shape: [3, 1, 1]
+      mode: unit
+      scale: 1.0
+      includes_batch: false
+    # parameter:
+    #   shape: [6890, 4] # [6890, 3] # [6890, 1]
+    #   init: zeros # randn
+    named_params:
+      parameters:
+        latent_cov:
+          shape: # [110210, 1] # [27554, 1] # [6890, 3] # [6890, 1]
+            - ${NUM_SPLATS[${SUBDIV_INDEX}]} # ${NUM_SPLATS[1]} # ${NUM_SPLATS[${SUBDIV}]}
+            - 4
+          init: randn # zeros # randn
+        latent_app:
+          shape: # [110210, 1] # [27554, 1] # [6890, 3] # [6890, 1]
+            - ${NUM_SPLATS[${SUBDIV_INDEX}]} # ${NUM_SPLATS[1]} # ${NUM_SPLATS[${SUBDIV}]}
+            - 4
+          init: randn # zeros # randn
+        offsets:
+          shape: # [110210, 1] # [27554, 1] # [6890, 3] # [6890, 1]
+            - ${NUM_SPLATS[${SUBDIV_INDEX}]} # ${NUM_SPLATS[1]} # ${NUM_SPLATS[${SUBDIV}]}
+            - 1
+          init: zeros # randn
+    opengl:
+      width: 1080 # 1920
+      height: 1080
+    # mesh_silhouette:
+    #   width: 1920
+    #   height: 1080 
+    rotation3d:
+      rotations: [180@y, 180@z] # [180@y, 180@z] # [180@z] # [180@y, 180@z]
+    transform:
+      transpose: true
+      xyz_in_at: row
+      xyz_out_at: row
+    rasterize:
+      decomposed: true
+    # minmax_normalization:
+    #   min_value: 1
+    #   max_value: 13776
+    # gaussian_splat_parameters:
+    #   num_splats: ${NUM_SPLATS[${SUBDIV_INDEX}]} # ${NUM_SPLATS[1]} # ${NUM_SPLATS[${SUBDIV}]} # 110210 # 27554
+    #   skip_positions: true
+    #   scale: 0.025 # 0.1 # 0.025 # 1.0
+    #   opacity: 0.9 # 0.1 # null
+    #   sh_degree: ${SH_DEGREE} # 3
+    gaussian_splat_rasterizer:
+      # prefiltered: false
+      debug: false # true
+      # scale_modifier: 1.0
+      # width: null
+      # height: null
+      # background_color: black
+  objectives:
+    laplacian_smoothness:
+      method: cotcurv
+    cosine_distance:
+      normalized: true
+      epsilon: 1.0e-4
+      dim: -1
+    intersection_over_union:
+      reduce: false

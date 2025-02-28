@@ -1,0 +1,114 @@
+# @package _global_
+
+SAVE_MESH_FREQ: 540
+MONITORING_MODES:
+  single:
+    frequency: 10
+    proc: [visualisation, optimization, save_offsets, save_splat]
+  multi:
+    frequency: ${SAVE_MESH_FREQ} # 280
+    proc: [visualisation, optimization, save_offsets, save_splat] # save_mesh]
+
+_moai_:
+  _definitions_:
+    _collections_:
+      _monitors_:
+        optimization:
+          optimization_losses:
+            _params_:
+              path: /plots
+              mode: weighted
+              keys: [
+                  recon,
+                  geom_reg,
+                  norm_reg,
+                  mesh_smooth,
+                  face_area,
+                  surf_reg,
+                  color_loss,
+                  ssim_loss,
+                  gauss_reg_loss,
+                  opac_reg_loss,
+                  alpha_loss,
+                ] # , ucf_loss]
+        visualisation:
+          config:
+            _params_:
+              path: '/config'
+          multicam_posed_images:
+            # poses: [extrinsics, extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
+            # intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
+            # images: [masked_color, mask, silhouette, splatted.color] # , reconstructed_color, ucf_map_viz]
+            # path: [/body/image, /body/mask, /body/pred/mask, /body/pred/raster] # , /body/pred/color, /body/pred/ucf]
+
+            # poses: [extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
+            # intrinsics: [intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
+            # images: [masked_color, mask, splatted.color] # , reconstructed_color, ucf_map_viz]
+            # path: [/body/image, /body/mask, /body/pred/raster] # , /body/pred/color, /body/pred/ucf]
+
+
+            # poses: [extrinsics, extrinsics, extrinsics, extrinsics, extrinsics]
+            # intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics, intrinsics]
+            # images: [masked_color, mask, silhouette, splatted.alpha, splatted.color]
+            # path: [/body/image, /body/mask, /body/pred/mask, /body/pred/alpha, /body/pred/raster]
+
+            # poses: [extrinsics, extrinsics] # , extrinsics, extrinsics]
+            # intrinsics: [intrinsics, intrinsics] # , intrinsics, intrinsics]
+            # images: [mask, silhouette] # , reconstructed_color, ucf_map_viz]
+            # path: [/body/mask, /body/pred/mask] # , /body/pred/color, /body/pred/ucf]
+
+            poses: [extrinsics, extrinsics, extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
+            intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
+            images: [masked_color, mask, splatted.alpha, splatted.color, ucf_map_viz] # , reconstructed_color, ucf_map_viz]
+            path: [/body/image, /body/mask, /body/pred/mask, /body/pred/raster, /body/pred/ucf] # , /body/pred/color, /body/pred/ucf]
+
+            # poses: [extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
+            # intrinsics: [intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
+            # images: [masked_color, mask, splatted.color] # , reconstructed_color, ucf_map_viz]
+            # path: [/body/image, /body/mask, /body/pred/raster] # , /body/pred/color, /body/pred/ucf]
+          triangle_mesh3d:
+            vertices: [deformed_vertices] # [deformed_vertices] # [deformed_vertices] # [body.vertices]
+            normals: [deformed_vertex_normals.vectors] # [deformed_vertex_normals.vectors] # [deformed_vertex_normals] # [vertex_normals]
+            faces: [faces] # [body.faces]
+            color: [red]
+            path: [/body/mesh]
+        save_offsets:
+          offsets:
+            _params_:
+              path: '.'
+        save_splat:
+          splat_cloud:
+            _params_:
+              path: '.'
+              method_type: ${METHOD}
+        save_mesh:
+          mesh:
+            _params_:
+              path: "."
+              extension: ply # obj
+            vertices: [deformed_vertices] # [deformed_vertices]
+            faces: [faces] # [body.faces]
+
+  _execution_:
+    _monitoring_:
+      _fit_:
+        # _optimization_step_:
+        _stages_:
+          # nerf_step:
+          #   _frequency_: 1
+          #   _monitors_: [optimization]
+          # init:
+          # _frequency_: 1
+        _batch_:
+          # _frequency_: 280
+          # _monitors_: [visualisation, save_mesh]
+          _frequency_: ${MONITORING_MODES.${monitoring_mode}.frequency}
+          _monitors_: ${MONITORING_MODES.${monitoring_mode}.proc}
+          _flows_: [viz_ucf]
+      _test_:
+        _datasets_:
+          zipped: # xhuman:
+            _frequency_: 1
+            _monitors_: ${MONITORING_MODES.${monitoring_mode}.proc}
+            _metrics_: [img_quality]
+            _flows_: [viz_ucf]

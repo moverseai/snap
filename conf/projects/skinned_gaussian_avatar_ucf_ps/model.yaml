@@ -1,0 +1,270 @@
+# @package _global_
+
+SH_DEGREE: ???
+NUM_SPLATS:
+  - 6890
+  - 27554
+  - 110210
+  - 440834
+SPLATS_PATH: ???
+
+model:
+  parameters:
+    initializers:
+      initialize_splats:
+        data_path: ${SPLATS_PATH}
+    groups:
+  #     model3:
+  #       modules:
+  #         - uncertainty_field
+  #       # parameters:
+  #       #   - preproc.named_params.latent # NOTE: required
+      # model2:
+      #   # modules:
+      #     # - tcnn_encoding_fully_fused_mlp # tcnn_encoding_mlp
+      #     # - uncertainty_field
+      #   monads:
+      #     # - nerf_postproc.gaussian_splat_parameters
+      #     - nerf_preproc.gaussian_splat_parameters
+      #   # parameters:
+      #   #   - preproc.named_params.offsets
+      #   #   - preproc.named_params.latent # NOTE: required
+      model_groups1:  
+    # optim_features =     {'lr': 0.0025}
+    # optim_opacity =     {'lr': 0.05}
+    # optim_rotation =     {'lr': 0.001}
+    # optim_scaling =    {'lr': 0.005}
+    #     self.position_lr_init = 0.00016
+    #     self.position_lr_final = 0.0000016
+    #     self.position_lr_delay_mult = 0.01
+    #     self.position_lr_max_steps = 30_000
+    #     self.feature_lr = 0.0025
+    #     self.opacity_lr = 0.025
+    #     self.scaling_lr = 0.005
+    #     self.rotation_lr = 0.001
+        groups:
+          rotation:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.rotation
+            lr: 0.001 # ${nerf_LR} # 1e-2
+          opacity:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.opacity
+            lr: 0.05 # ${nerf_LR} # 1e-2
+          scaling:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.scaling
+            lr: 0.005 # ${nerf_LR} # 1e-2
+          spherical_harmonics:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
+            lr: 0.0025 # ${nerf_LR} # 1e-2
+          positions:
+            parameters:
+              - preproc.named_params.offsets
+            lr: 1e-3
+      model1:
+        parameters:
+          - preproc.named_params.offsets
+      model2:
+        parameters:
+          - nerf_preproc.gaussian_splat_parameters.rotation
+          - nerf_preproc.gaussian_splat_parameters.scaling
+      model3:
+        # modules:
+        #   - uncertainty_field_torch # uncertainty_field
+        parameters:
+          - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
+          # - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
+          # - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
+          # - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d3
+          - nerf_preproc.gaussian_splat_parameters.opacity
+      model4:
+        modules:
+          - uncertainty_field_torch # uncertainty_field
+      model_groups2:  
+        groups:
+          dc:
+            # modules:
+            #   - uncertainty_field_torch # uncertainty_field
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.opacity
+              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
+            lr: ${nerf_LR}
+          d1:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
+            lr: ${sh_LR} # 0.05 # ${nerf_LR} # 1e-2
+          # d2:
+          #   parameters:
+          #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
+          #   lr: ${sh_LR} # 0.01 # ${nerf_LR} # 1e-2
+          # d3:
+          #   parameters:
+          #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d3
+          #   lr: ${sh_LR} # 0.005 # ${nerf_LR} # 1e-2          
+      # model4:
+      #   parameters:
+      #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
+      #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
+      #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d3
+  # components:
+  #   uncertainty_field:
+  #     input_dims: 3
+  #     encoding_config:
+  #       # otype: "Frequency"
+  #       # n_frequencies: 24
+  #       otype: "HashGrid"
+  #       n_levels: 8 # 16 # 16 # 8 # 16
+  #       n_features_per_level: 8 # 2 # 4 # 8 # 2
+  #       log2_hashmap_size: 19 # 19
+  #       base_resolution: 16 # 2 # 16
+  #       per_level_scale: 1.5
+  #     # hidden_dims: [32, 64, 128, 32] # NOTE: size required  
+  #     network_config:
+  #       otype: "FullyFusedMLP" # "CutlassMLP" # "FullyFusedMLP"
+  #       activation: "ReLU" # "None" # "ReLU"
+  #       n_neurons: 32 # 64 # 64 # NOTE: 32 seemed ok too
+  #       n_hidden_layers: 3 # 5 # 2
+  #   tcnn_encoding_fully_fused_mlp: # tcnn_encoding_mlp:
+  #     input_dims: 3
+  #     output_dims: 3
+  #     encoding_config:
+  #       # otype: "Frequency"
+  #       # n_frequencies: 24
+  #       otype: "HashGrid"
+  #       # otype: "Grid"
+  #       # type: "Hash"
+  #       n_levels: 8 # 16 # 16 # 8 # 16
+  #       n_features_per_level: 8 # 2 # 4 # 8 # 2
+  #       log2_hashmap_size: 19 # 19
+  #       base_resolution: 16 # 2 # 16
+  #       per_level_scale: 1.5
+
+  # #       # otype: "Composite"
+  # #       # nested: 
+  # #       #   - n_dims_to_encode: 2
+  # #       #     otype: "TriangleWave"
+  # #       #     n_frequencies: 6
+  # #       #   - n_dims_to_encode: 1
+  # #       #     otype: "Grid"
+  # #       #     type: "Hash"
+  # #       #     n_levels: 16 # 8 # 16
+  # #       #     n_features_per_level: 8 # 8 # 2
+  # #       #     log2_hashmap_size: 15 # 19
+  # #       #     base_resolution: 2 # 2 # 16
+  # #       #     per_level_scale: 1.5 
+
+  #     # hidden_dims: [32, 64, 128, 32] # NOTE: size required
+  #     # [64, 64, 128, 64, 32] # [64, 64, 128, 128, 64, 32] # [64, 64, 128, 32]
+  
+  #     network_config:
+  #       otype: "FullyFusedMLP" # "CutlassMLP" # "FullyFusedMLP"
+  #       activation: "ReLU" # "None" # "ReLU"
+  #       output_activation: "ReLU" # "ReLU" # "Sigmoid" # "None"
+  #       n_neurons: 32 # 64 # 64
+  #       n_hidden_layers: 3 # 5 # 2
+  components:
+    uncertainty_field_torch:
+      input_dims: 2
+      hidden_dims: [32, 64, 128, 32] # NOTE: size required        
+      encoding_config:        
+        otype: "Frequency"
+        n_frequencies: 24
+      # uncertainty_field:
+    #   input_dims: 2
+    #   encoding_config:
+    #     # otype: "Frequency"
+    #     # n_frequencies: 24
+    #     otype: "HashGrid"
+    #     n_levels: 8 # 16 # 16 # 8 # 16
+    #     n_features_per_level: 8 # 2 # 4 # 8 # 2
+    #     log2_hashmap_size: 19 # 19
+    #     base_resolution: 16 # 2 # 16
+    #     per_level_scale: 1.5
+    #   # hidden_dims: [32, 64, 128, 32] # NOTE: size required  
+    #   network_config:
+    #     otype: "FullyFusedMLP" # "CutlassMLP" # "FullyFusedMLP"
+    #     activation: "Sigmoid" # "None" # "ReLU"
+    #     n_neurons: 64 # 64 # 64 # NOTE: 32 seemed ok too
+    #     n_hidden_layers: 5 # 3 # 5 # 2
+  monads:
+    # grid:
+    #   mode: ndc
+    #   width: 1920
+    #   height: 1080
+    #   depth: 1
+    #   inclusive: true
+    #   order: xy
+    #   persistent: true
+    ones:
+      shape: [3, 1, 1]
+      includes_batch: false
+    random:
+      shape: [3, 1, 1]
+      mode: unit
+      scale: 1.0
+      includes_batch: false
+    linspace:
+      steps: ${NUM_SPLATS[${SUBDIV_INDEX}]}
+    # parameter:
+    #   shape: [6890, 4] # [6890, 3] # [6890, 1]
+    #   init: zeros # randn
+    named_params:
+      parameters:
+        offsets:
+          shape: # [110210, 1] # [27554, 1] # [6890, 3] # [6890, 1]
+            - ${NUM_SPLATS[${SUBDIV_INDEX}]} # ${NUM_SPLATS[1]} # ${NUM_SPLATS[${SUBDIV}]}
+            - 1
+          init: zeros # randn
+        # latent:
+        #   shape: [6890, 3] # [6890, 3] # [6890, 1]
+        #   init: rand # randn
+    # smpl:
+    #   use_translation: false
+    #   use_pose: false
+    #   use_betas: false
+    #   use_global_orientation: false
+    #   gender: ${oc.env:SMPL_GENDER}
+    #   model_path: ${oc.env:SMPL_ROOT}
+    #   num_betas: 10
+    #   # batch_size: 1
+    opengl:
+      width: 1080 # 1920
+      height: 1080
+    # mesh_silhouette:
+    #   width: 1920
+    #   height: 1080 
+    rotation3d:
+      rotations: [180@y, 180@z] # [180@y, 180@z] # [180@z] # [180@y, 180@z]
+    transform:
+      transpose: true
+      xyz_in_at: row
+      xyz_out_at: row
+    rasterize:
+      decomposed: true
+    # minmax_normalization:
+    #   min_value: 1
+    #   max_value: 13776
+    gaussian_splat_parameters:
+      num_splats: ${NUM_SPLATS[${SUBDIV_INDEX}]} # ${NUM_SPLATS[1]} # ${NUM_SPLATS[${SUBDIV}]} # 110210 # 27554
+      skip_positions: true
+      scale: 0.025 # 0.1 # 0.025 # 1.0
+      opacity: 0.9 # 0.1 # null
+      sh_degree: ${SH_DEGREE} # 3
+    gaussian_splat_rasterizer:
+      # prefiltered: false
+      debug: false # true
+      # scale_modifier: 1.0
+      # width: null
+      # height: null
+      # background_color: black
+  objectives:
+    laplacian_smoothness:
+      method: cotcurv
+    cosine_distance:
+      normalized: true
+      epsilon: 1.0e-4
+      dim: -1
+    intersection_over_union:
+      reduce: false
