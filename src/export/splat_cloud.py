@@ -89,6 +89,9 @@ class SplatCloud(
                         )
             quats = gaussian_params.rotation.detach().cpu().squeeze()
             scale = gaussian_params.scaling.detach().cpu().squeeze()
+            if "_v" in self.method_type:
+                scale_for_unity = torch.exp(scale)
+                scale_for_unity = scale_for_unity * torch.from_numpy(self.vertex_areas).unsqueeze(-1)
             opacity = gaussian_params.opacity.detach().cpu().squeeze()[..., np.newaxis]
             sxyz = self.shaped
             # xyz = self.shaped + self.normals * offsets
@@ -138,6 +141,15 @@ class SplatCloud(
             elements[:] = list(map(tuple, attributes))
             el = plyfile.PlyElement.describe(elements, "vertex")
             plyfile.PlyData([el]).write("splat.ply")
+            attributes_for_unity = np.concatenate(
+                # (xyz, nxyz, sh_dc, opacity, scale, quats, sxyz), axis=-1
+                (xyz, nxyz, sh_dc.squeeze(), sh_rest.squeeze().reshape(-1, 45), opacity, scale_for_unity, quats),
+                axis=-1,
+            )
+            elements_for_unity = np.empty(xyz.shape[0], dtype=dtype_full)
+            elements_for_unity[:] = list(map(tuple, attributes_for_unity))
+            el_for_unity = plyfile.PlyElement.describe(elements_for_unity, "vertex")
+            plyfile.PlyData([el_for_unity]).write("splat_for_unity.ply")
             ##### JOINTS
             trimesh.PointCloud(self.shaped_joints).export("joints.ply")
             ##### SKINNED MESH
@@ -173,6 +185,7 @@ class SplatCloud(
         self._cache_tensor("shaped_joints", tensors)
         self._cache_tensor("skinning_weights", tensors)
         self._cache_tensor("faces", tensors)
+        self._cache_tensor("vertex_areas", tensors)
         # if "shaped" in tensors and not hasattr(self, "shaped"):
         #     self.shaped = tensors["shaped"].detach().cpu().numpy().squeeze()
         # if "shaped_joints" in tensors and not hasattr(self, "shaped_joints"):
