@@ -99,7 +99,7 @@ def main(root_dir):
 
     df = pd.DataFrame(data_list, columns=yaml_info_names + ["Train_Take", "PSNR", "LPIPS", "SSIM", "Train Config"])
     # df = df.sort_values(by=["PSNR", "SSIM", "Dataset", "subject", "Train_Take", "take", "METHOD", "COV_STEPS", "COLOR_STEPS", "GEOM_STEPS", "COMB_STEPS"], ascending=False)
-    df = df.sort_values(by=["PSNR", "SSIM"], ascending=False)
+    df = df.sort_values(by=["SH_EPOCH", "comb_LR", "PSNR", "SSIM"], ascending=False)
     # print(df.to_string(index=False))
     rich.print(df.to_markdown())
 
