@@ -1,0 +1,21 @@
+# @package _global_
+
+
+_moai_:
+  _definitions_:
+    _collections_:
+      _metrics_:
+        img_quality:
+          peak_signal_noise_ratio:
+            preds: [splatted.color]
+            target: [masked_color]
+            _out_: [psnr]
+          learned_perceptual_image_patch_similarity:
+            preds: [splatted.color]
+            target: [masked_color]
+            _out_: [lpips]
+          structural_similarity_index_measure:
+            preds: [splatted.color]
+            target: [masked_color]
+            _out_: [ssim]
+      

@@ -9,22 +9,23 @@ defaults:
   - data/train/iterator: subset_zipped # indexed
   # - data/train/augmentation/albumentations: compose
   # - src/data/train/aug: euclidean_distance_transform
-  - src/data/train: [xhuman]
+  - src/data/train: [people_snapshot]
   # ###### DATA TEST
   - data/test/loader: torch
   - data/test/iterator: subset_zipped # indexed
   # - data/train/augmentation/albumentations: compose
   # - src/data/train/aug: euclidean_distance_transform
-  - src/data/test: [xhuman]
+  - src/data/test: [people_snapshot]
 
   # ###### MODEL
   - model: moai
-  # - model/components/tcnn: [encoding_fully_fused_mlp] # [encoding_mlp]
+#   - model/components/tcnn: [encoding_fully_fused_mlp] # [encoding_mlp]
+  - src/components: [uncertainty_field_torch] # [uncertainty_field]
   - model/monads/geometry/projection: [opengl]
   - model/monads/geometry/rotation:
       [rotmat_to_unitquat, quaternion_composition, unitquat_to_rotmat]
   # - model/monads/render/splats: [gaussian_splat_rasterizer]
-  - model/monads/render/splats: [gaussian_splat_rasterizer_ashawkey]
+  - model/monads/render/splats: [gaussian_splat_rasterizer_slothfulxtx]
   - model/monads/render/nvdiffrast: [
         # mesh_silhouette,
         rasterize,
@@ -36,19 +37,19 @@ defaults:
   - model/monads/geometry/transformation: [inverse]
   - model/monads/geometry/mesh: [mesh_vertex_normals, mesh_face_normals]
   - model/monads/generation/matrix: [rotation3d]
-  - model/monads/generation/tensor: [named_params, ones, random] # [parameter]
+  - model/monads/generation/tensor: [named_params, ones, random, linspace] # [parameter]
   - model/monads/generation/splats: [gaussian_splat_parameters]
   - model/monads/geometry/transformation: [transform, rotate]
   - model/monads/tensor: [int32, detach]
   # - model/monads/filter/highpass: [sobel2d]
   - model/monads/math: [clamp] # [minmax_normalization]
-  - src/monads: [rotate_spherical_harmonics]
+  - src/monads: [rotate_spherical_harmonics, expand_batched]
 
   # OPTIMIZATION
   - src/parameters/splats: [initialize_splats]
   - model/parameters/groups:
-      [model1, model2, model3, model4, model_groups1, model_groups2, model_groups3, model_groups4, model_groups5]
-  - model/parameters/optimizers: [adam, adamw, lbfgsls]
+      [model1, model2, model3, model4, model_groups1, model_groups2]
+  - model/parameters/optimizers: [adam, adamw, lbfgsls, adopt]
   - model/objectives: [passthrough]
   - model/objectives/regression: [L2, L1, cosine_distance]
   - model/objectives/mesh:

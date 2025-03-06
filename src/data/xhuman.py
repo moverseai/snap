@@ -63,6 +63,18 @@ class XHuman(torch.utils.data.Dataset):
     _METADATA_ = {
         "00016": {
             "gender": "male",
+        },
+        "00019": {
+            "gender": "female",
+        },
+        "00034": {
+            "gender": "male",
+        },        
+        "00028": {
+            "gender": "male",
+        },
+        "00087": {
+            "gender": "male",
         }
     }
 

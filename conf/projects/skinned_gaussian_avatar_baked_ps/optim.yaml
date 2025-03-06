@@ -1,0 +1,232 @@
+# @package _global_
+
+SIL_W: ???
+GEOMREG_W: ???
+SURF_W: ???
+AREA_W: ???
+LAP_W: ???
+NORMREG_W: ???
+IMG_W: ???
+SSIM_W: ???
+UCF_W: ???
+GAUSSREG_W: ???
+LONGTHIN_W: ???
+
+nerf_LR: ???
+ucf_LR: ???
+cov_LR: ???
+geom_LR: ???
+sh_LR: ???
+
+_moai_:
+  _definitions_:
+    _collections_:
+      _optimizers_:
+        # optim_mesh: &optim_mesh
+        #   # _type_: lbfgsls
+        #   # _params_:
+        #   #   max_iter: 15
+        #   #   lr: 1.0
+        #   #   tolerance_grad: 1e-09
+        #   #   tolerance_change: 1e-12
+        #   ##################
+        #   _type_: adam
+        #   _params_:
+        #     lr: 1e-3
+        #     amsgrad: true
+        #     eps: 1e-9 # 1e-6 # 1e-8
+        #     weight_decay: 0.0
+        #     foreach: false # false
+        #     capturable: true
+        #     differentiable: false
+        #     fused: true # true     
+        #     # adopt
+        #     # decouple: false
+        #     # maximize: false            
+        #   ##################             
+        #   # _type_: adamw # adam
+        #   # _params_:
+        #   #   lr: 1e-3
+        #   #   amsgrad: true
+        #   #   eps: 1e-12
+        #   #   weight_decay: 1e-5 # 0.1 # 1e-6
+        #   #   foreach: true # false
+        #   #   capturable: false
+        #   #   differentiable: false
+        #   #   fused: false # true
+        #   _groups_: [model1]
+        # optim_nerf: &optim_nerf
+        #   _type_: adam # adam
+        #   _params_:
+        #     lr: ${nerf_LR} # 1e-2
+        #     amsgrad: true
+        #     eps: 1e-9
+        #     weight_decay: 0.0
+        #     foreach: false # false
+        #     capturable: true # false
+        #     differentiable: false
+        #     fused: true # true     
+        #   _groups_: [model2] # [model_groups1] # [model2]
+        # optim_nerf: &optim_nerf
+        #   _type_: lbfgsls # adam
+        #   _params_:
+        #     lr: ${nerf_LR} # 1e-2
+        #     max_iter: 15
+        #     tolerance_grad: 1e-09
+        #     tolerance_change: 1e-12
+        #   _groups_: [model2] # [model_groups1] # [model2]
+
+        optim_appearance: &optim_appearance
+          _type_: adam # adopt # adam
+          _params_:
+            lr: ${nerf_LR} # 1e-2
+            # amsgrad: true
+            eps: 1e-9 #  1e-9
+            weight_decay: 0.0
+            foreach: false
+            capturable: true
+            fused: true
+            # foreach: true # false
+            # capturable: true # false
+            # fused: false # true     
+            differentiable: false
+          _groups_: [model3] # [model_groups2] # [model3] # [model2]
+
+        # optim_appearance_full: &optim_appearance_full
+        #   _type_: adam # adopt # adam
+        #   _params_:
+        #     lr: ${nerf_LR} # 1e-2
+        #     # amsgrad: true
+        #     eps: 1e-6 # 1e-9
+        #     weight_decay: 0.0
+        #     foreach: false # false
+        #     capturable: true # false
+        #     fused: true # true    
+        #     # foreach: true # false
+        #     # capturable: true # false
+        #     # fused: false # true     
+        #     differentiable: false
+        #   _groups_: [model_groups2] # [model3] # [model2]
+
+        optim_covariance: &optim_covariance
+          _type_: adam # adopt # adam
+          _params_:
+            lr: ${cov_LR} # 1e-2
+            # amsgrad: true
+            eps: 1e-9 # 1e-9
+            weight_decay: 0.0
+            foreach: false # false
+            capturable: true # false
+            fused: true # true     
+            # foreach: true # false
+            # capturable: true # false
+            # fused: false # true     
+            differentiable: false
+          _groups_: [model2] # [model2]
+
+        optim_geometry: &optim_geometry
+          _type_: adam # adopt # adam
+          _params_:
+            lr: ${geom_LR} # 1e-2
+            # amsgrad: true
+            eps: 1e-9 # 1e-9
+            weight_decay: 0.0
+            foreach: false # false
+            capturable: true # false
+            fused: true # true     
+            # foreach: true # false
+            # capturable: true # false
+            # fused: false # true     
+            differentiable: false
+          _groups_: [model1] # [model2]
+
+  #       optim_ucf: &optim_ucf
+  #         _type_: adam
+  #         _params_:
+  #           lr: ${ucf_LR} # 1e-2
+  #           amsgrad: false
+  #           eps: 1e-9
+  #           weight_decay: 0.0
+  #           foreach: false # false
+  #           capturable: false
+  #           differentiable: false
+  #           fused: false # true     
+  #         _groups_: [model3]
+      _objectives_:
+        reconstruction_and_silhouette_loss:
+          long_and_thin_penalty:
+            scaling: [gaussian_scales]
+            _weight_:
+              - ${LONGTHIN_W}
+            _reduction_: [mean]
+            _out_: [long_n_thin]
+          L2: # passthrough:
+            # error: [gaussian_params.scaling]
+            pred: [gaussian_scaling, neg_opacity, offsets]
+            gt: [null, null, null]
+            _weight_:
+              - ${GAUSSREG_W}
+              - ${GAUSSREG_W}
+              - ${GEOMREG_W}
+            _reduction_: [mean, mean, mean]
+            _out_: [gauss_reg_loss, opac_reg_loss, geom_reg]
+          L1:
+            gt: [masked_color, mask]
+            pred: [splatted.color, splatted.alpha] # [reconstructed_color]
+            # weights: [mask] # [ucf_weights_d] # [mask] # [ucf_weights]
+            _weight_:
+              - ${IMG_W}
+              - ${SIL_W}
+            _reduction_: [mean, mean] # [sum]
+            _out_: [color_loss, alpha_loss]
+          structural_dissimilarity:
+            gt: [masked_color]
+            pred: [splatted.color] # [reconstructed_color]
+            # mask: [mask]
+            # weights: [mask] # [ucf_weights_d] # [mask] # [ucf_weights]
+            _weight_:
+              - ${SSIM_W}
+            _reduction_: [mean] # [sum]
+            _out_: [ssim_loss]                
+          intersection_over_union: # intersection_over_union: # L1:
+           gt: [mask]
+           pred: [splatted.alpha]
+           _weight_: # [0.1]
+            - ${SIL_W}
+           _reduction_: [sum] # [sum]
+           _out_: [recon] 
+          surface_normal_consistency:
+            vertex_normals: [deformed_vertex_normals.vectors]
+            faces: [faces]
+            _weight_: # [10.0]
+              - ${SURF_W}
+            _reduction_: [mean]
+            _out_: [surf_reg]
+          surface_feature_consistency:
+            vertex_features: [vertex_offsets]
+            faces: [faces]
+            _weight_:
+              - ${GEOMREG_W}
+            _reduction_: [mean]
+            _out_: [offset_mesh_reg]
+          laplacian_smoothness:
+            vertices: [deformed_vertices]
+            faces: [faces] # [body.faces]
+            _weight_: # [100.0]
+              - ${LAP_W}
+            _reduction_: [mean]
+            _out_: [mesh_smooth]
+          face_area_consistency:
+            original: [original_vertex_normals.areas]
+            deformed: [deformed_vertex_normals.areas]
+            _weight_: # [1.0]
+              - ${AREA_W}
+            _reduction_: [mean]
+            _out_: [face_area]
+          # cosine_distance:
+          #   pred: [original_vertex_normals.vectors]
+          #   gt: [deformed_vertex_normals.vectors]
+          #   _weight_: # [1.0]
+          #     - ${NORMREG_W}
+          #   _reduction_: [mean]
+          #   _out_: [norm_reg]

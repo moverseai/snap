@@ -9,6 +9,7 @@ import logging
 from pytorch3d.ops.subdivide_meshes import SubdivideMeshes
 from pytorch3d.structures import Meshes
 from moai.monads.geometry.mesh.calculate_normals import MeshVertexNormals
+import trimesh
 
 __all__ = ["SubdividedSMPL"]
 
@@ -225,7 +226,7 @@ class SubdividedSMPL(torch.utils.data.Dataset):
             )["vectors"]
             shaped = shaped + normals.numpy().squeeze() * extra_offsets
         features = np.concatenate([regressor.T, weights], axis=-1)
-        subdiv, attrs = _subdivide(shaped, faces, features, level=level)
+        V, F, N, A = _subdivide(shaped, faces, features, level=level)
         # mesh = Meshes(
         #     torch.from_numpy(shaped)[np.newaxis], torch.from_numpy(faces)[np.newaxis]
         # )
@@ -234,16 +235,20 @@ class SubdividedSMPL(torch.utils.data.Dataset):
         #     feats=torch.from_numpy(np.concatenate([regressor.T, weights], axis=-1)),
         # )
         J_regressor, skinning_weights = torch.split(
-            attrs, shaped_joints.shape[0], dim=-1
+            A, shaped_joints.shape[0], dim=-1
         )
         self.joints = shaped_joints
         self.parents = parents
         self.weights = skinning_weights.numpy()
-        self.vertices = subdiv.verts_packed().numpy()
-        self.faces = subdiv.faces_packed().numpy()
-        self.normals = torch.nn.functional.normalize(
-            subdiv.verts_normals_packed(), dim=-1
-        ).numpy()
+        self.vertices = V.numpy()
+        self.faces = F.numpy()
+        areas = trimesh.Trimesh(self.vertices, self.faces, process=False).area_faces
+        areas = torch.from_numpy(areas).float()
+        vareas = torch.zeros(self.vertices.shape[0])
+        for c in range(F.shape[-1]):
+            vareas.scatter_add_(0, F[..., c], areas)
+        self.areas = vareas.numpy()
+        self.normals = torch.nn.functional.normalize(N, dim=-1).numpy()
         self.pose = _rodrigues(
             np.concatenate([self.global_orient[:, np.newaxis], self.pose], axis=1)
         )
@@ -293,4 +298,5 @@ class SubdividedSMPL(torch.utils.data.Dataset):
             "camera_position": self.camera_positions[self.subset],
             "view_projection_matrix": self.viewprojection_matrices[self.subset],
             "view_matrix": self.view_matrices[self.subset],
+            "vertex_areas": self.areas,
         }

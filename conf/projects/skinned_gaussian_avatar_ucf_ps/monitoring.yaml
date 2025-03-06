@@ -57,10 +57,10 @@ _moai_:
             # images: [mask, silhouette] # , reconstructed_color, ucf_map_viz]
             # path: [/body/mask, /body/pred/mask] # , /body/pred/color, /body/pred/ucf]
 
-            poses: [extrinsics, extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
-            intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
-            images: [masked_color, mask, splatted.alpha, splatted.color] # , reconstructed_color, ucf_map_viz]
-            path: [/body/image, /body/mask, /body/pred/mask, /body/pred/raster] # , /body/pred/color, /body/pred/ucf]
+            poses: [extrinsics, extrinsics, extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
+            intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
+            images: [masked_color, mask, splatted.alpha, splatted.color, ucf_map_viz] # , reconstructed_color, ucf_map_viz]
+            path: [/body/image, /body/mask, /body/pred/mask, /body/pred/raster, /body/pred/ucf] # , /body/pred/color, /body/pred/ucf]
 
             # poses: [extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
             # intrinsics: [intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
@@ -104,10 +104,11 @@ _moai_:
           # _monitors_: [visualisation, save_mesh]
           _frequency_: ${MONITORING_MODES.${monitoring_mode}.frequency}
           _monitors_: ${MONITORING_MODES.${monitoring_mode}.proc}
-          # _flows_: [viz_ucf]
+          _flows_: [viz_ucf]
       _test_:
         _datasets_:
           zipped: # xhuman:
             _frequency_: 1
             _monitors_: ${MONITORING_MODES.${monitoring_mode}.proc}
             _metrics_: [img_quality]
+            _flows_: [viz_ucf]

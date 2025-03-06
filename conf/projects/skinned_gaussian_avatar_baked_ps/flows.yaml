@@ -3,22 +3,52 @@
 _moai_:
   _definitions_:
     _flows_:
-      preproc:
+      init:
         named_params: # parameter:
           void:
             - betas
-          _out_: [params]
-        # smpl:
-        #   pose:
-        #     - ${mi:"flatten(pose, 1)"}
-        #   shape:
-        #     - betas
-        #   rotation:
-        #     - global_orient
-        #   translation:
-        #     - transl
-        #   _out_:
-        #     - body
+          _out_: [params]        
+      tcnn_encoding_mlp: # tcnn_encoding_fully_fused_mlp: # tcnn_encoding_mlp:
+        tensor: [params.latent_app]
+        _out_: [gaussian_app_sh]
+      encoding_mlp: # tcnn_encoding_fully_fused_mlp: # tcnn_encoding_fully_fused_mlp: # tcnn_encoding_mlp:
+        tensor: [params.latent_app]
+        _out_: [gaussian_app_op]
+      encoding_mlp1: # tcnn_encoding_fully_fused_mlp: # tcnn_encoding_fully_fused_mlp: # tcnn_encoding_mlp:
+        tensor: [params.latent_cov]
+        _out_: [gaussian_cov_scale]
+      encoding_mlp2: # tcnn_encoding_fully_fused_mlp: # tcnn_encoding_fully_fused_mlp: # tcnn_encoding_mlp:
+        tensor: [params.latent_cov]
+        _out_: [gaussian_cov_rot]
+      preproc:
+        _mi_latent:
+          expression:
+            # - ${mi:"gaussians[:, 0:1]"}
+            # - ${mi:"exp(gaussians[:, 1:4])"}
+            # - ${mi:"gaussians[:, 4:8]"}
+            # - ${mi:"gaussians[:, 8:9]"}
+            # - ${mi:"gaussians[:, 9:12]"}
+            # - ${mi:"exp(gaussians[:, 0:3]) * 4.0"}
+            # - ${mi:"gaussians[:, 3:7]"}
+            # - ${mi:"gaussians[:, 7:8]"}
+            # - ${mi:"gaussians[:, 8:11]"}
+            # - ${mi:"zeros(gaussian_opacity)"}
+            # - ${mi:"exp(gaussian_cov[:, 0:3]) * 4.0"}
+            # - ${mi:"gaussian_cov[:, 3:7]"}
+            # - ${mi:"gaussians_app[:, 0:1]"}
+            # - ${mi:"gaussians_app[:, 1:4]"}
+            - ${mi:"gaussian_cov_scale"}
+            - ${mi:"gaussian_cov_rot"}
+            - ${mi:"gaussian_app_op"}
+            - ${mi:"gaussian_app_sh"}
+          # _out_: [offsets, gaussian_scaling, gaussian_rotation, gaussian_opacity, gaussian_sh_dc]
+          _out_: [gaussian_scaling, gaussian_rotation, gaussian_opacity, gaussian_sh_dc] #, offsets]
+        normalize: 
+          tensor: [gaussian_rotation]
+          _out_: [gaussian_rotation]
+        sigmoid:
+          tensor: [gaussian_opacity]
+          _out_: [gaussian_opacity]
         _mi_index:
           expression:
             - ${mi:"sq(vertices, 0)"}
@@ -33,10 +63,7 @@ _moai_:
           _out_: [faces_i32]
         _mi_:
           expression:
-            # - ${mi:"params[:, 0:1]"}
-            # - ${mi:"params[:, 1:4]"}
             - params.offsets
-            # - params.latent
             - ${mi:"sq(extrinsics,0)"}
             # - ${mi:"transpose(extrinsics,0, 2, 1)"}
             - ${mi:"sq(intrinsics,0)"}
@@ -54,7 +81,6 @@ _moai_:
             - ${mi:"unsq(offsets, 0)"}
           _out_:
             - offsets
-            # - latent
             - extrinsics
             # - extrinsics
             - intrinsics
@@ -144,9 +170,9 @@ _moai_:
           indices: [faces_i32]
           _out_: [silhouette]
       nerf_preproc:
-        gaussian_splat_parameters:
-          tensor: [deformed_vertices]
-          _out_: [gaussian_params]
+        # gaussian_splat_parameters:
+        #   tensor: [deformed_vertices]
+        #   _out_: [gaussian_params]
         random:
           tensor: [color]
           _out_: [random_color]
@@ -160,8 +186,8 @@ _moai_:
             - ${mi:"ones(color)"}
             - ${mi:"background * random_color"}
             - ${mi:"masked_color + (1.0 - mask) * random_background"}
-            - ${mi:"gaussian_params.rotation"}
-            - ${mi:"gaussian_params.scaling"}
+            - ${mi:"unsq(gaussian_rotation, 0)"}
+            - ${mi:"gaussian_scaling"}
           _out_:
             - masked_color
             - reconstructed_color
@@ -212,11 +238,7 @@ _moai_:
         # #     - ${mi:"tanh(foreground.attributes)"}
         # #   _out_: [fg_features]
 
-      # tcnn_encoding_fully_fused_mlp: # tcnn_encoding_mlp:
-      #   # tensor: [rasterized.image]
-      #   tensor: [foreground.attributes] # [fg_features] # [foreground.attributes]
-      #   # tensor: [interpolated_latent]
-      #   _out_: [predicted_color]
+      
       test_bg_color:
         ones:
           tensor: [color]
@@ -276,59 +298,45 @@ _moai_:
       splat_sh0:
         _mi_gaussian:
           expression:
-            - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
-          _out_: [spherical_harmonics]
-      splat_sh1:
-        unitquat_to_rotmat:
-          rotation:
-            - ${mi:"roll(blended_rotations_quat, -1, -1)"}
-          _out_: [sh_rotation]
-        rotate_spherical_harmonics:
-          rotations: [sh_rotation]
-          sh1: [gaussian_params.spherical_harmonics_d1]
-          _out_: [rotated_sh]
-        _mi_gaussian:
-          expression:
-            - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
-            - ${mi:"sq(rotated_sh.sh1, 0)"}
-            - ${mi:"cat(spherical_harmonics, spherical_harmonics1, -2)"}
-          _out_: [spherical_harmonics, spherical_harmonics1, spherical_harmonics]
-      splat_sh2:
-        unitquat_to_rotmat:
-          rotation:
-            - ${mi:"roll(blended_rotations_quat, -1, -1)"}
-          _out_: [sh_rotation]
-        rotate_spherical_harmonics:
-          rotations: [sh_rotation]
-          sh1: [gaussian_params.spherical_harmonics_d1]
-          sh2: [gaussian_params.spherical_harmonics_d2]
-          _out_: [rotated_sh]
-        _mi_gaussian:
-          expression:
-            - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
-            - ${mi:"sq(rotated_sh.sh1, 0)"}
-            - ${mi:"sq(rotated_sh.sh2, 0)"}
-            - ${mi:"cat(spherical_harmonics, spherical_harmonics1, spherical_harmonics2, -2)"}
-          _out_: [spherical_harmonics, spherical_harmonics1, spherical_harmonics2, spherical_harmonics]
-      splat_sh3:
-        unitquat_to_rotmat:
-          rotation:
-            - ${mi:"roll(blended_rotations_quat, -1, -1)"}
-          _out_: [sh_rotation]
-        rotate_spherical_harmonics:
-          rotations: [sh_rotation]
-          sh1: [gaussian_params.spherical_harmonics_d1]
-          sh2: [gaussian_params.spherical_harmonics_d2]
-          sh3: [gaussian_params.spherical_harmonics_d3]
-          _out_: [rotated_sh]
-        _mi_gaussian:
-          expression:
-            - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
-            - ${mi:"sq(rotated_sh.sh1, 0)"}
-            - ${mi:"sq(rotated_sh.sh2, 0)"}
-            - ${mi:"sq(rotated_sh.sh3, 0)"}
-            - ${mi:"cat(spherical_harmonics, spherical_harmonics1, spherical_harmonics2, spherical_harmonics3, -2)"}
-          _out_: [spherical_harmonics, spherical_harmonics1, spherical_harmonics2, spherical_harmonics3, spherical_harmonics]
+            - ${mi:"unsq(gaussian_sh_dc, 0)"}
+            - ${mi:"unsq(gaussian_sh_dc, -2)"}
+            - ${mi:"expand_batch_as(gaussian_sh_dc, deformed_vertices)"}
+          _out_: [gaussian_sh_dc, gaussian_sh_dc, spherical_harmonics]
+      # splat_sh1:
+      #   unitquat_to_rotmat:
+      #     rotation:
+      #       - ${mi:"roll(blended_rotations_quat, -1, -1)"}
+      #     _out_: [sh_rotation]
+      #   rotate_spherical_harmonics:
+      #     rotations: [sh_rotation]
+      #     sh1: [gaussian_params.spherical_harmonics_d1]
+      #     _out_: [rotated_sh]
+      #   _mi_gaussian:
+      #     expression:
+      #       - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
+      #       - ${mi:"sq(rotated_sh.sh1, 0)"}
+      #       - ${mi:"cat(spherical_harmonics, spherical_harmonics1, -2)"}
+      #     _out_: [spherical_harmonics, spherical_harmonics1, spherical_harmonics]
+      # splat_sh3:
+      #   unitquat_to_rotmat:
+      #     rotation:
+      #       - ${mi:"roll(blended_rotations_quat, -1, -1)"}
+      #     _out_: [sh_rotation]
+      #   rotate_spherical_harmonics:
+      #     rotations: [sh_rotation]
+      #     sh1: [gaussian_params.spherical_harmonics_d1]
+      #     sh2: [gaussian_params.spherical_harmonics_d2]
+      #     sh3: [gaussian_params.spherical_harmonics_d3]
+      #     _out_: [rotated_sh]
+      #   _mi_gaussian:
+      #     expression:
+      #       - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
+      #       - ${mi:"sq(rotated_sh.sh1, 0)"}
+      #       - ${mi:"sq(rotated_sh.sh2, 0)"}
+      #       - ${mi:"sq(rotated_sh.sh3, 0)"}
+      #       - ${mi:"cat(spherical_harmonics, spherical_harmonics1, spherical_harmonics2, spherical_harmonics3, -2)"}
+      #     _out_: [spherical_harmonics, spherical_harmonics1, spherical_harmonics2, spherical_harmonics3, spherical_harmonics]
+        
         # _mi_gaussian:
         #   expression:
         #     - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
@@ -352,11 +360,12 @@ _moai_:
         #   _out_: [gaussian_params]
         _mi_gaussian:
           expression:
-            - ${mi:"-gaussian_params.opacity"}
-            - ${mi:"expand_batch_as(gaussian_params.opacity, deformed_vertices)"}
+            - ${mi:"-gaussian_opacity"}
+            - ${mi:"unsq(gaussian_opacity, 0)"}
+            - ${mi:"expand_batch_as(gaussian_opacity, deformed_vertices)"}
             # - ${mi:"expand_batch_as(gaussian_quats, deformed_vertices)"}
             - ${mi:"expand_batch_as(gaussian_scales, deformed_vertices)"}            
-          _out_: [neg_opacity, opacities, gaussian_scales]
+          _out_: [neg_opacity, gaussian_opacity, opacities, gaussian_scales]
         # detach:
         #   tensor: [deformed_vertices]
         #   _out_: [deformed_vertices_d]
@@ -407,8 +416,8 @@ _moai_:
         #   _out_: [gaussian_params]
         _mi_gaussian:
           expression:
-            - ${mi:"-gaussian_params.opacity"}
-            - ${mi:"expand_batch_as(gaussian_params.opacity, deformed_vertices)"}
+            - ${mi:"-gaussian_opacity"}
+            - ${mi:"expand_batch_as(gaussian_opacity, deformed_vertices)"}
             # - ${mi:"expand_batch_as(gaussian_quats, deformed_vertices)"}
             - ${mi:"expand_batch_as(gaussian_scales, deformed_vertices)"}            
           _out_: [neg_opacity, opacities, gaussian_scales]
@@ -428,58 +437,3 @@ _moai_:
           image: [color] # [silhouette]  # [B, C, H, W]
           background_color: [random_background]  # [B, 3]
           _out_: [splatted]
-      # ucf_preproc:                
-      #   _mi_ucf_preproc1:
-      #     expression:
-      #       - ${mi:"foreground.triangles.id / 13776.0"}
-      #       - ${mi:"sq(views,0)"}
-      #       - ${mi:"sq(time,0)"}
-      #     _out_: [normalized_ids, views, time]
-      #   expand_batched:
-      #     tensor: [views, time]
-      #     expand: [silhouette, silhouette]
-      #     _out_: [views, time]
-      #   _mi_ucf_preproc2:
-      #     expression:
-      #       - ${mi:"cat(views, time, 1)"}
-      #       - ${mi:"transpose(viewstime, 0, 2, 3, 1)"}
-      #       - ${mi:"viewstime[:, :, :, 0:1]"}
-      #     _out_: [viewstime, viewstime, sliced_viewstime]
-      #   rasterized_foreground:
-      #     triangle_ids: [rasterized.triangles.id, rasterized.triangles.id]
-      #     attributes: [viewstime, sliced_viewstime]
-      #     _out_: [ecf_foreground, ecf_foreground_1]
-      # uncertainty_field:
-      #   tensor:
-      #     - ${mi:"cat(ecf_foreground.attributes, normalized_ids, 1)"}
-      #   _out_: [ucf]
-      # ucf_postproc:
-      #   _mi_postproc1_ucf:
-      #     expression:
-      #       - ${mi:"ucf + 1.001"} # add eps
-      #       - ${mi:"0.5 * reciprocal(ucf ^ 2)"}
-      #     _out_: [ucf, ucf_w]
-      #   foreground_remap:
-      #     raster: 
-      #       - ${mi:"zeros(sliced_viewstime)"}
-      #     indices: [ecf_foreground_1.indices]
-      #     foreground: [ucf_w]
-      #     _out_: [ucf_map]
-      #   _mi_postproc2_ucf:
-      #     expression:
-      #       - ${mi:"transpose(ucf_map, 0, 3, 1, 2)"}
-      #       - ${mi:"log(ucf)"}
-      #     # _out_: [ecf_viz_map]
-      #     _out_: [ucf_weights, ucf_log]
-      #   detach:
-      #     tensor: [ucf_weights]
-      #     _out_: [ucf_weights_d]
-      # viz_ucf:
-      #   _mi_viz_ucf:
-      #     expression:
-      #       - ${mi:"ucf_weights * 0.2"}
-      #     _out_: [ucf_map_viz]
-      #   clamp:
-      #     x: [ucf_map_viz]
-      #     _out_: [ucf_map_viz]
-      

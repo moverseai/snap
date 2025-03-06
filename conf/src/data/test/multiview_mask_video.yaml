@@ -1,0 +1,8 @@
+# @package data.test.iterator.datasets.multiview_mask_video
+
+_target_: src.data.multiview_video.MultiviewMaskVideo
+path: ???
+subset: null
+prefix: ''
+suffix: ''
+extension: mp4

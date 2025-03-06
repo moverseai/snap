@@ -71,7 +71,7 @@ class InitializeSplats(object):
                 "spherical_harmonics_d2",
             ):
                 d2 = []
-                for i in range(12, 28):
+                for i in range(12, 27):
                     d2.append(ply["vertex"][f"f_rest_{i}"])
                 model.named_flows.nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2.data.copy_(
                     torch.from_numpy(

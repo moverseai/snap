@@ -2,9 +2,10 @@
 
 SH_DEGREE: ???
 NUM_SPLATS:
-  - 10475
-  - 41853
-  - 167333
+  - 6890
+  - 27554
+  - 110210
+  - 440834
 SPLATS_PATH: ???
 
 model:
@@ -70,15 +71,22 @@ model:
           - nerf_preproc.gaussian_splat_parameters.rotation
           - nerf_preproc.gaussian_splat_parameters.scaling
       model3:
+        # modules:
+        #   - uncertainty_field_torch # uncertainty_field
         parameters:
           - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
           # - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
           # - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
           # - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d3
           - nerf_preproc.gaussian_splat_parameters.opacity
+      model4:
+        modules:
+          - uncertainty_field_torch # uncertainty_field
       model_groups2:  
         groups:
           dc:
+            # modules:
+            #   - uncertainty_field_torch # uncertainty_field
             parameters:
               - nerf_preproc.gaussian_splat_parameters.opacity
               - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
@@ -86,7 +94,7 @@ model:
           d1:
             parameters:
               - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
-            lr: ${sh1_LR} # 0.05 # ${nerf_LR} # 1e-2
+            lr: ${sh_LR} # 0.05 # ${nerf_LR} # 1e-2
           # d2:
           #   parameters:
           #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
@@ -94,91 +102,12 @@ model:
           # d3:
           #   parameters:
           #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d3
-          #   lr: ${sh_LR} # 0.005 # ${nerf_LR} # 1e-2  
-      model_groups3:  
-        groups:
-          dc:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.opacity
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
-            lr: ${nerf_LR}
-          d1:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
-            lr: ${sh1_LR} # 0.05 # ${nerf_LR} # 1e-2
-          d2:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
-            lr: ${sh2_LR} # 0.01 # ${nerf_LR} # 1e-2
-          # d3:
-          #   parameters:
-          #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d3
-          #   lr: ${sh_LR} # 0.005 # ${nerf_LR} # 1e-2   
+          #   lr: ${sh_LR} # 0.005 # ${nerf_LR} # 1e-2          
       # model4:
       #   parameters:
       #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
       #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
       #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d3
-      model_groups4:  
-        groups:
-          rotation:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.rotation
-            lr: 0.01 # ${nerf_LR} # 1e-2
-          opacity:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.opacity
-            lr: 0.05 # ${nerf_LR} # 1e-2
-          scaling:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.scaling
-            lr: 0.05 # ${nerf_LR} # 1e-2
-          spherical_harmonics:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
-            lr:  0.025 # ${nerf_LR} # 1e-2
-          d1:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
-            lr: 0.005 # ${nerf_LR} # 1e-2
-          d2:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
-            lr: 0.0001 # ${sh2_LR} # 0.01 # ${nerf_LR} # 1e-2
-          positions:
-            parameters:
-              - preproc.named_params.offsets
-            lr: 1e-4
-      model_groups5:  
-        groups:
-          rotation:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.rotation
-            lr: 0.005 # ${nerf_LR} # 1e-2
-          opacity:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.opacity
-            lr: 0.005 # ${nerf_LR} # 1e-2
-          scaling:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.scaling
-            lr: 0.005 # ${nerf_LR} # 1e-2
-          spherical_harmonics:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
-            lr: 0.0025 # ${nerf_LR} # 1e-2
-          d1:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
-            lr: 0.001 # ${sh1_LR} # 0.05 # ${nerf_LR} # 1e-2
-          d2:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
-            lr: 0.00005 # ${sh2_LR} # 0.01 # ${nerf_LR} # 1e-2
-          positions:
-            parameters:
-              - preproc.named_params.offsets
-            lr: 1e-5
   # components:
   #   uncertainty_field:
   #     input_dims: 3
@@ -235,6 +164,30 @@ model:
   #       output_activation: "ReLU" # "ReLU" # "Sigmoid" # "None"
   #       n_neurons: 32 # 64 # 64
   #       n_hidden_layers: 3 # 5 # 2
+  components:
+    uncertainty_field_torch:
+      input_dims: 2
+      hidden_dims: [32, 64, 128, 32] # NOTE: size required        
+      encoding_config:        
+        otype: "Frequency"
+        n_frequencies: 24
+      # uncertainty_field:
+    #   input_dims: 2
+    #   encoding_config:
+    #     # otype: "Frequency"
+    #     # n_frequencies: 24
+    #     otype: "HashGrid"
+    #     n_levels: 8 # 16 # 16 # 8 # 16
+    #     n_features_per_level: 8 # 2 # 4 # 8 # 2
+    #     log2_hashmap_size: 19 # 19
+    #     base_resolution: 16 # 2 # 16
+    #     per_level_scale: 1.5
+    #   # hidden_dims: [32, 64, 128, 32] # NOTE: size required  
+    #   network_config:
+    #     otype: "FullyFusedMLP" # "CutlassMLP" # "FullyFusedMLP"
+    #     activation: "Sigmoid" # "None" # "ReLU"
+    #     n_neurons: 64 # 64 # 64 # NOTE: 32 seemed ok too
+    #     n_hidden_layers: 5 # 3 # 5 # 2
   monads:
     # grid:
     #   mode: ndc
@@ -252,6 +205,8 @@ model:
       mode: unit
       scale: 1.0
       includes_batch: false
+    linspace:
+      steps: ${NUM_SPLATS[${SUBDIV_INDEX}]}
     # parameter:
     #   shape: [6890, 4] # [6890, 3] # [6890, 1]
     #   init: zeros # randn
@@ -275,8 +230,8 @@ model:
     #   num_betas: 10
     #   # batch_size: 1
     opengl:
-      width: 800 # 1920
-      height: 1200
+      width: 1080 # 1920
+      height: 1080
     # mesh_silhouette:
     #   width: 1920
     #   height: 1080 
