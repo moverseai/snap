@@ -1,0 +1,9 @@
+# @package data.test.iterator.datasets.subdivided_smpl
+
+_target_: src.data.subdivided_smpl.SubdividedSMPL
+path: ???
+gender: ???
+models_path: ???
+subset: null
+offsets_path: null
+level: 1

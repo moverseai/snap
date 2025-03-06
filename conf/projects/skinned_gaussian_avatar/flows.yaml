@@ -19,10 +19,10 @@ _moai_:
         #     - transl
         #   _out_:
         #     - body
-        _mi_index:
-          expression:
-            - ${mi:"sq(vertices, 0)"}
-          _out_: [vertices]
+        # _mi_index:
+        #   expression:
+        #     - ${mi:"sq(vertices, 0)"}
+        #   _out_: [vertices]
         mesh_vertex_normals: #TODO: animated normals
           vertices: [vertices]
           faces: [faces]
@@ -265,7 +265,7 @@ _moai_:
       splats_qlbs:
         quaternion_composition:
           x: 
-            - ${mi:"sq(blended_rotations_quat,0)"}
+            - ${mi:"blended_rotations_quat"}
           y: [gaussian_quats]
           _out_: [gaussian_quats]
         _mi_scaling:
@@ -306,8 +306,8 @@ _moai_:
         _mi_gaussian:
           expression:
             - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
-            - ${mi:"sq(rotated_sh.sh1, 0)"}
-            - ${mi:"sq(rotated_sh.sh2, 0)"}
+            - ${mi:"rotated_sh.sh1"}
+            - ${mi:"rotated_sh.sh2"}
             - ${mi:"cat(spherical_harmonics, spherical_harmonics1, spherical_harmonics2, -2)"}
           _out_: [spherical_harmonics, spherical_harmonics1, spherical_harmonics2, spherical_harmonics]
       splat_sh3:
