@@ -23,25 +23,34 @@ def extract_test_yaml_info(yaml_path):
 
         with open(yaml_path, 'r') as f:
             config = yaml.load(f, Loader=NoTagConstructor)
-        
-        cov_steps = config.get("COV_STEPS", "N/A")
-        color_steps = config.get("COLOR_STEPS", "N/A")
-        geom_steps = config.get("GEOM_STEPS", "N/A")
-        train_folder_path = config.get("SPLATS_PATH", "N/A")
-        method = config.get("METHOD", "N/A")
+        run_info_names = ["COV_STEPS", "COLOR_STEPS", "GEOM_STEPS", "COMB_STEPS", "SPLATS_PATH", "METHOD", "comb_LR", "SH_EPOCH"]
+        run_info = []
+        for name in run_info_names:
+            run_info.append(config.get(name, "N/A"))
+        # cov_steps = config.get("COV_STEPS", "N/A")
+        # color_steps = config.get("COLOR_STEPS", "N/A")
+        # geom_steps = config.get("GEOM_STEPS", "N/A")
+        # comb_steps = config.get("COMB_STEPS", "N/A")
+        # train_folder_path = config.get("SPLATS_PATH", "N/A")
+        # method = config.get("METHOD", "N/A")
         
         datasets = config.get("data", {}).get("train", {}).get("iterator", {}).get("datasets", {})
         if not datasets:
             return None
         
-        dataset = next(iter(datasets))  # Get the first key
-        dataset_info = datasets.get(dataset, {})
+        dataset_name = next(iter(datasets))  # Get the first key
+        dataset_info_all = datasets.get(dataset_name, {})
+        dataset_info_names = ["subject", "split", "take"]
+        dataset_info = []
+        for name in dataset_info_names:
+            dataset_info.append(dataset_info_all.get(name, "N/A"))
+        dataset_info_names.insert(0, "Dataset")
+        dataset_info.insert(0, dataset_name)
+        # subject = dataset_info_all.get("subject", "N/A")
+        # split = dataset_info_all.get("split", "N/A")
+        # take = dataset_info_all.get("take", "N/A")
         
-        subject = dataset_info.get("subject", "N/A")
-        split = dataset_info.get("split", "N/A")
-        take = dataset_info.get("take", "N/A")
-        
-        return dataset, subject, split, take, cov_steps, color_steps, geom_steps, train_folder_path, method
+        return dataset_info_names + run_info_names, dataset_info + run_info
     except Exception as e:
         print(f"Error reading YAML {yaml_path}: {e}")
         return None
@@ -78,14 +87,19 @@ def main(root_dir):
         yaml_path = os.path.join(parent_folder, "config_resolved.yaml")
         
         if os.path.exists(yaml_path):
-            yaml_info = extract_test_yaml_info(yaml_path)
+            yaml_info_names, yaml_info = extract_test_yaml_info(yaml_path)
             if yaml_info:
-                dataset, subject, split, test_take, cov_steps, color_steps, geom_steps, train_folder_path, method = yaml_info
-                train_take = extract_train_yaml_info(os.path.join(train_folder_path, "config_resolved.yaml"))
-                data_list.append([dataset, subject, train_take, test_take, method, cov_steps, color_steps, geom_steps, split, test_avg_results.iloc[0]['psnr'], test_avg_results.iloc[0]['lpips'], test_avg_results.iloc[0]['ssim'], os.path.join(train_folder_path, "config_resolved.yaml")])
-    
-    df = pd.DataFrame(data_list, columns=["Dataset", "Subject", "Train_Take", "Test_Take", "Method", "COV_STEPS", "COLOR_STEPS", "GEOM_STEPS", "Split", "PSNR", "LPIPS", "SSIM", "Train Config"])
-    df = df.sort_values(by=["Dataset", "Subject", "Train_Take", "Test_Take", "Method", "COV_STEPS", "COLOR_STEPS", "GEOM_STEPS"])
+                # dataset, subject, split, test_take, cov_steps, color_steps, geom_steps, comb_steps, train_folder_path, method = yaml_info
+                train_take = extract_train_yaml_info(os.path.join(yaml_info[yaml_info_names.index("SPLATS_PATH")], "config_resolved.yaml"))
+                train_config_path = os.path.join(yaml_info[yaml_info_names.index("SPLATS_PATH")], "config_resolved.yaml")
+                del yaml_info[yaml_info_names.index("SPLATS_PATH")]
+                yaml_info_names.remove("SPLATS_PATH")
+                data_list.append(yaml_info + [train_take, test_avg_results.iloc[0]['psnr'], test_avg_results.iloc[0]['lpips'], test_avg_results.iloc[0]['ssim'], train_config_path])
+                
+
+    df = pd.DataFrame(data_list, columns=yaml_info_names + ["Train_Take", "PSNR", "LPIPS", "SSIM", "Train Config"])
+    # df = df.sort_values(by=["PSNR", "SSIM", "Dataset", "subject", "Train_Take", "take", "METHOD", "COV_STEPS", "COLOR_STEPS", "GEOM_STEPS", "COMB_STEPS"], ascending=False)
+    df = df.sort_values(by=["PSNR", "SSIM"], ascending=False)
     # print(df.to_string(index=False))
     rich.print(df.to_markdown())
 
@@ -95,5 +109,5 @@ if __name__ == "__main__":
     # parser.add_argument("root_dir", type=str, help="Path to the root directory containing experiment folders.")
     # args = parser.parse_args()
     
-    root_dir = "C:/Users/info/Documents/GitHub/snap/multirun/2025-03-05"
+    root_dir = "C:/Users/info/Documents/GitHub/snap/actions/test/2025-03-06"
     main(root_dir)
