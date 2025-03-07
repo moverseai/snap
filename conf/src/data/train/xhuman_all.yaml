@@ -1,0 +1,10 @@
+# @package data.train.iterator.datasets.xhuman_all
+
+_target_: src.data.xhuman_all.XHuman_all
+path: ???
+subject: ???
+split: train
+take: ???
+models_path: ???
+level: 1
+offsets_path: null

@@ -23,7 +23,16 @@ def extract_yaml_info(yaml_path):
         with open(yaml_path, 'r') as f:
             config = yaml.load(f, Loader=NoTagConstructor)
         
-        run_info_names = ["COV_STEPS", "COLOR_STEPS", "GEOM_STEPS", "COMB_STEPS", "METHOD", "comb_LR", "SH_EPOCH"]
+        run_info_names = [
+            # "COV_STEPS", 
+            # "COLOR_STEPS", 
+            # "GEOM_STEPS", 
+            # "COMB_STEPS", 
+            "METHOD", 
+            # "comb_LR", 
+            "SH_EPOCH", 
+            "ORDER",
+            ]
         run_info = []
         for name in run_info_names:
             run_info.append(config.get(name, "N/A"))
@@ -69,7 +78,20 @@ def main(root_dir):
                 data_list.append(yaml_info + [yaml_path])
     df = pd.DataFrame(data_list, columns=yaml_info_names + ["Train Config"])
     # df.loc[len(df)] = yaml_info + [yaml_path]
-    df = df.sort_values(by=["Dataset", "subject", "take", "METHOD", "COV_STEPS", "COLOR_STEPS", "GEOM_STEPS", "COMB_STEPS", "comb_LR", "SH_EPOCH"])
+    df = df.sort_values(by=[
+        "Dataset", 
+        "subject", 
+        "take", 
+        "METHOD", 
+        # "COV_STEPS", 
+        # "COLOR_STEPS", 
+        # "GEOM_STEPS", 
+        # "COMB_STEPS", 
+        # "comb_LR", 
+        # "SH_EPOCH",
+        "ORDER"
+        ], ascending=False)
+    
     # print(df.to_markdown())
     rich.print(df.to_markdown())
 
@@ -79,5 +101,5 @@ if __name__ == "__main__":
     # parser.add_argument("root_dir", type=str, help="Path to the root directory containing experiment folders.")
     # args = parser.parse_args()
     
-    root_dir = "C:/Users/info/Documents/GitHub/snap/multirun/2025-03-05/17-28-16"
+    root_dir = "C:/Users/info/Documents/GitHub/snap/multirun/2025-03-07/13-18-25"
     main(root_dir)
