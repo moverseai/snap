@@ -64,6 +64,9 @@ class XHuman(torch.utils.data.Dataset):
         "00016": {
             "gender": "male",
         },
+        "00018": {
+            "gender": "male",
+        },
         "00019": {
             "gender": "female",
         },

@@ -12,7 +12,7 @@ from moai.monads.geometry.mesh.calculate_normals import MeshVertexNormals
 from pytorch3d.ops.subdivide_meshes import SubdivideMeshes
 from pytorch3d.structures import Meshes
 
-__all__ = ["SubdividedSMPL"]
+__all__ = ["SubdividedSMPLAnim"]
 
 log = logging.getLogger(__name__)
 
@@ -228,7 +228,7 @@ class SubdividedSMPLAnim(torch.utils.data.Dataset):
         self.pose = np.stack(self.parquet_table["joint_rotations"].values).reshape(
             -1, 23, 3
         )
-        self.transl = np.stack(self.parquet_table["global_translation"].values)
+        self.transl = np.stack(self.parquet_table["mesh_translation"].values)
         self.global_orient = np.stack(self.parquet_table["global_rotation"].values)
 
         offsets = np.einsum(
@@ -236,15 +236,16 @@ class SubdividedSMPLAnim(torch.utils.data.Dataset):
         )
         shaped = template + offsets
         shaped_joints = np.einsum("jv,vc->jc", regressor, shaped)
+        extra_offsets = None
         if offsets_path and os.path.exists(offsets_path):
             extra_offsets = np.load(offsets_path)["offsets"]
-            normals = MeshVertexNormals().forward(
-                torch.from_numpy(shaped)[np.newaxis],
-                torch.from_numpy(faces)[np.newaxis],
-            )["vectors"]
-            shaped = shaped + normals.numpy().squeeze() * extra_offsets
+            # normals = MeshVertexNormals().forward(
+            #     torch.from_numpy(shaped)[np.newaxis],
+            #     torch.from_numpy(faces)[np.newaxis],
+            # )["vectors"]
+            # shaped = shaped + normals.numpy().squeeze() * extra_offsets
         features = np.concatenate([regressor.T, weights], axis=-1)
-        V, F, N, A = _subdivide(shaped, faces, features, level=level)
+        V, F, N, A = _subdivide(shaped, faces, features, level=level, offsets=extra_offsets)
         # mesh = Meshes(
         #     torch.from_numpy(shaped)[np.newaxis], torch.from_numpy(faces)[np.newaxis]
         # )

@@ -1,0 +1,10 @@
+# @package data.train.iterator.datasets.subdivided_smpl_anim
+
+_target_: src.data.subdivided_smpl_anim.SubdividedSMPLAnim
+anim_path: ???
+path: ???
+gender: ???
+models_path: ???
+subset: null
+offsets_path: null
+level: 1

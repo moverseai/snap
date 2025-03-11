@@ -1,4 +1,4 @@
-# @package data.test.iterator.datasets.xhuman_all
+# @package data.test.iterator.datasets.xhuman
 
 _target_: src.data.xhuman_all.XHuman_all
 path: ???

@@ -10,6 +10,7 @@ import typing
 import logging
 from collections import defaultdict
 import trimesh
+import re
 
 __all__ = ["XHuman_all"]
 
@@ -70,10 +71,13 @@ class XHuman_all(torch.utils.data.Dataset):
         "00019": {
             "gender": "female",
         },
-        "00034": {
-            "gender": "male",
+        "00027": {
+            "gender": "female",
         },        
         "00028": {
+            "gender": "male",
+        },
+        "00034": {
             "gender": "male",
         },
         "00087": {
@@ -122,19 +126,35 @@ class XHuman_all(torch.utils.data.Dataset):
             ],
             axis=0,
         )
-        self.data_path = os.path.join(path, subject, split, take)
-        cams = np.load(os.path.join(self.data_path, "render", "cameras.npz"))
-        self.intrinsic = cams["intrinsic"].astype(np.float32)
-        self.extrinsic = cams["extrinsic"].astype(np.float32)
+        self.data_path = os.path.join(path, subject, split)
+        takes_folders = [dir for dir in glob.glob(os.path.join(self.data_path, "Take*")) if os.path.isdir(dir)]
+        self.intrinsic = np.array([])
+        self.extrinsic = np.array([])
         self.batch = batch
-        imgs = glob.glob(os.path.join(path, subject, split, take, "render", "image", "*.??g"))
-        indices = [x for x in map(int, map(lambda p: os.path.splitext(os.path.basename(p))[0].split("_")[1], imgs))]
-        perm = np.random.permutation(len(indices))
-        self.file_indices = np.array(indices)[perm]
-        self.indices = np.array(list(range(len(self.file_indices))))[perm]
+        self.image_files = []
+        self.projection_matrices = np.array([])
+        for take in takes_folders:  
+            cams = np.load(os.path.join(self.data_path, take, "render", "cameras.npz"))
+            if self.intrinsic.size == 0:
+                self.extrinsic = cams["extrinsic"].astype(np.float32)
+                self.intrinsic = np.broadcast_to(cams["intrinsic"].astype(np.float32)[np.newaxis, ...], (self.extrinsic.shape[0], 3, 3))
+                self.projection_matrices = _create_projection_matrices(self.intrinsic, 800, 1200)
+            else:
+                self.extrinsic = np.append(self.extrinsic, cams["extrinsic"].astype(np.float32), axis=0)
+                self.intrinsic = np.append(self.intrinsic, np.broadcast_to(cams["intrinsic"].astype(np.float32)[np.newaxis, ...], (cams["extrinsic"].astype(np.float32).shape[0], 3, 3)), axis=0)
+                self.projection_matrices = np.append(self.projection_matrices, _create_projection_matrices(np.broadcast_to(cams["intrinsic"].astype(np.float32)[np.newaxis, ...], (cams["extrinsic"].astype(np.float32).shape[0], 3, 3)), 800, 1200), axis=0)
+
+            imgs = glob.glob(os.path.join(path, subject, split, take, "render", "image", "*.??g"))
+            self.image_files.extend(imgs)
+        # indices = [x for x in map(int, map(lambda p: os.path.splitext(os.path.basename(p))[0].split("_")[1], imgs))]
+        self.perm = np.random.permutation(len(self.image_files))
+        # self.file_indices = np.array(indices)[perm]
+        # self.indices = np.array(list(range(len(self.file_indices))))[perm]
         # self.indices = np.random.permutation(len(self.extrinsic))
+        self.image_files_perm = [self.image_files[i] for i in self.perm]
+        #! Assume betas is common for all Takes
         with open(
-            os.path.join(self.data_path, "smplx", "mesh-f00001_smplx.pkl"), "rb"
+            os.path.join(self.data_path, take, "smplx", "mesh-f00001_smplx.pkl"), "rb"
         ) as f:
             data = pickle.load(f)
         self.betas = data["betas"]
@@ -173,9 +193,11 @@ class XHuman_all(torch.utils.data.Dataset):
         # self.pose = _rodrigues(
         #     np.concatenate([self.global_orient[:, np.newaxis], self.pose], axis=1)
         # )
-        self.projection_matrices = _create_projection_matrices(
-            self.intrinsic[np.newaxis], 800, 1200
-        )  # TODO: fix hardcoded
+
+        # self.projection_matrices = _create_projection_matrices(
+        #     self.intrinsic[np.newaxis], 800, 1200
+        # )  # TODO: fix hardcoded
+
         # self.view_matrices = self.extrinsics.transpose(0, 2, 1).copy()  # row major
         # self.viewprojection_matrices = (
         #     (self.projection_matrices @ self.extrinsics).transpose(0, 2, 1).copy()
@@ -186,13 +208,18 @@ class XHuman_all(torch.utils.data.Dataset):
         # return int(len(self.extrinsic) / self.batch) - int(
         #     len(self.extrinsic) % self.batch
         # )
-        return int(len(self.indices) / self.batch) - int(
-            len(self.indices) % self.batch
+        return int(len(self.image_files) / self.batch) - int(
+            len(self.image_files) % self.batch
         )
 
-    def _load_sample(self, batched: dict, index: int, file_index: int) -> None:
+    def _load_sample(self, batched: dict, index: int) -> None:
+        take_match = re.search(r'Take\d+', self.image_files_perm[index])
+        take = take_match.group(0) if take_match else None
+        assert take
+        file_index = int(os.path.splitext(os.path.basename(self.image_files_perm[index]).split("_")[1])[0])
+
         with open(
-            os.path.join(self.data_path, "smplx", f"mesh-f{(file_index):05d}_smplx.pkl"),
+            os.path.join(self.data_path, take, "smplx", f"mesh-f{(file_index):05d}_smplx.pkl"),
             "rb",
         ) as f:
             data = pickle.load(f)
@@ -226,20 +253,20 @@ class XHuman_all(torch.utils.data.Dataset):
         evals, evecs = np.linalg.eigh(np.einsum("bki,bkj->bij", wQ, wQ))
         blended_quats = np.roll(evecs[..., -1], 1, axis=-1)  # XYZW -> WXYZ
         # blended_quats = evecs[..., -1]
-        view_matrices = self.extrinsic[index].transpose(1, 0).copy()  # row major
+        view_matrices = self.extrinsic[self.perm[index], ...].transpose(1, 0).copy()  # row major
         viewprojection_matrices = (
-            (self.projection_matrices[0] @ self.extrinsic[index]).transpose(1, 0).copy()
+            (self.projection_matrices[self.perm[index]] @ self.extrinsic[self.perm[index]]).transpose(1, 0).copy()
         )
-        camera_position = np.linalg.inv(self.extrinsic[index])[:3, 3]
+        camera_position = np.linalg.inv(self.extrinsic[self.perm[index]])[:3, 3]
         img = cv2.imread(
             os.path.join(
-                self.data_path, "render", "image", f"color_{(file_index):06d}.png"
+                self.data_path, take, "render", "image", f"color_{(file_index):06d}.png"
             )
         )
         img = np.flip(img, -1).transpose(2, 0, 1).astype(np.float32) / 255.0
         msk = cv2.imread(
             os.path.join(
-                self.data_path, "render", "depth", f"depth_{(file_index):06d}.tiff"
+                self.data_path, take, "render", "depth", f"depth_{(file_index):06d}.tiff"
             ),
             cv2.IMREAD_ANYDEPTH,
         )
@@ -249,7 +276,7 @@ class XHuman_all(torch.utils.data.Dataset):
         batched["normals"].append(n.squeeze())
         batched["blended_transforms"].append(bxf)
         batched["blended_rotations_quat"].append(blended_quats)
-        batched["extrinsics"].append(self.extrinsic[index])
+        batched["extrinsics"].append(self.extrinsic[self.perm[index], ...])
         batched["pose"].append(pose[0])
         batched["transl"].append(data["transl"])
         batched["global_orient"].append(data["global_orient"])
@@ -266,16 +293,16 @@ class XHuman_all(torch.utils.data.Dataset):
 
         batched = defaultdict(list)
         for i in range(self.batch):
-            idx = int(self.indices[index * self.batch + i])
-            f_idx = int(self.file_indices[index * self.batch + i])
-            self._load_sample(batched, idx, f_idx)
+            idx = index * self.batch + i
+            # f_idx = int(self.file_indices[index * self.batch + i])
+            self._load_sample(batched, idx)
 
         returned = toolz.valmap(lambda v: np.stack(v), batched)
         returned["shaped_joints"] = self.joints
         returned["shaped"] = returned["shaped"][0]
         returned["skinning_weights"] = self.weights
         returned["faces"] = self.faces
-        returned["intrinsics"] = np.broadcast_to(self.intrinsic, (self.batch, 3, 3))
+        returned["intrinsics"] = self.intrinsic[self.perm[index * self.batch : ( + 1) * self.batch]]
         returned["vertex_areas"] = self.areas # np.broadcast_to(self.areas, (self.batch, *self.areas.shape))
         returned["betas"] = self.betas
         return returned

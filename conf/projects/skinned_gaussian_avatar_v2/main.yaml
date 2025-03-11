@@ -9,7 +9,7 @@ defaults:
   - data/train/iterator: subset_zipped # indexed
   # - data/train/augmentation/albumentations: compose
   # - src/data/train/aug: euclidean_distance_transform
-  - src/data/train: [subdivided_smpl, multiview_video, multiview_mask_video]
+  - src/data/train: [subdivided_smpl_anim, multiview_video, multiview_mask_video]
   # ###### DATA TEST
   - data/test/loader: torch
   - data/test/iterator: subset_zipped # indexed

@@ -29,18 +29,6 @@ model:
       #   #   - preproc.named_params.offsets
       #   #   - preproc.named_params.latent # NOTE: required
       model_groups1:  
-    # optim_features =     {'lr': 0.0025}
-    # optim_opacity =     {'lr': 0.05}
-    # optim_rotation =     {'lr': 0.001}
-    # optim_scaling =    {'lr': 0.005}
-    #     self.position_lr_init = 0.00016
-    #     self.position_lr_final = 0.0000016
-    #     self.position_lr_delay_mult = 0.01
-    #     self.position_lr_max_steps = 30_000
-    #     self.feature_lr = 0.0025
-    #     self.opacity_lr = 0.025
-    #     self.scaling_lr = 0.005
-    #     self.rotation_lr = 0.001
         groups:
           rotation:
             parameters:
@@ -94,68 +82,95 @@ model:
           # d3:
           #   parameters:
           #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d3
-          #   lr: ${sh_LR} # 0.005 # ${nerf_LR} # 1e-2          
-      # model4:
-      #   parameters:
-      #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
-      #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
-      #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d3
-  # components:
-  #   uncertainty_field:
-  #     input_dims: 3
-  #     encoding_config:
-  #       # otype: "Frequency"
-  #       # n_frequencies: 24
-  #       otype: "HashGrid"
-  #       n_levels: 8 # 16 # 16 # 8 # 16
-  #       n_features_per_level: 8 # 2 # 4 # 8 # 2
-  #       log2_hashmap_size: 19 # 19
-  #       base_resolution: 16 # 2 # 16
-  #       per_level_scale: 1.5
-  #     # hidden_dims: [32, 64, 128, 32] # NOTE: size required  
-  #     network_config:
-  #       otype: "FullyFusedMLP" # "CutlassMLP" # "FullyFusedMLP"
-  #       activation: "ReLU" # "None" # "ReLU"
-  #       n_neurons: 32 # 64 # 64 # NOTE: 32 seemed ok too
-  #       n_hidden_layers: 3 # 5 # 2
-  #   tcnn_encoding_fully_fused_mlp: # tcnn_encoding_mlp:
-  #     input_dims: 3
-  #     output_dims: 3
-  #     encoding_config:
-  #       # otype: "Frequency"
-  #       # n_frequencies: 24
-  #       otype: "HashGrid"
-  #       # otype: "Grid"
-  #       # type: "Hash"
-  #       n_levels: 8 # 16 # 16 # 8 # 16
-  #       n_features_per_level: 8 # 2 # 4 # 8 # 2
-  #       log2_hashmap_size: 19 # 19
-  #       base_resolution: 16 # 2 # 16
-  #       per_level_scale: 1.5
+          #   lr: ${sh_LR} # 0.005 # ${nerf_LR} # 1e-2      
+      model_groups4:  
+        groups:
+          rotation:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.rotation
+            lr: 0.01 # ${nerf_LR} # 1e-2
+          opacity:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.opacity
+            lr: 0.05 # ${nerf_LR} # 1e-2
+          scaling:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.scaling
+            lr: 0.05 # ${nerf_LR} # 1e-2
+          spherical_harmonics:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
+            lr: 0.025 # ${nerf_LR} # 1e-2
+          d1:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
+            lr: 0.005 # ${nerf_LR} # 1e-2
+          positions:
+            parameters:
+              - preproc.named_params.offsets
+            lr: 1e-4  
 
-  # #       # otype: "Composite"
-  # #       # nested: 
-  # #       #   - n_dims_to_encode: 2
-  # #       #     otype: "TriangleWave"
-  # #       #     n_frequencies: 6
-  # #       #   - n_dims_to_encode: 1
-  # #       #     otype: "Grid"
-  # #       #     type: "Hash"
-  # #       #     n_levels: 16 # 8 # 16
-  # #       #     n_features_per_level: 8 # 8 # 2
-  # #       #     log2_hashmap_size: 15 # 19
-  # #       #     base_resolution: 2 # 2 # 16
-  # #       #     per_level_scale: 1.5 
+      model_rotation:
+        groups:
+          rotation:
+            parameters:
+                - nerf_preproc.gaussian_splat_parameters.rotation
+            lr: 0.001 # ${nerf_LR} # 1e-2
+      model_rotation_full:
+        groups:
+          rotation_full:
+            parameters:
+                - nerf_preproc.gaussian_splat_parameters.rotation
+            lr: 0.01 # ${nerf_LR} # 1e-2
+      model_opacity:
+        groups:
+          opacity:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.opacity
+            lr: 0.05 # ${nerf_LR} # 1e-2
+      model_scaling:
+        groups:
+          scaling:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.scaling
+            lr: 0.005 # ${nerf_LR} # 1e-2
+      model_scaling_full:
+        groups:
+          scaling_full:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.scaling
+            lr: 0.05 # ${nerf_LR} # 1e-2
+      model_spherical_harmonics:
+        groups:
+          spherical_harmonics:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
+            lr: 0.0025 # ${nerf_LR} # 1e-2
+      model_spherical_harmonics_full:
+        groups:
+          spherical_harmonics_full:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
+            lr: 0.025 # ${nerf_LR} # 1e-2
+      model_d1:
+        groups:
+          d1:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
+            lr: 0.005 # ${nerf_LR} # 1e-2
+      model_positions:
+        groups:
+          positions:
+            parameters:
+              - preproc.named_params.offsets
+            lr: 1e-3 
+      model_positions_full:
+        groups:
+          positions_full:
+            parameters:
+              - preproc.named_params.offsets
+            lr: 1e-4  
 
-  #     # hidden_dims: [32, 64, 128, 32] # NOTE: size required
-  #     # [64, 64, 128, 64, 32] # [64, 64, 128, 128, 64, 32] # [64, 64, 128, 32]
-  
-  #     network_config:
-  #       otype: "FullyFusedMLP" # "CutlassMLP" # "FullyFusedMLP"
-  #       activation: "ReLU" # "None" # "ReLU"
-  #       output_activation: "ReLU" # "ReLU" # "Sigmoid" # "None"
-  #       n_neurons: 32 # 64 # 64
-  #       n_hidden_layers: 3 # 5 # 2
   monads:
     # grid:
     #   mode: ndc

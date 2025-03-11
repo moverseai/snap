@@ -106,10 +106,10 @@ model:
             parameters:
               - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
             lr: ${sh1_LR} # 0.05 # ${nerf_LR} # 1e-2
-          d2:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
-            lr: ${sh2_LR} # 0.01 # ${nerf_LR} # 1e-2
+          # d2:
+          #   parameters:
+          #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
+          #   lr: ${sh2_LR} # 0.01 # ${nerf_LR} # 1e-2
           # d3:
           #   parameters:
           #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d3
@@ -141,10 +141,10 @@ model:
             parameters:
               - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
             lr: 0.005 # ${nerf_LR} # 1e-2
-          d2:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
-            lr: 0.0001 # ${sh2_LR} # 0.01 # ${nerf_LR} # 1e-2
+          # d2:
+          #   parameters:
+          #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
+          #   lr: 0.0001 # ${sh2_LR} # 0.01 # ${nerf_LR} # 1e-2
           positions:
             parameters:
               - preproc.named_params.offsets
@@ -171,10 +171,10 @@ model:
             parameters:
               - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
             lr: 0.001 # ${sh1_LR} # 0.05 # ${nerf_LR} # 1e-2
-          d2:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
-            lr: 0.00005 # ${sh2_LR} # 0.01 # ${nerf_LR} # 1e-2
+          # d2:
+          #   parameters:
+          #     - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d2
+          #   lr: 0.00005 # ${sh2_LR} # 0.01 # ${nerf_LR} # 1e-2
           positions:
             parameters:
               - preproc.named_params.offsets

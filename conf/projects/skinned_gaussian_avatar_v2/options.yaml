@@ -1,7 +1,7 @@
 # @package _global_
 
 experiment:
-  name: skinned_gaussian_avatar
+  name: ${action}_Moverse_${SUBJECT}_${METHOD}
   batch_size: 1
   workers: 0
 

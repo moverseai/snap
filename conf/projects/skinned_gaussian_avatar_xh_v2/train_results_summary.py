@@ -101,5 +101,5 @@ if __name__ == "__main__":
     # parser.add_argument("root_dir", type=str, help="Path to the root directory containing experiment folders.")
     # args = parser.parse_args()
     
-    root_dir = "C:/Users/info/Documents/GitHub/snap/multirun/2025-03-07/13-18-25"
+    root_dir = "C:/Users/info/Documents/GitHub/snap/multirun/2025-03-08"
     main(root_dir)

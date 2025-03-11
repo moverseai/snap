@@ -290,7 +290,7 @@ _moai_:
         _mi_gaussian:
           expression:
             - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
-            - ${mi:"sq(rotated_sh.sh1, 0)"}
+            - ${mi:"rotated_sh.sh1"}
             - ${mi:"cat(spherical_harmonics, spherical_harmonics1, -2)"}
           _out_: [spherical_harmonics, spherical_harmonics1, spherical_harmonics]
       splat_sh2:

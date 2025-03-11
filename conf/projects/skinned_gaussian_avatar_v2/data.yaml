@@ -3,7 +3,8 @@
 SUBSET: null # [6, 7] # [0, 3] # null # [6, 7] # null # [1, 2] # [0, 1, 2]
 SUBJECT: ???
 TAKE: ???
-DATA_ROOT: ???
+DATASET_PATH: ???
+DATA_ROOT: ${DATASET_PATH}/${SUBJECT}
 VIEWS: ???
 SUBDIV: one
 SUBDIV_LEVELS:
@@ -15,7 +16,8 @@ SUBDIV_LEVELS_INDEX:
   one: '1'
   two: '2'
 SUBDIV_INDEX: ${SUBDIV_LEVELS_INDEX.${SUBDIV}}
-OFFSETS: ???
+OFFSETS: ${DATASET_PATH}/moverse_${SUBJECT}_bundle_offsets.npz
+TIME_SUBSAMPLING: ???
 
 data:
   train:
@@ -26,16 +28,16 @@ data:
       num_workers: 0
     iterator:
       start: 0
-      step: 1 # 1
+      step: ${TIME_SUBSAMPLING} # 1
       end: 900 # 50 # 500
       datasets:
-        subdivided_smpl:
-          path: ${DATA_ROOT}
-          subset: ${SUBSET}
-          gender: ${oc.env:SMPL_GENDER}
-          models_path: ${oc.env:SMPL_ROOT}
-          offsets_path: ${oc.select:OFFSETS,null}
-          level: ${SUBDIV_LEVELS.${SUBDIV}} # ${SUBDIV} # ${SUBDIV_LEVELS.${SUBDIV}}
+        # subdivided_smpl:
+        #   path: ${DATA_ROOT}
+        #   subset: ${SUBSET}
+        #   gender: ${oc.env:SMPL_GENDER}
+        #   models_path: ${oc.env:SMPL_ROOT}
+        #   offsets_path: ${oc.select:OFFSETS,null}
+        #   level: ${SUBDIV_LEVELS.${SUBDIV}} # ${SUBDIV} # ${SUBDIV_LEVELS.${SUBDIV}}
         multiview_video:
           path: ${DATA_ROOT}
           subset: ${SUBSET}
@@ -44,6 +46,14 @@ data:
           path: ${DATA_ROOT} #/masks
           subset: ${SUBSET}
           suffix: '_mask' # '' # '_mask'
+        subdivided_smpl_anim:
+          anim_path: ${DATA_ROOT}/bundle_rtm.anim
+          path: ${DATA_ROOT}
+          gender: ${oc.env:SMPL_GENDER}
+          models_path: ${oc.env:SMPL_ROOT}
+          subset: ${SUBSET}
+          offsets_path: ${oc.select:OFFSETS,null}
+          level: ${SUBDIV_LEVELS.${SUBDIV}} # ${SUBDIV} # ${SUBDIV_LEVELS.${SUBDIV}}
   
   test:
     loader:

@@ -76,7 +76,7 @@ _moai_:
             capturable: true # false
             differentiable: false
             fused: true # true     
-          _groups_: [model3] # [model_groups2] # [model3] # [model2]
+          _groups_: [model_spherical_harmonics, model_opacity] #[model3] 
         optim_appearance_full: &optim_appearance_full
           _type_: adam
           _params_:
@@ -88,7 +88,7 @@ _moai_:
             capturable: true # false
             differentiable: false
             fused: true # true     
-          _groups_: [model_groups2] # [model3] # [model2]
+          _groups_: [model_spherical_harmonics_full, model_opacity, model_d1] #[model_groups2]
         optim_covariance: &optim_covariance
           _type_: adam
           _params_:
@@ -100,7 +100,19 @@ _moai_:
             capturable: true # false
             differentiable: false
             fused: true # true     
-          _groups_: [model2] # [model2]
+          _groups_: [model_rotation, model_scaling] #[model2]
+        optim_covariance_full: &optim_covariance_full
+          _type_: adam
+          _params_:
+            lr: ${cov_LR} # 1e-2
+            amsgrad: true
+            eps: 1e-9
+            weight_decay: 0.0
+            foreach: false # false
+            capturable: true # false
+            differentiable: false
+            fused: true # true     
+          _groups_: [model_rotation_full, model_scaling_full] #[model2]
         optim_geometry: &optim_geometry
           _type_: adam
           _params_:
@@ -112,7 +124,19 @@ _moai_:
             capturable: true # false
             differentiable: false
             fused: true # true     
-          _groups_: [model1] # [model2]
+          _groups_: [model_positions] #[model1]
+        optim_geometry_full: &optim_geometry_full
+          _type_: adam
+          _params_:
+            lr: ${geom_LR} # 1e-2
+            amsgrad: true
+            eps: 1e-9
+            weight_decay: 0.0
+            foreach: false # false
+            capturable: true # false
+            differentiable: false
+            fused: true # true     
+          _groups_: [model_positions_full] #[model1]
         optim_combined: &optim_combined
           _type_: adam
           _params_:
@@ -124,7 +148,7 @@ _moai_:
             capturable: true # false
             differentiable: false
             fused: true # true     
-          _groups_: [model1, model2, model3]
+          _groups_: [model_groups1]
         optim_combined_full: &optim_combined_full
           _type_: adam
           _params_:
@@ -136,7 +160,7 @@ _moai_:
             capturable: true # false
             differentiable: false
             fused: true # true     
-          _groups_: [model1, model2, model_groups2]
+          _groups_: [model_groups4]
   #       optim_ucf: &optim_ucf
   #         _type_: adam
   #         _params_:
