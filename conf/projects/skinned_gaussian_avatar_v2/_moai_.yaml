@@ -154,11 +154,11 @@ _moai_:
           #     # _assign_:
           #     # _objective_:
           # _batch_:
-          # mesh_step:
-          #   _optimizer_: optim_mesh
-          #   _iterations_: 1 # 5
-          #   _objective_: silhouette_loss
-          #   _flows_: [preproc, postproc, geom_preproc, geom_postproc]
+          mesh_step:
+            _optimizer_: optim_mesh
+            _iterations_: 1 # 5
+            _objective_: silhouette_loss
+            _flows_: [preproc, postproc, geom_preproc, geom_postproc]
           # splats_geom_step:
           #   _optimizer_: optim_mesh
           #   _iterations_: 1 #5 # 5 # 10
@@ -166,12 +166,12 @@ _moai_:
           #   _flows_: ${METHOD_FLOWS.${METHOD}}
 
 
-          splats_step:
-            _optimizer_: optim_nerf
-            _iterations_: 2 #5 # 5 # 10
-            _objective_: reconstruction_and_silhouette_loss # reconstruction_and_silhouette_loss # reconstruction_loss
-            # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
-            _flows_: ${METHOD_FLOWS.${METHOD}}
+          # splats_step:
+          #   _optimizer_: optim_nerf
+          #   _iterations_: 2 #5 # 5 # 10
+          #   _objective_: reconstruction_and_silhouette_loss # reconstruction_and_silhouette_loss # reconstruction_loss
+          #   # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
+          #   _flows_: ${METHOD_FLOWS.${METHOD}}
 
 
 

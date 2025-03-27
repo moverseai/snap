@@ -78,7 +78,10 @@ class XHuman(torch.utils.data.Dataset):
         },
         "00087": {
             "gender": "male",
-        }
+        },
+        "00027": {
+            "gender": "female",
+        },
     }
 
     def __init__(
@@ -91,6 +94,7 @@ class XHuman(torch.utils.data.Dataset):
         offsets_path: typing.Optional[str] = None,
         level: int = 1,
         batch: int = 2,
+        shuffle: bool = True,
     ) -> None:
         super().__init__()
         gender = XHuman._METADATA_[subject]["gender"]
@@ -124,12 +128,13 @@ class XHuman(torch.utils.data.Dataset):
         )
         self.data_path = os.path.join(path, subject, split, take)
         cams = np.load(os.path.join(self.data_path, "render", "cameras.npz"))
-        self.intrinsic = cams["intrinsic"].astype(np.float32)
+        # self.intrinsic = cams["intrinsic"].astype(np.float32)
+        self.intrinsic = np.load("D:/Kotarelas/HAHA/haha_intrinsics.npz")[list(np.load("D:/Kotarelas/HAHA/haha_intrinsics.npz").keys())[0]]
         self.extrinsic = cams["extrinsic"].astype(np.float32)
         self.batch = batch
         imgs = glob.glob(os.path.join(path, subject, split, take, "render", "image", "*.??g"))
         indices = [x for x in map(int, map(lambda p: os.path.splitext(os.path.basename(p))[0].split("_")[1], imgs))]
-        perm = np.random.permutation(len(indices))
+        perm = np.random.permutation(len(indices)) if shuffle else range(len(indices))
         self.file_indices = np.array(indices)[perm]
         self.indices = np.array(list(range(len(self.file_indices))))[perm]
         # self.indices = np.random.permutation(len(self.extrinsic))
@@ -259,6 +264,7 @@ class XHuman(torch.utils.data.Dataset):
         batched["view_matrix"].append(view_matrices)
         batched["color"].append(img)
         batched["mask"].append(msk)
+        batched["file_index"].append(file_index)
 
     def __getitem__(self, index: int) -> typing.Any:
         # i1 = int(self.indices[index * self.batch])

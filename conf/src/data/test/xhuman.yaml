@@ -8,3 +8,4 @@ take: ???
 models_path: ???
 level: 1
 offsets_path: null
+shuffle: true

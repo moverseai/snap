@@ -302,7 +302,7 @@ class XHuman_all(torch.utils.data.Dataset):
         returned["shaped"] = returned["shaped"][0]
         returned["skinning_weights"] = self.weights
         returned["faces"] = self.faces
-        returned["intrinsics"] = self.intrinsic[self.perm[index * self.batch : ( + 1) * self.batch]]
+        returned["intrinsics"] = self.intrinsic[self.perm[index * self.batch : (index + 1) * self.batch]]
         returned["vertex_areas"] = self.areas # np.broadcast_to(self.areas, (self.batch, *self.areas.shape))
         returned["betas"] = self.betas
         return returned

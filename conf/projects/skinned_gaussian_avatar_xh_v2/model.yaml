@@ -5,7 +5,7 @@ NUM_SPLATS:
   - 10475
   - 41853
   - 167333
-SPLATS_PATH: ???
+SPLATS_PATH: D:/Kotarelas/gaussianSplatting/gaussianSplatsResults/xh_${SUBJECT}_full_trained/0
 
 model:
   parameters:
@@ -110,66 +110,66 @@ model:
               - preproc.named_params.offsets
             lr: 1e-4  
 
-      model_rotation:
-        groups:
-          rotation:
-            parameters:
-                - nerf_preproc.gaussian_splat_parameters.rotation
-            lr: 0.001 # ${nerf_LR} # 1e-2
-      model_rotation_full:
-        groups:
-          rotation_full:
-            parameters:
-                - nerf_preproc.gaussian_splat_parameters.rotation
-            lr: 0.01 # ${nerf_LR} # 1e-2
-      model_opacity:
-        groups:
-          opacity:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.opacity
-            lr: 0.05 # ${nerf_LR} # 1e-2
-      model_scaling:
-        groups:
-          scaling:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.scaling
-            lr: 0.005 # ${nerf_LR} # 1e-2
-      model_scaling_full:
-        groups:
-          scaling_full:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.scaling
-            lr: 0.05 # ${nerf_LR} # 1e-2
-      model_spherical_harmonics:
-        groups:
-          spherical_harmonics:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
-            lr: 0.0025 # ${nerf_LR} # 1e-2
-      model_spherical_harmonics_full:
-        groups:
-          spherical_harmonics_full:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
-            lr: 0.025 # ${nerf_LR} # 1e-2
-      model_d1:
-        groups:
-          d1:
-            parameters:
-              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
-            lr: 0.005 # ${nerf_LR} # 1e-2
-      model_positions:
-        groups:
-          positions:
-            parameters:
-              - preproc.named_params.offsets
-            lr: 1e-3 
-      model_positions_full:
-        groups:
-          positions_full:
-            parameters:
-              - preproc.named_params.offsets
-            lr: 1e-4  
+      # model_rotation:
+      #   groups:
+      #     rotation:
+      #       parameters:
+      #           - nerf_preproc.gaussian_splat_parameters.rotation
+      #       lr: 0.001 # ${nerf_LR} # 1e-2
+      # model_rotation_full:
+      #   groups:
+      #     rotation_full:
+      #       parameters:
+      #           - nerf_preproc.gaussian_splat_parameters.rotation
+      #       lr: 0.01 # ${nerf_LR} # 1e-2
+      # model_opacity:
+      #   groups:
+      #     opacity:
+      #       parameters:
+      #         - nerf_preproc.gaussian_splat_parameters.opacity
+      #       lr: 0.05 # ${nerf_LR} # 1e-2
+      # model_scaling:
+      #   groups:
+      #     scaling:
+      #       parameters:
+      #         - nerf_preproc.gaussian_splat_parameters.scaling
+      #       lr: 0.005 # ${nerf_LR} # 1e-2
+      # model_scaling_full:
+      #   groups:
+      #     scaling_full:
+      #       parameters:
+      #         - nerf_preproc.gaussian_splat_parameters.scaling
+      #       lr: 0.05 # ${nerf_LR} # 1e-2
+      # model_spherical_harmonics:
+      #   groups:
+      #     spherical_harmonics:
+      #       parameters:
+      #         - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
+      #       lr: 0.0025 # ${nerf_LR} # 1e-2
+      # model_spherical_harmonics_full:
+      #   groups:
+      #     spherical_harmonics_full:
+      #       parameters:
+      #         - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
+      #       lr: 0.025 # ${nerf_LR} # 1e-2
+      # model_d1:
+      #   groups:
+      #     d1:
+      #       parameters:
+      #         - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_d1
+      #       lr: 0.005 # ${nerf_LR} # 1e-2
+      # model_positions:
+      #   groups:
+      #     positions:
+      #       parameters:
+      #         - preproc.named_params.offsets
+      #       lr: 1e-3 
+      # model_positions_full:
+      #   groups:
+      #     positions_full:
+      #       parameters:
+      #         - preproc.named_params.offsets
+      #       lr: 1e-4  
 
   monads:
     # grid:

@@ -14,7 +14,8 @@ SUBDIV_LEVELS_INDEX:
   one: '1'
   two: '2'
 SUBDIV_INDEX: ${SUBDIV_LEVELS_INDEX.${SUBDIV}}
-OFFSETS: ???
+OFFSETS: D:/Kotarelas/gaussianSplatting/datasets/xh_${SUBJECT}_offsets.npz
+TEST_DATA_SHUFFLE: ???
 
 data:
   train:
@@ -56,3 +57,4 @@ data:
           level: ${SUBDIV_LEVELS.${SUBDIV}} # ${SUBDIV} # ${SUBDIV_LEVELS.${SUBDIV}}
           batch: ${VIEWS}
           offsets_path: ${oc.select:OFFSETS,null}
+          shuffle: ${TEST_DATA_SHUFFLE}

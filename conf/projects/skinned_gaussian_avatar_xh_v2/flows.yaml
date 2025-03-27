@@ -227,6 +227,7 @@ _moai_:
              - ${mi:"ones(color)"}
              - ${mi:"background * random_color"}
              - ${mi:"masked_color + ((1.0 - mask) * random_background)"}
+            #  - ${mi:"mask * color"}
           _out_: [masked_color, background, random_background, masked_color]
       geom_postproc:
         #TODO: 1-channel silhouette?
@@ -381,6 +382,9 @@ _moai_:
         # #     # - ${mi:"transpose(reconstructed_color, 0, 3, 1, 2)"}
         # #   _out_: [reconstructed_color]
       test_nerf_postproc:
+        ones:
+            tensor: [color]
+            _out_: [white_bg]
         # mesh_vertex_normals:
         #   vertices: [deformed_vertices, vertices] #,  body.vertices]
         #   faces: [faces, faces] # [body.faces, body.faces]
@@ -393,8 +397,9 @@ _moai_:
             - ${mi:"-gaussian_params.opacity"}
             - ${mi:"expand_batch_as(gaussian_params.opacity, deformed_vertices)"}
             # - ${mi:"expand_batch_as(gaussian_quats, deformed_vertices)"}
-            - ${mi:"expand_batch_as(gaussian_scales, deformed_vertices)"}            
-          _out_: [neg_opacity, opacities, gaussian_scales]
+            - ${mi:"expand_batch_as(gaussian_scales, deformed_vertices)"}
+            - ${mi:"1.0 - white_bg"}             
+          _out_: [neg_opacity, opacities, gaussian_scales, black_bg]
         # detach:
         #   tensor: [deformed_vertices]
         #   _out_: [deformed_vertices_d]
@@ -409,8 +414,15 @@ _moai_:
           scales: [gaussian_scales] # [gaussian_params.scaling]  # [B, V, 3]
           intrinsics: [intrinsics]  # [B, 3, 3]
           image: [color] # [silhouette]  # [B, C, H, W]
-          background_color: [random_background]  # [B, 3]
+          background_color: [random_background] #[random_background] #[black_bg]  # [B, 3]
+          masked_image: [masked_color]
           _out_: [splatted]
+        _mi_end:
+          expression:
+            - ${mi:"splatted.splatted_color_resized * 255.0"}
+            - ${mi:"splatted.masked_color_resized * 255.0"}
+            - ${mi:"sq(file_index)"}
+          _out_: [splatted_color_resized_export, masked_color_resized_export, file_index]
       # ucf_preproc:                
       #   _mi_ucf_preproc1:
       #     expression:

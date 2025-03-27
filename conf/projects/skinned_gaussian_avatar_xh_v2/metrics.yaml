@@ -7,15 +7,15 @@ _moai_:
       _metrics_:
         img_quality:
           peak_signal_noise_ratio:
-            preds: [splatted.color]
-            target: [masked_color]
+            preds: [splatted.splatted_color_resized]
+            target: [splatted.masked_color_resized]
             _out_: [psnr]
           learned_perceptual_image_patch_similarity:
-            preds: [splatted.color]
-            target: [masked_color]
+            preds: [splatted.splatted_color_resized]
+            target: [splatted.masked_color_resized]
             _out_: [lpips]
           structural_similarity_index_measure:
-            preds: [splatted.color]
-            target: [masked_color]
+            preds: [splatted.splatted_color_resized]
+            target: [splatted.masked_color_resized]
             _out_: [ssim]
       

@@ -18,7 +18,7 @@ engine:
     rerun:
       name: ${experiment.name}
       memory_limit: 4GB
-      world_coordinates: RUF # RDD # RUF
+      world_coordinates: RDD #RUF # RDD # RUF
       # export: './rerun.rrd'
       # annotations:
       #   plots:

@@ -3,12 +3,13 @@
 SAVE_MESH_FREQ: 540
 MONITORING_MODES:
   single:
-    frequency: 10
-    proc: [visualisation, optimization, save_offsets, save_splat]
+    frequency: 100
+    proc: [visualisation, optimization, save_offsets, save_splat, save_gt_image_batch, save_pred_image_batch]
   multi:
     frequency: ${SAVE_MESH_FREQ} # 280
     proc: [visualisation, optimization, save_offsets, save_splat] # save_mesh]
 
+IMAGES_SAVE_PATH: ???
 _moai_:
   _definitions_:
     _collections_:
@@ -62,7 +63,7 @@ _moai_:
             # For Training/testing
             poses: [extrinsics, extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
             intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
-            images: [masked_color, mask, splatted.alpha, splatted.color] # , reconstructed_color, ucf_map_viz]
+            images: [splatted.masked_color_resized, mask, splatted.alpha, splatted.splatted_color_resized] # , reconstructed_color, ucf_map_viz]
             path: [/body/image, /body/mask, /body/pred/mask, /body/pred/raster] # , /body/pred/color, /body/pred/ucf]
 
             # poses: [extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
@@ -91,6 +92,26 @@ _moai_:
               extension: ply # obj
             vertices: [deformed_vertices] # [deformed_vertices]
             faces: [faces] # [body.faces]
+        save_gt_image_batch:
+          image2d:
+            # tensors: [splatted]
+            modality: [color] # or depth
+            colormap: [none] # bone, etc.
+            transform: [none] # minmax, etc.
+            mode: [all] # [all, overwrite]
+            key: [masked_color_resized_export]
+            path: ['${IMAGES_SAVE_PATH}/${SUBJECT}/${TAKE}/gt']
+            extension: [png]
+        save_pred_image_batch:
+          image2d:
+            # tensors: [splatted]
+            modality: [color] # or depth
+            colormap: [none] # bone, etc.
+            transform: [none] # minmax, etc.
+            mode: [all] # [all, overwrite]
+            key: [splatted_color_resized_export]
+            path: ['${IMAGES_SAVE_PATH}/${SUBJECT}/${TAKE}/pred']
+            extension: [png]
 
   _execution_:
     _monitoring_:
