@@ -43,10 +43,10 @@ def _load_expressive_body_data(body_data_path: str) -> typing.Dict[str, np.ndarr
     weights = np.ascontiguousarray(np.array(body_data["weights"]).astype(np.float32))
     faces = np.ascontiguousarray(np.array(body_data["f"]).astype(np.int32))
     hands_meanr = np.ascontiguousarray(
-        np.array(body_data["hands_meanr"]).astype(np.int32)
+        np.array(body_data["hands_meanr"]).astype(np.float32)
     )
     hands_meanl = np.ascontiguousarray(
-        np.array(body_data["hands_meanl"]).astype(np.int32)
+        np.array(body_data["hands_meanl"]).astype(np.float32)
     )
     return (
         shape_blendshapes,
@@ -95,6 +95,7 @@ class XHuman_all(torch.utils.data.Dataset):
         offsets_path: typing.Optional[str] = None,
         level: int = 1,
         batch: int = 2,
+        optimized_pose_params_path: typing.Optional[str] = None,
     ) -> None:
         super().__init__()
         gender = XHuman_all._METADATA_[subject]["gender"]
@@ -230,14 +231,14 @@ class XHuman_all(torch.utils.data.Dataset):
                 data["jaw_pose"],
                 data["leye_pose"],
                 data["reye_pose"],
-                data["right_hand_pose"],
-                data["left_hand_pose"],
-                # data["left_hand_pose"],
                 # data["right_hand_pose"],
+                # data["left_hand_pose"],
+                data["left_hand_pose"],
+                data["right_hand_pose"],
             ],
             axis=0,
         )
-        # full_pose += self.pose_mean
+        full_pose += self.pose_mean
         pose = _rodrigues(full_pose[np.newaxis])
         j, xf = _traverse_kinematic_chain(pose, self.joints, self.parents)
         expression = data["expression"]

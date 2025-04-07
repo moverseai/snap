@@ -51,16 +51,18 @@ _moai_:
             # intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics, intrinsics]
             # images: [masked_color, mask, silhouette, splatted.alpha, splatted.color]
             # path: [/body/image, /body/mask, /body/pred/mask, /body/pred/alpha, /body/pred/raster]
+            
+            # For offsets extraction
+            # poses: [extrinsics, extrinsics] # , extrinsics, extrinsics]
+            # intrinsics: [intrinsics, intrinsics] # , intrinsics, intrinsics]
+            # images: [mask, silhouette] # , reconstructed_color, ucf_map_viz]
+            # path: [/body/mask, /body/pred/mask] # , /body/pred/color, /body/pred/ucf]
 
-            poses: [extrinsics, extrinsics] # , extrinsics, extrinsics]
-            intrinsics: [intrinsics, intrinsics] # , intrinsics, intrinsics]
-            images: [mask, silhouette] # , reconstructed_color, ucf_map_viz]
-            path: [/body/mask, /body/pred/mask] # , /body/pred/color, /body/pred/ucf]
-
-            # poses: [extrinsics, extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
-            # intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
-            # images: [masked_color, mask, splatted.alpha, splatted.color] # , reconstructed_color, ucf_map_viz]
-            # path: [/body/image, /body/mask, /body/pred/mask, /body/pred/raster] # , /body/pred/color, /body/pred/ucf]
+            # For training
+            poses: [extrinsics, extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
+            intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
+            images: [masked_color, mask, splatted.alpha, splatted.color] # , reconstructed_color, ucf_map_viz]
+            path: [/body/image, /body/mask, /body/pred/mask, /body/pred/raster] # , /body/pred/color, /body/pred/ucf]
 
             # poses: [extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
             # intrinsics: [intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]

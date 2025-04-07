@@ -7,5 +7,6 @@ split: test
 take: ???
 models_path: ???
 level: 1
-offsets_path: null
-shuffle: true
+offsets_path: ???
+shuffle: false
+optimized_pose_params_path: ???

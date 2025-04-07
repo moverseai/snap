@@ -7,4 +7,5 @@ split: train
 take: ???
 models_path: ???
 level: 1
-offsets_path: null
+offsets_path: ???
+optimized_pose_params_path: ???

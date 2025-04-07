@@ -9,7 +9,7 @@ defaults:
   - data/train/iterator: subset_zipped # indexed
   # - data/train/augmentation/albumentations: compose
   # - src/data/train/aug: euclidean_distance_transform
-  - src/data/train: [xhuman_all]
+  - src/data/train: [xhuman]
   # ###### DATA TEST
   - data/test/loader: torch
   - data/test/iterator: subset_zipped # indexed

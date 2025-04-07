@@ -5,7 +5,7 @@ NUM_SPLATS:
   - 10475
   - 41853
   - 167333
-SPLATS_PATH: D:/Kotarelas/gaussianSplatting/gaussianSplatsResults/xh_${SUBJECT}_full_trained/0
+SPLATS_PATH: ???
 
 model:
   parameters:

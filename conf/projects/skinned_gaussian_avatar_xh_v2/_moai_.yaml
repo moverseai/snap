@@ -120,7 +120,7 @@ COLOR_STEPS: ???
 GEOM_STEPS: ???
 COMB_STEPS: ???
 
-ORDER: ???
+# ORDER: ???
 
 OPTIM_ORDER:
   acg: 
@@ -381,7 +381,7 @@ _moai_:
           #   _flows_: ${METHOD_FLOWS.${METHOD}}
           
 
-          # combined optimization
+          # combined optimization FOR TRAINING
           splats_combined:
             _optimizer_: optim_combined
             _iterations_: ${COMB_STEPS} # 1 #5 # 5 # 10

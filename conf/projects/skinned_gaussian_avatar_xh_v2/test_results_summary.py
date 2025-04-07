@@ -6,6 +6,17 @@ import rich
 class NoTagConstructor(yaml.SafeLoader):
     def construct_undefined(self, node):
         return None  # Replace unknown objects with None
+
+def get_nested_value(dictionary, key_path, default="N/A"):
+    """Retrieve a value from a nested dictionary using a dotted key path."""
+    keys = key_path.split(".")
+    value = dictionary
+    try:
+        for key in keys:
+            value = value[key]
+        return value
+    except (KeyError, TypeError):
+        return default
     
 def find_files(root_dir, desired_end):
     """ Recursively find all files with a given name inside a root directory. """
@@ -24,20 +35,21 @@ def extract_test_yaml_info(yaml_path):
         with open(yaml_path, 'r') as f:
             config = yaml.load(f, Loader=NoTagConstructor)
         run_info_names = [
-            "COV_STEPS", 
-            "COLOR_STEPS", 
-            "GEOM_STEPS", 
-            "COMB_STEPS", 
+            # "COV_STEPS", 
+            # "COLOR_STEPS", 
+            # "GEOM_STEPS", 
+            # "COMB_STEPS", 
             "SPLATS_PATH", 
             "METHOD", 
-            "comb_LR", 
+            # "comb_LR", 
             "SH_EPOCH", 
-            "ORDER",
+            # "ORDER",
+            "model.monads.gaussian_splat_parameters.scale",
             ]
         
         run_info = []
         for name in run_info_names:
-            run_info.append(config.get(name, "N/A"))
+            run_info.append(get_nested_value(config, name, "N/A"))
         # cov_steps = config.get("COV_STEPS", "N/A")
         # color_steps = config.get("COLOR_STEPS", "N/A")
         # geom_steps = config.get("GEOM_STEPS", "N/A")
@@ -121,6 +133,7 @@ def main(root_dir):
         # "SH_EPOCH", 
         # "comb_LR",
         # "ORDER",
+        "model.monads.gaussian_splat_parameters.scale",
         ], ascending=False)
     
     # print(df.to_string(index=False))
@@ -132,5 +145,5 @@ if __name__ == "__main__":
     # parser.add_argument("root_dir", type=str, help="Path to the root directory containing experiment folders.")
     # args = parser.parse_args()
     
-    root_dir = "C:/Users/info/Documents/GitHub/snap/multirun/2025-03-08"
+    root_dir = "C:/Users/info/Documents/GitHub/snap/multirun/2025-04-03"
     main(root_dir)

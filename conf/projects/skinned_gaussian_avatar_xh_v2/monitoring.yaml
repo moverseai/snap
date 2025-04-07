@@ -4,7 +4,7 @@ SAVE_MESH_FREQ: 540
 MONITORING_MODES:
   single:
     frequency: 100
-    proc: [visualisation, optimization, save_offsets, save_splat, save_gt_image_batch, save_pred_image_batch]
+    proc: [visualisation, optimization, save_offsets, save_splat, save_gt_image_batch, save_pred_image_batch] # , save_gt_image_batch, save_pred_image_batch Comment this for offsets extraction and training, keep it only for testing
   multi:
     frequency: ${SAVE_MESH_FREQ} # 280
     proc: [visualisation, optimization, save_offsets, save_splat] # save_mesh]
@@ -60,7 +60,13 @@ _moai_:
             # images: [mask, silhouette] # , reconstructed_color, ucf_map_viz]
             # path: [/body/mask, /body/pred/mask] # , /body/pred/color, /body/pred/ucf]
 
-            # For Training/testing
+            # For training
+            # poses: [extrinsics, extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
+            # intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
+            # images: [masked_color, mask, splatted.alpha, splatted.color] # , reconstructed_color, ucf_map_viz]
+            # path: [/body/image, /body/mask, /body/pred/mask, /body/pred/raster] # , /body/pred/color, /body/pred/ucf]
+
+            # For testing
             poses: [extrinsics, extrinsics, extrinsics, extrinsics] # , extrinsics, extrinsics]
             intrinsics: [intrinsics, intrinsics, intrinsics, intrinsics] # , intrinsics, intrinsics]
             images: [splatted.masked_color_resized, mask, splatted.alpha, splatted.splatted_color_resized] # , reconstructed_color, ucf_map_viz]

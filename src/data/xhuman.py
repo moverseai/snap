@@ -23,6 +23,22 @@ from src.data.subdivided_smpl import (
     _traverse_kinematic_chain,
     _skinning,
 )
+# try:
+#     from src.data.subdivided_smpl import (
+#         _subdivide,
+#         _rodrigues,
+#         _create_projection_matrices,
+#         _traverse_kinematic_chain,
+#         _skinning,
+#     )
+# except:
+#     from subdivided_smpl import (
+#         _subdivide,
+#         _rodrigues,
+#         _create_projection_matrices,
+#         _traverse_kinematic_chain,
+#         _skinning,
+#     )
 
 
 def _load_expressive_body_data(body_data_path: str) -> typing.Dict[str, np.ndarray]:
@@ -42,10 +58,10 @@ def _load_expressive_body_data(body_data_path: str) -> typing.Dict[str, np.ndarr
     weights = np.ascontiguousarray(np.array(body_data["weights"]).astype(np.float32))
     faces = np.ascontiguousarray(np.array(body_data["f"]).astype(np.int32))
     hands_meanr = np.ascontiguousarray(
-        np.array(body_data["hands_meanr"]).astype(np.int32)
+        np.array(body_data["hands_meanr"]).astype(np.float32)
     )
     hands_meanl = np.ascontiguousarray(
-        np.array(body_data["hands_meanl"]).astype(np.int32)
+        np.array(body_data["hands_meanl"]).astype(np.float32)
     )
     return (
         shape_blendshapes,
@@ -95,6 +111,7 @@ class XHuman(torch.utils.data.Dataset):
         level: int = 1,
         batch: int = 2,
         shuffle: bool = True,
+        optimized_pose_params_path: typing.Optional[str] = None,
     ) -> None:
         super().__init__()
         gender = XHuman._METADATA_[subject]["gender"]
@@ -126,10 +143,15 @@ class XHuman(torch.utils.data.Dataset):
             ],
             axis=0,
         )
+        self.optimized_posed_params = None
+        if optimized_pose_params_path is not None:
+            log.info("Using optimized pose parameters")
+            with open(optimized_pose_params_path, 'rb') as f:
+                self.optimized_posed_params = pickle.load(f)
         self.data_path = os.path.join(path, subject, split, take)
         cams = np.load(os.path.join(self.data_path, "render", "cameras.npz"))
         # self.intrinsic = cams["intrinsic"].astype(np.float32)
-        self.intrinsic = np.load("D:/Kotarelas/HAHA/haha_intrinsics.npz")[list(np.load("D:/Kotarelas/HAHA/haha_intrinsics.npz").keys())[0]]
+        self.intrinsic = np.load("C:/Users/info/Documents/Kotarelas/3D Gaussian Avatar/haha/haha_intrinsics.npz")[list(np.load("C:/Users/info/Documents/Kotarelas/3D Gaussian Avatar/haha/haha_intrinsics.npz").keys())[0]]
         self.extrinsic = cams["extrinsic"].astype(np.float32)
         self.batch = batch
         imgs = glob.glob(os.path.join(path, subject, split, take, "render", "image", "*.??g"))
@@ -142,7 +164,7 @@ class XHuman(torch.utils.data.Dataset):
             os.path.join(self.data_path, "smplx", "mesh-f00001_smplx.pkl"), "rb"
         ) as f:
             data = pickle.load(f)
-        self.betas = data["betas"]
+        self.betas = data["betas"] if self.optimized_posed_params is None else self.optimized_posed_params['_betas'].squeeze()
         offsets = np.einsum(
             "vcb,b->vc", blendshapes[..., : self.betas.shape[-1]], self.betas
         )
@@ -208,17 +230,28 @@ class XHuman(torch.utils.data.Dataset):
                 data["jaw_pose"],
                 data["leye_pose"],
                 data["reye_pose"],
-                data["right_hand_pose"],
-                data["left_hand_pose"],
-                # data["left_hand_pose"],
                 # data["right_hand_pose"],
+                # data["left_hand_pose"],
+                data["left_hand_pose"],
+                data["right_hand_pose"],
+            ],
+            axis=0,
+        ) if self.optimized_posed_params is None else np.concatenate(
+            [
+                self.optimized_posed_params['_body_pose_dict']["global_orient"][index].squeeze(),
+                self.optimized_posed_params['_body_pose_dict']["body_pose"][index].squeeze(),
+                self.optimized_posed_params['_body_pose_dict_hf']["jaw_pose"][index].squeeze(),
+                self.optimized_posed_params['_body_pose_dict_hf']["leye_pose"][index].squeeze(),
+                self.optimized_posed_params['_body_pose_dict_hf']["reye_pose"][index].squeeze(),
+                self.optimized_posed_params['_body_pose_dict_hf']["left_hand_pose"][index].squeeze(),
+                self.optimized_posed_params['_body_pose_dict_hf']["right_hand_pose"][index].squeeze(),
             ],
             axis=0,
         )
-        # full_pose += self.pose_mean
+        full_pose += self.pose_mean
         pose = _rodrigues(full_pose[np.newaxis])
         j, xf = _traverse_kinematic_chain(pose, self.joints, self.parents)
-        expression = data["expression"]
+        expression = data["expression"] if self.optimized_posed_params is None else self.optimized_posed_params['_body_pose_dict_hf']["expression"][index].squeeze()
         # offsets = np.einsum(
         #     "vcb,b->vc",
         #     self.expression_blendshapes[..., : expression.shape[-1]],
@@ -248,16 +281,20 @@ class XHuman(torch.utils.data.Dataset):
             ),
             cv2.IMREAD_ANYDEPTH,
         )
+        
+        transl = data["transl"] if self.optimized_posed_params is None else self.optimized_posed_params['_body_pose_dict']['transl'][index].squeeze()
+        global_orient = data["global_orient"] if self.optimized_posed_params is None else self.optimized_posed_params['_body_pose_dict']['global_orient'][index].squeeze()
+        
         msk = (msk < 10.0).astype(np.float32)[np.newaxis]
-        batched["vertices"].append(v + data["transl"])
+        batched["vertices"].append(v + transl)
         batched["shaped"].append(vertices)
         batched["normals"].append(n.squeeze())
         batched["blended_transforms"].append(bxf)
         batched["blended_rotations_quat"].append(blended_quats)
         batched["extrinsics"].append(self.extrinsic[index])
         batched["pose"].append(pose[0])
-        batched["transl"].append(data["transl"])
-        batched["global_orient"].append(data["global_orient"])
+        batched["transl"].append(transl)
+        batched["global_orient"].append(global_orient)
         batched["time"].append(index / len(self.extrinsic))
         batched["camera_position"].append(camera_position)
         batched["view_projection_matrix"].append(viewprojection_matrices)
@@ -285,3 +322,28 @@ class XHuman(torch.utils.data.Dataset):
         returned["vertex_areas"] = self.areas # np.broadcast_to(self.areas, (self.batch, *self.areas.shape))
         returned["betas"] = self.betas
         return returned
+
+
+# if __name__ == '__main__':
+#     root = r'C:/Users/info/Documents/Kotarelas/3D Gaussian Avatar/datasets/XHUMAN'
+#     subject = '00016'
+#     take = 'Take1'
+#     split = 'test'
+#     models = r'C:/Users/info/Documents/Kotarelas/models_smplx_v1_1'
+#     d = XHuman(root, subject, split, take, models, None, 1, 1)
+#     index = 100
+#     out = d[index]
+#     import trimesh
+#     trimesh.Trimesh(out['vertices'][0], out['faces']).export(f'{subject}_{split}_{take}_{index}.ply')
+#     f_idx = int(d.file_indices[index * d.batch + 0])
+#     print(f_idx)
+#     with open(
+#         os.path.join(d.data_path, "smplx", f"mesh-f{(f_idx):05d}_smplx.pkl"),
+#         "rb",
+#     ) as f:
+#         data = pickle.load(f)
+#         import smplx
+#         bmodel = smplx.create(gender='male', model_path=os.path.join(models, 'models'), model_type='smplx', 
+#                         use_pca=False, use_hands=True, use_face=True, flat_hand_mean=False)
+#         output = bmodel(**toolz.valmap(lambda x: torch.from_numpy(x)[np.newaxis], data))
+#         trimesh.Trimesh(output.vertices[0], bmodel.faces).export(f'{subject}_{split}_{take}_{index}_smplx.ply')

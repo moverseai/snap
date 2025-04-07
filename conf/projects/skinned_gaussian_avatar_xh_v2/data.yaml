@@ -14,8 +14,9 @@ SUBDIV_LEVELS_INDEX:
   one: '1'
   two: '2'
 SUBDIV_INDEX: ${SUBDIV_LEVELS_INDEX.${SUBDIV}}
-OFFSETS: D:/Kotarelas/gaussianSplatting/datasets/xh_${SUBJECT}_offsets.npz
+OFFSETS: ??? #C:/Users/info/Documents/Kotarelas/3D Gaussian Avatar/datasets/xh_${SUBJECT}_offsets.npz
 TEST_DATA_SHUFFLE: ???
+OPTIMIZED_POSE_PARAMS: ???
 
 data:
   train:
@@ -37,6 +38,7 @@ data:
           level: ${SUBDIV_LEVELS.${SUBDIV}} # ${SUBDIV} # ${SUBDIV_LEVELS.${SUBDIV}}
           batch: ${VIEWS}
           offsets_path: ${oc.select:OFFSETS,null}
+          optimized_pose_params_path: ${oc.select:OPTIMIZED_POSE_PARAMS,null}
   
   test:
     loader:
@@ -58,3 +60,4 @@ data:
           batch: ${VIEWS}
           offsets_path: ${oc.select:OFFSETS,null}
           shuffle: ${TEST_DATA_SHUFFLE}
+          optimized_pose_params_path: ${oc.select:OPTIMIZED_POSE_PARAMS,null}
