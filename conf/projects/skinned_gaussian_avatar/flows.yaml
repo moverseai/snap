@@ -249,10 +249,11 @@ _moai_:
           expression:
             - ${mi:"roll(gaussian_quats, -1, -1)"}
             # - ${mi:"unsq(blended_transforms, 0)"}
-          _out_: [gaussian_quats] # , blended_transforms]
+          _out_: [gaussian_quats] #, blended_transforms]
         rotmat_to_unitquat:
           rotation:
-            - ${mi:"blended_transforms[0, :, :, 0:3, 0:3]"}
+            # - ${mi:"blended_transforms[0, :, :, 0:3, 0:3]"}
+            - ${mi:"blended_transforms[:, :, 0:3, 0:3]"}
           _out_: [blended_quats]
         quaternion_composition:
           x: [blended_quats]
