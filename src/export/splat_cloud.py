@@ -92,6 +92,7 @@ class SplatCloud(
             if "_v" in self.method_type:
                 scale_for_unity = torch.exp(scale)
                 scale_for_unity = scale_for_unity * torch.from_numpy(self.vertex_areas).unsqueeze(-1)
+                scale_for_unity = torch.log(scale_for_unity)
             opacity = gaussian_params.opacity.detach().cpu().squeeze()[..., np.newaxis]
             sxyz = self.shaped
             # xyz = self.shaped + self.normals * offsets
