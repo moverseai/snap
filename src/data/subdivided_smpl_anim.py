@@ -228,7 +228,8 @@ class SubdividedSMPLAnim(torch.utils.data.Dataset):
         self.pose = np.stack(self.parquet_table["joint_rotations"].values).reshape(
             -1, 23, 3
         )
-        self.transl = np.stack(self.parquet_table["mesh_translation"].values)
+        # self.transl = np.stack(self.parquet_table["mesh_translation"].values)
+        self.transl = np.stack(self.parquet_table["global_translation"].values)
         self.global_orient = np.stack(self.parquet_table["global_rotation"].values)
 
         offsets = np.einsum(
@@ -236,6 +237,7 @@ class SubdividedSMPLAnim(torch.utils.data.Dataset):
         )
         shaped = template + offsets
         shaped_joints = np.einsum("jv,vc->jc", regressor, shaped)
+        self.transl -= shaped_joints[0] #NOTE: fix/check
         extra_offsets = None
         if offsets_path and os.path.exists(offsets_path):
             extra_offsets = np.load(offsets_path)["offsets"]
@@ -264,7 +266,8 @@ class SubdividedSMPLAnim(torch.utils.data.Dataset):
         vareas = torch.zeros(self.vertices.shape[0])
         for c in range(F.shape[-1]):
             vareas.scatter_add_(0, F[..., c], areas)
-        self.areas = vareas.numpy()
+        # self.areas = vareas.numpy()
+        self.areas = np.sqrt(vareas.numpy() / np.pi) / 3.5
         self.normals = torch.nn.functional.normalize(N, dim=-1).numpy()
         self.pose = _rodrigues(
             np.concatenate([self.global_orient[:, np.newaxis], self.pose], axis=1)

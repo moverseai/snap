@@ -1,10 +1,10 @@
 # @package _global_
 
 SUBSET: null # [6, 7] # [0, 3] # null # [6, 7] # null # [1, 2] # [0, 1, 2]
-SUBJECT: ???
+# SUBJECT: ???
 TAKE: ???
-DATASET_PATH: ???
-DATA_ROOT: ${DATASET_PATH}/${SUBJECT}
+# DATASET_PATH: ???
+DATA_ROOT: ??? # ${DATASET_PATH}/${SUBJECT}
 VIEWS: ???
 SUBDIV: one
 SUBDIV_LEVELS:
@@ -16,7 +16,7 @@ SUBDIV_LEVELS_INDEX:
   one: '1'
   two: '2'
 SUBDIV_INDEX: ${SUBDIV_LEVELS_INDEX.${SUBDIV}}
-OFFSETS: ${DATASET_PATH}/moverse_${SUBJECT}_bundle_offsets.npz
+OFFSETS: ??? # ${DATASET_PATH}/moverse_${SUBJECT}_bundle_offsets.npz
 TIME_SUBSAMPLING: ???
 
 data:
@@ -47,7 +47,7 @@ data:
           subset: ${SUBSET}
           suffix: '_mask' # '' # '_mask'
         subdivided_smpl_anim:
-          anim_path: ${DATA_ROOT}/bundle_rtm.anim
+          anim_path: ${DATA_ROOT}/bundle.anim
           path: ${DATA_ROOT}
           gender: ${oc.env:SMPL_GENDER}
           models_path: ${oc.env:SMPL_ROOT}

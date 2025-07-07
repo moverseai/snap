@@ -1,7 +1,7 @@
 # @package _global_
 
 experiment:
-  name: ${action}_Moverse_${SUBJECT}_${METHOD}
+  name: skinned_gaussian_avatar_reproc
   batch_size: 1
   workers: 0
 
@@ -18,7 +18,7 @@ engine:
     rerun:
       name: ${experiment.name}
       memory_limit: 4GB
-      world_coordinates: RDD #RUF # RDD # RUF
+      world_coordinates: RUF # RDD #RUF # RDD # RUF
       # export: './rerun.rrd'
       # annotations:
       #   plots:

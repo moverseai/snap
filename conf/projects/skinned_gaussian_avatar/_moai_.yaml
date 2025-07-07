@@ -149,12 +149,12 @@ _moai_:
           #   _flows_: ${METHOD_FLOWS.${METHOD}}
 
 
-          # splats_step:
-          #   _optimizer_: optim_nerf
-          #   _iterations_: 5 #5 # 5 # 10
-          #   _objective_: reconstruction_and_silhouette_loss # reconstruction_and_silhouette_loss # reconstruction_loss
-          #   # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
-          #   _flows_: ${METHOD_FLOWS.${METHOD}}
+          splats_step:
+            _optimizer_: optim_nerf
+            _iterations_: 1 # 5 #5 # 5 # 10
+            _objective_: reconstruction_and_silhouette_loss # reconstruction_and_silhouette_loss # reconstruction_loss
+            # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
+            _flows_: ${METHOD_FLOWS.${METHOD}}
 
 
 
@@ -165,24 +165,24 @@ _moai_:
           #   # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
           #   _flows_: ${METHOD_FLOWS.${METHOD}}
 
-          splats_appearance:
-            _optimizer_: optim_appearance
-            _iterations_: ${COLOR_STEPS} # 2 #5 # 5 # 10
-            _objective_: reconstruction_and_silhouette_loss # reconstruction_loss
-            # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
-            _flows_: ${METHOD_FLOWS.${METHOD}}
-          splats_covariance:
-            _optimizer_: optim_covariance
-            _iterations_: ${COV_STEPS} # 2 #5 # 5 # 10
-            _objective_: reconstruction_and_silhouette_loss # reconstruction_loss
-            # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
-            _flows_: ${METHOD_FLOWS.${METHOD}}
-          splats_geometry:
-            _optimizer_: optim_geometry
-            _iterations_: ${GEOM_STEPS} # 1 #5 # 5 # 10
-            _objective_: reconstruction_and_silhouette_loss # reconstruction_loss
-            # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
-            _flows_: ${METHOD_FLOWS.${METHOD}}
+          # splats_appearance:
+          #   _optimizer_: optim_appearance
+          #   _iterations_: ${COLOR_STEPS} # 2 #5 # 5 # 10
+          #   _objective_: reconstruction_and_silhouette_loss # reconstruction_loss
+          #   # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
+          #   _flows_: ${METHOD_FLOWS.${METHOD}}
+          # splats_covariance:
+          #   _optimizer_: optim_covariance
+          #   _iterations_: ${COV_STEPS} # 2 #5 # 5 # 10
+          #   _objective_: reconstruction_and_silhouette_loss # reconstruction_loss
+          #   # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
+          #   _flows_: ${METHOD_FLOWS.${METHOD}}
+          # splats_geometry:
+          #   _optimizer_: optim_geometry
+          #   _iterations_: ${GEOM_STEPS} # 1 #5 # 5 # 10
+          #   _objective_: reconstruction_and_silhouette_loss # reconstruction_loss
+          #   # _flows_: [preproc, nerf_preproc, tcnn_encoding_mlp, nerf_postproc]
+          #   _flows_: ${METHOD_FLOWS.${METHOD}}
 
               # [
               #   preproc,

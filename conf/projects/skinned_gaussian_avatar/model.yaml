@@ -45,19 +45,19 @@ model:
           rotation:
             parameters:
               - nerf_preproc.gaussian_splat_parameters.rotation
-            lr: 0.001 # ${nerf_LR} # 1e-2
+            lr: 0.002 # ${nerf_LR} # 1e-2
           opacity:
             parameters:
               - nerf_preproc.gaussian_splat_parameters.opacity
-            lr: 0.05 # ${nerf_LR} # 1e-2
+            lr: 0.003 # ${nerf_LR} # 1e-2
           scaling:
             parameters:
               - nerf_preproc.gaussian_splat_parameters.scaling
-            lr: 0.005 # ${nerf_LR} # 1e-2
+            lr: 0.002 # ${nerf_LR} # 1e-2
           spherical_harmonics:
             parameters:
               - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
-            lr: 0.0025 # ${nerf_LR} # 1e-2
+            lr: 0.005 # ${nerf_LR} # 1e-2
           positions:
             parameters:
               - preproc.named_params.offsets
