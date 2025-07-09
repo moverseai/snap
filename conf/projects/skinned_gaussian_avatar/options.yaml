@@ -1,0 +1,21 @@
+# @package _global_
+
+experiment:
+  name: skinned_gaussian_avatar
+  batch_size: 1
+  workers: 0
+
+engine:
+  runner:
+    deterministic: false # required for index add ops
+    devices: 1
+    num_sanity_val_steps: 0
+    max_epochs: 5
+
+  modules:
+    precision:
+      precision: highest
+    rerun:
+      name: ${experiment.name}
+      memory_limit: 4GB
+      world_coordinates: RUF

@@ -1,0 +1,44 @@
+# @package _global_
+
+SUBSET: null # array of view IDs, e.g. [6, 7] # [0, 3] # null # [6, 7] # null # [1, 2] # [0, 1, 2]
+DATA_ROOT: ???
+
+SUBDIV: two
+SUBDIV_LEVELS:
+  zero: 0
+  one: 1
+  two: 2
+SUBDIV_LEVELS_INDEX:
+  zero: '0'
+  one: '1'
+  two: '2'
+SUBDIV_INDEX: ${SUBDIV_LEVELS_INDEX.${SUBDIV}}
+OFFSETS: ???
+
+data:
+  train:
+    loader:
+      shuffle: true
+      prefetch_factor: null
+      persistent_workers: false
+      num_workers: 0
+    iterator:
+      start: 0
+      step: 1
+      end: 900
+      datasets:
+        subdivided_smpl:
+          path: ${DATA_ROOT}
+          subset: ${SUBSET}
+          gender: ${oc.env:SMPL_GENDER}
+          models_path: ${oc.env:SMPL_ROOT}
+          offsets_path: ${oc.select:OFFSETS,null}
+          level: ${SUBDIV_LEVELS.${SUBDIV}}
+        multiview_video:
+          path: ${DATA_ROOT}
+          subset: ${SUBSET}
+          suffix: '_color'
+        multiview_mask_video:
+          path: ${DATA_ROOT} 
+          subset: ${SUBSET}
+          suffix: '_mask' 

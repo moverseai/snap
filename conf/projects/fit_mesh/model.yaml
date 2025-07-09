@@ -1,0 +1,45 @@
+# @package _global_
+
+model:
+  parameters:
+    groups:
+      model:
+        monads:
+          - preproc.parameter
+  monads:
+    parameter:
+      shape: [6890, 1]
+      init: zeros
+    smpl:
+      use_translation: false
+      use_pose: false
+      use_betas: false
+      use_global_orientation: false
+      gender: ${oc.env:SMPL_GENDER}
+      model_path: ${oc.env:SMPL_ROOT}
+      num_betas: 10
+      # batch_size: 1
+    opengl:
+      width: 1920
+      height: 1080
+    mesh_silhouette:
+      width: 1920
+      height: 1080
+    rotation3d:
+      rotations: [180@y, 180@z]
+    transform:
+      transpose: true
+      xyz_in_at: row
+      xyz_out_at: row
+    rasterize:
+      decomposed: true
+  ### OBJECTIVES
+  objectives:
+    laplacian_smoothness:
+      method: cotcurv
+    cosine_distance:
+      normalized: true
+      epsilon: 1.0e-4
+      dim: -1
+    intersection_over_union:
+      reduce: false

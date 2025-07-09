@@ -1,0 +1,69 @@
+# @package _global_
+
+SH_DEGREE: ???
+NUM_SPLATS:
+  - 6890
+  - 27554 # FIX
+  - 110210
+SPLATS_PATH: ???
+
+model:
+  parameters:
+    groups:  
+      model_groups1:
+        groups:
+          rotation:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.rotation
+            lr: 0.002
+          opacity:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.opacity
+            lr: 0.003
+          scaling:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.scaling
+            lr: 0.002
+          spherical_harmonics:
+            parameters:
+              - nerf_preproc.gaussian_splat_parameters.spherical_harmonics_dc
+            lr: 0.005
+          positions:
+            parameters:
+              - preproc.named_params.offsets
+            lr: 1e-3      
+  monads:
+    random:
+      shape: [3, 1, 1]
+      mode: unit
+      scale: 1.0
+      includes_batch: false    
+    named_params:
+      parameters:
+        offsets:
+          shape: 
+            - ${NUM_SPLATS[${SUBDIV_INDEX}]} 
+            - 1
+          init: zeros             
+    gaussian_splat_parameters:
+      num_splats: ${NUM_SPLATS[${SUBDIV_INDEX}]} 
+      skip_positions: true
+      scale: 1.0
+      opacity: 0.9
+      sh_degree: ${oc.select:SH_DEGREE,3}
+    gaussian_splat_rasterizer:
+      # prefiltered: false
+      debug: false # true
+      # scale_modifier: 1.0
+      # width: null
+      # height: null
+      # background_color: black
+  objectives:
+    laplacian_smoothness:
+      method: cotcurv
+    cosine_distance:
+      normalized: true
+      epsilon: 1.0e-4
+      dim: -1
+    intersection_over_union:
+      reduce: false

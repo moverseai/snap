@@ -1,0 +1,70 @@
+# @package _global_
+
+METHOD: ???
+METHOD_FLOWS:
+  none:
+    - preproc
+    - postproc
+    - nerf_preproc
+    - splats_none
+    - splat_sh0
+    - nerf_postproc    
+  lbs:
+    - preproc
+    - postproc
+    - nerf_preproc
+    - splats_lbs
+    - splat_sh0
+    - nerf_postproc
+  lbs_v:
+    - preproc
+    - postproc
+    - nerf_preproc
+    - splats_lbs
+    - splat_sh0
+    - splat_scale_vertex
+    - nerf_postproc  
+  qlbs_v:
+    - preproc
+    - postproc
+    - nerf_preproc
+    - splats_qlbs
+    - splat_sh0
+    - splat_scale_vertex
+    - nerf_postproc
+  qlbs_sh1_v:
+    - preproc
+    - postproc
+    - nerf_preproc
+    - splats_qlbs
+    - splat_sh1
+    - splat_scale_vertex
+    - nerf_postproc
+  qlbs_sh2_v:
+    - preproc
+    - postproc
+    - nerf_preproc
+    - splats_qlbs
+    - splat_sh2
+    - splat_scale_vertex
+    - nerf_postproc
+  qlbs_sh3_v:
+    - preproc
+    - postproc
+    - nerf_preproc
+    - splats_qlbs
+    - splat_sh3
+    - splat_scale_vertex
+    - nerf_postproc
+
+_moai_:
+  _execution_:
+    _lightning_step_:
+      _fit_:
+        _refresh_optimizers_: false
+        _stages_:
+          splats_step:
+            _optimizer_: optim_nerf
+            _iterations_: 1
+            _objective_: reconstruction_and_silhouette_loss             
+            _flows_: ${METHOD_FLOWS.${METHOD}}

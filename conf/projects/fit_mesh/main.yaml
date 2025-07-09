@@ -1,0 +1,53 @@
+defaults:
+    ###### ENGINE
+    - engine/runner: lightning
+    - engine/modules: [import, manual_seed, rerun, numpy, precision]
+    - engine/loggers: tabular
+
+    # ###### DATA TEST
+    - data/train/loader: torch
+    - data/train/iterator: subset_zipped
+    - src/data/train: [smpl, multiview_video, multiview_mask_video]
+
+    # ###### MODEL
+    - model: moai
+    - model/monads/human/body: [smpl]
+    - model/monads/geometry/projection: [opengl]
+    - model/monads/render/nvdiffrast:
+          [rasterize, attribute_interpolation, antialias]
+    - model/monads/geometry/mesh: [mesh_vertex_normals]
+    - model/monads/generation/matrix: [rotation3d]
+    - model/monads/generation/tensor: [parameter]
+    - model/monads/geometry/transformation: [transform, rotate]
+    - model/monads/tensor: [int32]
+
+    # OPTIMIZATION
+    - model/parameters/groups: model
+    - model/parameters/optimizers: [adam]
+    - model/objectives/regression: [L2, cosine_distance]
+    - model/objectives/mesh:
+          [
+              surface_normal_consistency,
+              laplacian_smoothness,
+              face_area_consistency,
+          ]
+    - model/objectives/image: [intersection_over_union]
+
+    # MONITORING
+    - model/monitors/visualization/rerun:
+          [triangle_mesh3d, multicam_posed_images, optimization_losses]
+    - model/monitors/exporting/local: [mesh]
+    - src/export: [offsets]
+
+    # ###### EXTRA FILES
+    - data
+    - options
+    - model
+    - monitoring
+    - flows
+    - optim
+    - _moai_
+
+    ###### HYDRA
+    - override hydra/hydra_logging: moai
+    - override hydra/job_logging: moai

@@ -1,0 +1,196 @@
+# @package _global_
+
+_moai_:
+  _definitions_:
+    _flows_:
+      preproc:
+        named_params: 
+          void:
+            - betas
+          _out_: [params]
+        mesh_vertex_normals: 
+          vertices: [vertices]
+          faces: [faces]
+          _out_: [original_vertex_normals]
+        int32:
+          tensor:
+            - ${mi:"sq(faces, 0)"}
+          _out_: [faces_i32]
+        _mi_:
+          expression:
+            - params.offsets
+            - ${mi:"sq(extrinsics,0)"}
+            - ${mi:"sq(intrinsics,0)"}
+            - ${mi:"sq(mask,0)"}
+            - ${mi:"extrinsics[:, 0:3, 0:3]"} 
+            - ${mi:"extrinsics[:, 0:3, 3]"} 
+            - ${mi:"transpose(rotation, 0, 2, 1)"} 
+            - ${mi:"original_vertex_normals.vectors * offsets"}
+            - ${mi:"vertices + oriented_offsets"}
+            - ${mi:"sq(color,0)"}
+            - ${mi:"sq(camera_position,0)"}
+            - ${mi:"sq(view_projection_matrix,0)"}
+            - ${mi:"sq(view_matrix,0)"}
+            - ${mi:"unsq(offsets, 0)"}
+          _out_:
+            - offsets
+            - extrinsics
+            - intrinsics
+            - mask
+            - rotation
+            - translation
+            - rotation_t
+            - oriented_offsets
+            - deformed_vertices
+            - color
+            - camera_position
+            - view_projection_matrix
+            - view_matrix
+            - vertex_offsets              
+      postproc:
+        mesh_vertex_normals:
+          vertices: [deformed_vertices] 
+          faces: [faces] 
+          _out_: [deformed_vertex_normals] 
+      nerf_preproc:
+        gaussian_splat_parameters:
+          tensor: [deformed_vertices]
+          _out_: [gaussian_params]
+        random:
+          tensor: [color]
+          _out_: [random_color]
+        _mi_nerf:
+          expression:
+            - ${mi:"mask * color"}            
+            - ${mi:"zeros(color)"}
+            - ${mi:"transpose(reconstructed_color, 0, 2, 3, 1)"}            
+            - ${mi:"ones(color)"}
+            - ${mi:"background * random_color"}
+            - ${mi:"masked_color + (1.0 - mask) * random_background"}
+            - ${mi:"gaussian_params.rotation"}
+            - ${mi:"gaussian_params.scaling"}
+          _out_:
+            - masked_color
+            - reconstructed_color
+            - reconstructed_color
+            - background
+            - random_background
+            - masked_color
+            - gaussian_quats
+            - gaussian_scales     
+      splats_none:
+        _mi_expand:
+          expression:
+            - ${mi:"expand_batch_as(gaussian_quats, deformed_vertices)"}
+          _out_: [gaussian_quats]
+      splats_lbs:
+        _mi_roll:
+          expression:
+            - ${mi:"roll(gaussian_quats, -1, -1)"}
+          _out_: [gaussian_quats] 
+        rotmat_to_unitquat:
+          rotation:
+            - ${mi:"blended_transforms[:, :, 0:3, 0:3]"}
+          _out_: [blended_quats]
+        quaternion_composition:
+          x: [blended_quats]
+          y: [gaussian_quats]
+          _out_: [gaussian_quats]
+        _mi_unroll:
+          expression:
+            - ${mi:"roll(gaussian_quats, 1, -1)"}
+          _out_: [gaussian_quats]
+      splats_qlbs:
+        quaternion_composition:
+          x: 
+            - ${mi:"blended_rotations_quat"}
+          y: [gaussian_quats]
+          _out_: [gaussian_quats]
+        _mi_scaling:
+          expression:
+            - ${mi:"gaussian_scales"}
+          _out_: [gaussian_scales]
+      splat_sh0:
+        _mi_gaussian:
+          expression:
+            - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
+          _out_: [spherical_harmonics]
+      splat_sh1:
+        unitquat_to_rotmat:
+          rotation:
+            - ${mi:"roll(blended_rotations_quat, -1, -1)"}
+          _out_: [sh_rotation]
+        rotate_spherical_harmonics:
+          rotations: [sh_rotation]
+          sh1: [gaussian_params.spherical_harmonics_d1]
+          _out_: [rotated_sh]
+        _mi_gaussian:
+          expression:
+            - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
+            - ${mi:"rotated_sh.sh1"}
+            - ${mi:"cat(spherical_harmonics, spherical_harmonics1, -2)"}
+          _out_: [spherical_harmonics, spherical_harmonics1, spherical_harmonics]
+      splat_sh2:
+        unitquat_to_rotmat:
+          rotation:
+            - ${mi:"roll(blended_rotations_quat, -1, -1)"}
+          _out_: [sh_rotation]
+        rotate_spherical_harmonics:
+          rotations: [sh_rotation]
+          sh1: [gaussian_params.spherical_harmonics_d1]
+          sh2: [gaussian_params.spherical_harmonics_d2]
+          _out_: [rotated_sh]
+        _mi_gaussian:
+          expression:
+            - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
+            - ${mi:"rotated_sh.sh1"}
+            - ${mi:"rotated_sh.sh2"}
+            - ${mi:"cat(spherical_harmonics, spherical_harmonics1, spherical_harmonics2, -2)"}
+          _out_: [spherical_harmonics, spherical_harmonics1, spherical_harmonics2, spherical_harmonics]
+      splat_sh3:
+        unitquat_to_rotmat:
+          rotation:
+            - ${mi:"roll(blended_rotations_quat, -1, -1)"}
+          _out_: [sh_rotation]
+        rotate_spherical_harmonics:
+          rotations: [sh_rotation]
+          sh1: [gaussian_params.spherical_harmonics_d1]
+          sh2: [gaussian_params.spherical_harmonics_d2]
+          sh3: [gaussian_params.spherical_harmonics_d3]
+          _out_: [rotated_sh]
+        _mi_gaussian:
+          expression:
+            - ${mi:"expand_batch_as(gaussian_params.spherical_harmonics_dc, deformed_vertices)"}
+            # - ${mi:"sq(rotated_sh.sh1, 0)"}
+            # - ${mi:"sq(rotated_sh.sh2, 0)"}
+            # - ${mi:"sq(rotated_sh.sh3, 0)"}
+            - ${mi:"rotated_sh.sh1"}
+            - ${mi:"rotated_sh.sh2"}
+            - ${mi:"rotated_sh.sh3"}
+            - ${mi:"cat(spherical_harmonics, spherical_harmonics1, spherical_harmonics2, spherical_harmonics3, -2)"}
+          _out_: [spherical_harmonics, spherical_harmonics1, spherical_harmonics2, spherical_harmonics3, spherical_harmonics]        
+      splat_scale_vertex:
+        _mi_scaling:
+          expression:
+            - ${mi:"gaussian_scales * unsq(vertex_areas, -1)"}
+          _out_: [gaussian_scales]
+      nerf_postproc:
+        _mi_gaussian:
+          expression:
+            - ${mi:"-gaussian_params.opacity"}
+            - ${mi:"expand_batch_as(gaussian_params.opacity, deformed_vertices)"}
+            - ${mi:"expand_batch_as(gaussian_scales, deformed_vertices)"}            
+          _out_: [neg_opacity, opacities, gaussian_scales]
+        gaussian_splat_rasterizer:
+          view_matrix: [view_matrix]
+          view_projection_matrix: [view_projection_matrix]
+          camera_position: [camera_position]
+          positions: [deformed_vertices]
+          sh_coeffs: [spherical_harmonics]
+          opacities: [opacities]
+          rotations: [gaussian_quats]
+          scales: [gaussian_scales]
+          intrinsics: [intrinsics]
+          image: [color]
+          _out_: [splatted]          
+        

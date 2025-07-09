@@ -1,0 +1,54 @@
+defaults:
+    ###### ENGINE
+    - engine/runner: lightning
+    - engine/modules: [import, manual_seed, rerun, numpy, precision]
+    - engine/loggers: tabular
+
+    # ###### DATA TRAIN
+    - data/train/loader: torch
+    - data/train/iterator: subset_zipped
+    - src/data/train: [subdivided_smpl, multiview_video, multiview_mask_video]
+
+    # ###### MODEL
+    - model: moai
+    - model/monads/geometry/rotation:
+          [rotmat_to_unitquat, quaternion_composition, unitquat_to_rotmat]
+    - model/monads/render/splats: [gaussian_splat_rasterizer_ashawkey]
+    - model/monads/geometry/mesh: [mesh_vertex_normals]
+    - model/monads/generation/tensor: [named_params, random]
+    - model/monads/generation/splats: [gaussian_splat_parameters]
+    - model/monads/tensor: [int32]
+    - src/monads: [rotate_spherical_harmonics]
+
+    # OPTIMIZATION
+    - model/parameters/groups: [model_groups1]
+    - model/parameters/optimizers: [adam]
+    - model/objectives/regression: [L2, L1]
+    - model/objectives/mesh:
+          [
+              surface_normal_consistency,
+              laplacian_smoothness,
+              face_area_consistency,
+              surface_feature_consistency,
+          ]
+    - model/objectives/image:
+          [intersection_over_union, structural_dissimilarity]
+    - model/objectives/splats: [long_and_thin_penalty]
+
+    # MONITORING
+    - model/monitors/visualization/rerun:
+          [triangle_mesh3d, multicam_posed_images, optimization_losses, config]
+    - src/export: [splat_cloud]
+
+    # ###### EXTRA FILES
+    - data
+    - options
+    - model
+    - monitoring
+    - flows
+    - optim
+    - _moai_
+
+    ###### HYDRA
+    - override hydra/hydra_logging: moai
+    - override hydra/job_logging: moai

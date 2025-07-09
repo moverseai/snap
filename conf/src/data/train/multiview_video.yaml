@@ -1,0 +1,8 @@
+# @package data.train.iterator.datasets.multiview_video
+
+_target_: src.data.multiview_video.MultiviewVideo
+path: ???
+subset: null
+suffix: ''
+prefix: ''
+extension: mp4

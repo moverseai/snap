@@ -1,0 +1,69 @@
+# @package _global_
+
+SIL_W: ???
+GEOMREG_W: ???
+SURF_W: ???
+AREA_W: ???
+LAP_W: ???
+NORMREG_W: ???
+
+_moai_:
+  _definitions_:
+    _collections_:
+      _optimizers_:
+        optim_mesh: &optim_mesh
+          _type_: adam
+          _params_:
+            lr: 1e-3
+            amsgrad: true
+            eps: 1e-9
+            weight_decay: 0.0
+            foreach: true # false
+            capturable: false
+            differentiable: false
+            fused: false # true
+          _groups_: [model]
+      _objectives_:
+        silhouette_loss:
+          L2:
+            gt: [null]
+            pred: [offsets]
+            _weight_:
+              - ${oc.select:GEOMREG_W,100.0}
+            _reduction_: [mean]
+            _out_: [geom_reg]
+          intersection_over_union:
+            gt: [mask]
+            pred: [silhouette]
+            _weight_:
+              - ${oc.select:SIL_W,10.0}
+            _reduction_: [sum]
+            _out_: [recon]
+          surface_normal_consistency:
+            vertex_normals: [deformed_vertex_normals.vectors]
+            faces: [faces]
+            _weight_:
+              - ${oc.select:SURF_W,1.0}
+            _reduction_: [mean]
+            _out_: [surf_reg]
+          laplacian_smoothness:
+            vertices: [deformed_vertices]
+            faces: [body.faces]
+            _weight_:
+              - ${oc.select:LAP_W,0.1}
+            _reduction_: [mean]
+            _out_: [mesh_smooth]
+          face_area_consistency:
+            original: [original_vertex_normals.areas]
+            deformed: [deformed_vertex_normals.areas]
+            _weight_:
+              - ${oc.select:AREA_W,0.01}
+            _reduction_: [mean]
+            _out_: [face_area]
+          cosine_distance:
+            pred: [original_vertex_normals.vectors]
+            gt: [deformed_vertex_normals.vectors]
+            _weight_:
+              - ${oc.select:NORMREG_W,1.0}
+            _reduction_: [mean]
+            _out_: [norm_reg]

@@ -1,0 +1,12 @@
+# @package _global_
+
+_moai_:
+  _execution_:
+    _lightning_step_:
+      _fit_:
+        _refresh_optimizers_: false
+        _stages_:
+          nerf_step:
+            _optimizer_: optim_mesh
+            _objective_: silhouette_loss
+            _flows_: [preproc, postproc]

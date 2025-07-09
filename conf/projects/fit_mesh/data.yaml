@@ -1,0 +1,24 @@
+# @package _global_
+
+SUBSET: null # array of view IDs, e.g. [6, 7] # [0, 3] # null # [6, 7] # null # [1, 2] # [0, 1, 2]
+DATA_ROOT: ???
+
+data:
+  train:
+    loader:
+      shuffle: true
+    iterator:
+      start: 0
+      step: 2
+      end: 500
+      datasets:
+        smpl:
+          path: ${DATA_ROOT}
+          subset: ${SUBSET}
+        multiview_video:
+          path: ${DATA_ROOT}
+          subset: ${SUBSET}
+        multiview_mask_video:
+          path: ${DATA_ROOT}
+          subset: ${SUBSET}
+          suffix: "_mask"
