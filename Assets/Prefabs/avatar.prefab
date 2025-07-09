@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7196656880353449248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6075582887727020876}
+  - component: {fileID: 5504073354676704948}
+  m_Layer: 0
+  m_Name: avatar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6075582887727020876
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7196656880353449248}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5504073354676704948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7196656880353449248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fadd9f660bae2d4b992b78dd941bf09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Asset: {fileID: 11400000, guid: f7e838855d8647248b25fd6961d557e9, type: 2}
+  m_RenderOrder: 0
+  m_SplatScale: 1
+  m_OpacityScale: 1
+  m_SHOrder: 3
+  m_SHOnly: 0
+  m_SortNthFrame: 1
+  m_RenderMode: 0
+  m_PointDisplaySize: 3
+  m_Cutouts: []
+  m_ShaderSplats: {fileID: 4800000, guid: 487ed38122c94fe408629aae88e0693c, type: 3}
+  m_ShaderComposite: {fileID: 4800000, guid: 6a7e220c62ebee745892f984755f0852, type: 3}
+  m_ShaderDebugPoints: {fileID: 4800000, guid: 85137a0ba6cb6624f854f6f9b19f3498, type: 3}
+  m_ShaderDebugBoxes: {fileID: 4800000, guid: 9015ab4bb4c777240b7e0243e3e3a9ef, type: 3}
+  m_CSSplatUtilities: {fileID: 7200000, guid: b30a69a665308054e9681529e89353e7, type: 3}
+  pelvisPosition: {x: 0, y: 0, z: 0}
+  splatsRotationMode: 0
+  shOrderRotation: 0
+  maxCurveDuration: 0
+  targetFPS: 60
+  repeatingTimestamp: 0
+  animateFromStreaming: 0
+  streamCharacterName: Actor0
