@@ -172,3 +172,16 @@ page/.hugo_build.lock
 # hydra
 actions/
 multirun/
+
+# u3d
+/Assets/
+/.vs/
+/Library/
+/obj/
+/Logs/
+/Packages/
+/ProjectSettings/
+/UserSettings/
+*.csproj
+*.sln
+.vsconfig
