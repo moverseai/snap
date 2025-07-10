@@ -11,6 +11,16 @@ __all__ = ["MultiviewVideo", "MultiviewMaskVideo"]
 
 log = logging.getLogger(__name__)
 
+import re
+from pathlib import Path
+
+def _extract_index(path: Path) -> int:    
+    """
+    Extracts an index from the filename stem of the given path. 
+    """
+    match = re.search(r'(\d+)', path.stem)
+    return int(match.group(1)) if match else -1
+
 class MultiviewVideo(torch.utils.data.Dataset):
     def __init__(
         self, 
@@ -22,7 +32,7 @@ class MultiviewVideo(torch.utils.data.Dataset):
     ) -> None:
         super().__init__()
         self.videos = []
-        video_files = sorted(Path(path).glob(f"{prefix}*{suffix}.{extension}"))
+        video_files = sorted(Path(path).glob(f"{prefix}*{suffix}.{extension}"), key=_extract_index)
         self.subset = list(subset or range(len(video_files)))
         for s in self.subset:
             if s < 0 or s > len(video_files):
@@ -62,7 +72,7 @@ class MultiviewMaskVideo(torch.utils.data.Dataset):
     ) -> None:
         super().__init__()
         self.videos = []
-        video_files = sorted(Path(path).glob(f"{prefix}*{suffix}.{extension}"))
+        video_files = sorted(Path(path).glob(f"{prefix}*{suffix}.{extension}"), key=_extract_index)
         self.subset = list(subset or range(len(video_files)))
         for s in self.subset:
             if s < 0 or s > len(video_files):
