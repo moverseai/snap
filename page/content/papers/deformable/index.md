@@ -5,7 +5,7 @@ params:
   author: Nikolaos Zioulis
 title: Deformable 3D Gaussian Splatting for Animatable Human Avatars
 categories: ["papers"]
-tags: ["splats", "smpl", "arXiv23"]
+tags: ["splats", "smpl", "arxiv23"]
 layout: simple
 menu: #
 robots: all

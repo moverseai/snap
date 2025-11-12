@@ -1,11 +1,11 @@
 ---
-date: 2024-06-06T04:14:54-08:00
+date: 2023-12-01T04:14:54-08:00
 draft: false
 params:
   author: Nikolaos Zioulis
 title: Human101
 categories: ["papers"]
-tags: ["splats", "smpl", "arXiv23"]
+tags: ["splats", "smpl", "arxiv23"]
 layout: simple
 menu: #
 robots: all
