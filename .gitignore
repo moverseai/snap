@@ -170,3 +170,18 @@ cython_debug/
 
 # Temporary lock file while building
 /page/.hugo_build.lock
+
+.vsconfig
+.vs/
+.vscode/
+actions/
+multirun/
+Library/
+Assets/
+Packages/
+ProjectSettings/
+Logs/
+obj/
+UserSettings/
+snap.sln
+*.csproj
