@@ -5,7 +5,7 @@ params:
   author: Nikolaos Zioulis
 title: HUGS
 categories: ["papers"]
-tags: ["splats", "smpl", "smplx", "cvpr24"]
+tags: ["splats", "smpl", "cvpr24"]
 layout: simple
 menu: #
 robots: all
