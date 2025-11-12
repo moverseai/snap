@@ -243,6 +243,12 @@
   pageRef = "tags/tpami24"
   weight = 52
 
+[[main]]
+  name = "CVPR 2024"
+  parent = "2024"
+  pageRef = "tags/cvpr24"
+  weight = 53
+
 # [[main]]
   # name = "About"
   # pageRef = "about"
@@ -253,6 +259,11 @@
 [[subnavigation]]
   name = "NeRF"
   pageRef = "tags/nerf"
+  weight = 9
+
+[[subnavigation]]
+  name = "Splats"
+  pageRef = "tags/splats"
   weight = 10
 
 [[subnavigation]]
