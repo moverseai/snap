@@ -56,7 +56,7 @@ Paper
 
 #### Comparisons
 {{<badge label="skeleton--NeRF" message="NeuralActor" color="blue" logo="github" link="lingjie0206/Neural_Actor_Main_Code" target="_blank">}}
-{{<badge label="skeleton--NeRF" message="HDHumans" color="blue" logo="link" target="_blank">}}
+{{<badge label="skeleton--NeRF" message="HDHumans" color="cyan" logo="link" target="_blank">}}
 {{<badge label="body--NeRF" message="TAVA" color="coral" logo="github" link="facebookresearch/tava" target="_blank">}}
 
 #### Performance
