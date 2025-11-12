@@ -249,6 +249,23 @@
   pageRef = "tags/cvpr24"
   weight = 53
 
+[[main]]
+  name = "ACM Multimedia 2024"
+  parent = "2024"
+  pageRef = "tags/acmmm24"
+  weight = 54
+
+[[main]]
+  name = "2025"
+  pageRef = "papers2025"
+  weight = 60
+
+[[main]]
+  name = "3DV 2025"
+  parent = "2025"
+  pageRef = "tags/cvpr25"
+  weight = 63
+
 # [[main]]
   # name = "About"
   # pageRef = "about"
