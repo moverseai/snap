@@ -55,11 +55,11 @@ Paper
 
 #### Data
 {{<badge label="test" message="MonoPerfCap" color="coral" logo="link" link="https://vcai.mpi-inf.mpg.de/projects/wxu/MonoPerfCap/" target="_blank">}}
-{{<badge label="test" message="NeuMan" color="white" logo="github" link="apple/ml-neuman" target="_blank">}}
+{{<badge label="test" message="NeuMan" color="white" logo="github" link="https://github.com/apple/ml-neuman" target="_blank">}}
 
 #### Comparisons
 {{<badge label="body--NeRF" message="HumanNeRF" color="blue" logo="github" link="chungyiweng/HumanNeRF" target="_blank">}}
-{{<badge label="body--NeRF" message="NeuMan" color="white" logo="github" link="apple/ml-neuman" target="_blank">}}
+{{<badge label="body--NeRF" message="NeuMan" color="white" logo="github" link="https://github.com/apple/ml-neuman" target="_blank">}}
 
 #### Performance
 {{<badge label="train" message="36--48h" color="informational" logo="link" >}}

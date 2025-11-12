@@ -17,7 +17,7 @@ summary: TODO
 keywords: #
 type: '2024' # we use year as a type to list papers in the list view
 series: ["Papers Published @ 2024"]
-series_order: 13
+series_order: 1
 ---
 
 ## `TriHuman`: A Real-time and Controllable Tri-plane Representation for Detailed Human Geometry and Appearance Synthesis
