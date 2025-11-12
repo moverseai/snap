@@ -60,7 +60,7 @@ Paper
 #### Comparisons
 {{<badge label="body--NeRF" message="NeuralBody" color="coral" logo="github" link="https://github.com/zju3dv/neuralbody" target="_blank">}}
 {{<badge label="body--NeRF" message="HumanNeRF" color="blue" logo="github" link="chungyiweng/HumanNeRF" target="_blank">}}
-{{<badge label="body--NeRF" message="NeuMan" color="white" logo="github" link="[apple/ml-neuman](https://github.com/apple/ml-neuman)" target="_blank">}}
+{{<badge label="body--NeRF" message="NeuMan" color="white" logo="github" link="https://github.com/apple/ml-neuman" target="_blank">}}
 
 #### Performance
 {{<badge label="train" message="70h" color="informational" logo="link" >}}
