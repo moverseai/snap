@@ -297,6 +297,13 @@
   pageRef = "tags/cvpr25"
   weight = 63
 
+
+[[main]]
+  name = "EuroXR 2025"
+  parent = "2025"
+  pageRef = "tags/euroxr25"
+  weight = 64
+
 [[main]]
   name = "arXiv 2025"
   parent = "2025"
