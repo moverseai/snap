@@ -227,6 +227,12 @@
   weight = 47
 
 [[main]]
+  name = "arXiv 2023"
+  parent = "2023"
+  pageRef = "tags/arxiv23"
+  weight = 49
+
+[[main]]
   name = "2024"
   pageRef = "papers2024"
   weight = 50
@@ -256,6 +262,12 @@
   weight = 54
 
 [[main]]
+  name = "arXiv 2024"
+  parent = "2024"
+  pageRef = "tags/arxiv24"
+  weight = 59
+
+[[main]]
   name = "2025"
   pageRef = "papers2025"
   weight = 60
@@ -265,6 +277,12 @@
   parent = "2025"
   pageRef = "tags/cvpr25"
   weight = 63
+
+[[main]]
+  name = "arXiv 2025"
+  parent = "2025"
+  pageRef = "tags/arxiv25"
+  weight = 69
 
 # [[main]]
   # name = "About"
