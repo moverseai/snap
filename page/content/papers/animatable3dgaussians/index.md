@@ -5,7 +5,7 @@ params:
   author: Nikolaos Zioulis
 title: Animatable 3D Gaussian
 categories: ["papers"]
-tags: ["splats", "smpl", "acmmm24"]
+tags: ["splats", "smpl", "monocular", "acmmm24"]
 layout: simple
 menu: #
 robots: all
@@ -27,6 +27,7 @@ series_order: 8
 {{< keywordList >}}
 {{< keyword icon="tag" >}} Splats {{< /keyword >}}
 {{< keyword icon="tag" >}} SMPL {{< /keyword >}}
+{{< keyword icon="tag" >}} Monocular {{< /keyword >}}
 {{< keyword icon="email" >}} *ACM Multimedia* 2024 {{< /keyword >}}
 {{< /keywordList >}}
 

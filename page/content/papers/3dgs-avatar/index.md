@@ -5,7 +5,7 @@ params:
   author: Nikolaos Zioulis
 title: 3DGS-Avatar
 categories: ["papers"]
-tags: ["splats", "smpl", "cvpr24"]
+tags: ["splats", "smpl", "monocular", "cvpr24"]
 layout: simple
 menu: #
 robots: all
@@ -27,6 +27,7 @@ series_order: 4
 {{< keywordList >}}
 {{< keyword icon="tag" >}} Splats {{< /keyword >}}
 {{< keyword icon="tag" >}} SMPL {{< /keyword >}}
+{{< keyword icon="tag" >}} Monocular {{< /keyword >}}
 {{< keyword icon="email" >}} *CVPR* 2024 {{< /keyword >}}
 {{< /keywordList >}}
 

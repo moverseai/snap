@@ -5,7 +5,7 @@ params:
   author: Nikolaos Zioulis
 title: GaussianAvatar
 categories: ["papers"]
-tags: ["splats", "smpl", "smplx", "texture", "cvpr24"]
+tags: ["splats", "smpl", "smplx", "texture", "monocular", "cvpr24"]
 layout: simple
 menu: #
 robots: all
@@ -30,6 +30,7 @@ series_order: 2
 {{< keyword icon="tag" >}} SMPL {{< /keyword >}}
 {{< keyword icon="tag" >}} SMPL-X {{< /keyword >}}
 {{< keyword icon="tag" >}} Texture {{< /keyword >}}
+{{< keyword icon="tag" >}} Monocular {{< /keyword >}}
 {{< keyword icon="email" >}} *CVPR* 2024 {{< /keyword >}}
 {{< /keywordList >}}
 
