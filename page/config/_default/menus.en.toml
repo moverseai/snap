@@ -278,6 +278,13 @@
   pageRef = "papers2025"
   weight = 60
 
+
+[[main]]
+  name = "ICCV 2025"
+  parent = "2025"
+  pageRef = "tags/iccv25"
+  weight = 62
+
 [[main]]
   name = "3DV 2025"
   parent = "2025"
