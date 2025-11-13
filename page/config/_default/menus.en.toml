@@ -262,6 +262,12 @@
   weight = 54
 
 [[main]]
+  name = "ECCV 2024"
+  parent = "2024"
+  pageRef = "tags/eccv24"
+  weight = 55
+
+[[main]]
   name = "arXiv 2024"
   parent = "2024"
   pageRef = "tags/arxiv24"

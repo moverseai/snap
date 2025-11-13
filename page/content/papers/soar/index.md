@@ -35,17 +35,7 @@ series_order: 9
 
 ### Abstract
 {{< lead >}}
-Self-occlusion is common when capturing people in the
-wild, where the performer do not follow predefined motion
-scripts. This challenges existing monocular human reconstruction systems that assume full body visibility. We introduce Self-Occluded Avatar Recovery (SOAR), a method for
-complete human reconstruction from partial observations
-where parts of the body are entirely unobserved. SOAR
-leverages structural normal prior and generative diffusion
-prior to address such an ill-posed reconstruction problem.
-For structural normal prior, we model human with an reposable surfel model with well-defined and easily readable shapes. For generative diffusion prior, we perform
-an initial reconstruction and refine it using score distillation. On various benchmarks, we show that SOAR performs favorably than state-of-the-art reconstruction and
-generation methods, and on-par comparing to concurrent
-works. 
+Self-occlusion is common when capturing people in the wild, where the performer do not follow predefined motion scripts. This challenges existing monocular human reconstruction systems that assume full body visibility. We introduce Self-Occluded Avatar Recovery (SOAR), a method for complete human reconstruction from partial observations where parts of the body are entirely unobserved. SOAR leverages structural normal prior and generative diffusion prior to address such an ill-posed reconstruction problem. For structural normal prior, we model human with an reposable surfel model with well-defined and easily readable shapes. For generative diffusion prior, we perform an initial reconstruction and refine it using score distillation. On various benchmarks, we show that SOAR performs favorably than state-of-the-art reconstruction and generation methods, and on-par comparing to concurrent works. 
 {{< /lead >}}
 
 {{< button href="https://arxiv.org/pdf/2410.23800" target="_blank" >}}
