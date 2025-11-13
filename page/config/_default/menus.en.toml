@@ -227,6 +227,12 @@
   weight = 47
 
 [[main]]
+  name = "ICLR 2023"
+  parent = "2023"
+  pageRef = "tags/iclr23"
+  weight = 48
+
+[[main]]
   name = "arXiv 2023"
   parent = "2023"
   pageRef = "tags/arxiv23"
