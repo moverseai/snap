@@ -60,5 +60,6 @@ Paper
 
 #### Performance
 {{<badge label="train" message="RTX3090" color="informational" logo="link" >}}
+
 {{<badge label="render" message="512_x_512" color="informational" logo="link" >}}
 {{<badge label="render" message="89ms" color="informational" logo="link" >}}
