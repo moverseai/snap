@@ -6,5 +6,5 @@ cascade:
 layout: simple
 ---
 
-{{< list title="2021" cardView=true limit=18 where="Type" value="2021" >}}
+{{< list title="2021" cardView=true limit=32 where="Type" value="2021" >}}
 
