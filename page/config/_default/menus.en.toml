@@ -280,6 +280,12 @@
   weight = 56
 
 [[main]]
+  name = "ICLR 2024"
+  parent = "2024"
+  pageRef = "tags/iclr24"
+  weight = 57
+
+[[main]]
   name = "arXiv 2024"
   parent = "2024"
   pageRef = "tags/arxiv24"

@@ -17,7 +17,7 @@ summary: TODO
 keywords: #
 type: '2024' # we use year as a type to list papers in the list view
 series: ["Papers Published @ 2024"]
-series_order: 5
+series_order: 23
 ---
 
 ## Relightable Neural Actor with Intrinsic Decomposition and Pose Control
