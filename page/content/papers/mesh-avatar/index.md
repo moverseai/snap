@@ -22,7 +22,7 @@ series_order: 26
 
 ## `MeshAvatar`: Learning High-quality Triangular Human Avatars from Multi-view Videos
 
-> Zhe Li, Zerong Zheng, Lizhen Wang, Yebin Liu
+> Yushuo Chen, Zerong Zheng, Zhe Li, Chao Xu, Yebin Liu
 
 {{< keywordList >}}
 {{< keyword icon="tag" >}} NeRF {{< /keyword >}}
