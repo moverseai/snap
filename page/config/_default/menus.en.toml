@@ -309,12 +309,17 @@
   pageRef = "tags/cvpr25"
   weight = 63
 
-
 [[main]]
   name = "EuroXR 2025"
   parent = "2025"
   pageRef = "tags/euroxr25"
   weight = 64
+
+[[main]]
+  name = "SIGGRAH 2025"
+  parent = "2025"
+  pageRef = "tags/siggraph25"
+  weight = 65
 
 [[main]]
   name = "TIP 2025"
