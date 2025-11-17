@@ -173,10 +173,16 @@
   weight = 36
 
 [[main]]
+  name = "Eurographics 2022"
+  parent = "2022"
+  pageRef = "tags/eurographics22"
+  weight = 37
+
+[[main]]
   name = "arXiv 2022"
   parent = "2022"
   pageRef = "tags/arxiv22"
-  weight = 37
+  weight = 38
 
 
 [[main]]
