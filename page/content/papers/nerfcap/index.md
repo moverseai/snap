@@ -63,5 +63,5 @@ Paper
 
 #### Performance
 {{<badge label="train" message="3d" color="informational" logo="link" >}}
-{{<badge label="train" message="2080_Ti" color="informational" logo="link" >}}
+{{<badge label="train" message="RTX2080Ti" color="informational" logo="link" >}}
 {{<badge label="finetune" message="1h" color="informational" logo="link" >}}
