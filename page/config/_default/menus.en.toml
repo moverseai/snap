@@ -317,6 +317,12 @@
   weight = 64
 
 [[main]]
+  name = "TIP 2025"
+  parent = "2025"
+  pageRef = "tags/tip25"
+  weight = 68
+
+[[main]]
   name = "arXiv 2025"
   parent = "2025"
   pageRef = "tags/arxiv25"
