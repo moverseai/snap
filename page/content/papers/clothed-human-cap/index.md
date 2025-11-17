@@ -17,7 +17,7 @@ summary: TODO
 keywords: #
 type: '2023' # we use year as a type to list papers in the list view
 series: ["Papers Published @ 2023"]
-series_order: 30
+series_order: 29
 ---
 
 ## Clothed Human Performance Capture with a Double-layer Neural Radiance Fields

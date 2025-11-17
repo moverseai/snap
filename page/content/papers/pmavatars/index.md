@@ -19,8 +19,8 @@ description: "Pose Modulated Avatars from Video"
 summary: TODO
 keywords: #
 type: '2024' # we use year as a type to list papers in the list view
-series: ["Papers Published @ 2023"]
-series_order: 29
+series: ["Papers Published @ 2024"]
+series_order: 24
 ---
 
 ## Pose Modulated Avatars from Video
