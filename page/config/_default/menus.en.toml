@@ -328,7 +328,7 @@
   weight = 64
 
 [[main]]
-  name = "SIGGRAH 2025"
+  name = "SIGGRAPH 2025"
   parent = "2025"
   pageRef = "tags/siggraph25"
   weight = 65
