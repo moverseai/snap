@@ -1,5 +1,5 @@
 ---
-date: 2025-12-01T04:14:54-08:00
+date: 2025-11-01T04:14:54-08:00
 draft: false
 params:
   author: Nikolaos Zioulis
