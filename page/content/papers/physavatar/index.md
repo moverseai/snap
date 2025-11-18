@@ -22,7 +22,7 @@ series_order: 35
 
 ## `PhysAvatar`: Learning the Physics of Dressed 3D Avatars from Visual Observations
 
-> * Yang Zheng, Qingqing Zhao, Guandao Yang, Wang Yifan, Donglai Xiang, Florian Dubost, Dmitry Lagun, Thabo Beeler, Federico Tombari, Leonidas Guibas, Gordon Wetzstein
+> Yang Zheng, Qingqing Zhao, Guandao Yang, Wang Yifan, Donglai Xiang, Florian Dubost, Dmitry Lagun, Thabo Beeler, Federico Tombari, Leonidas Guibas, Gordon Wetzstein
 
 {{< keywordList >}}
 {{< keyword icon="tag" >}} Splats {{< /keyword >}}

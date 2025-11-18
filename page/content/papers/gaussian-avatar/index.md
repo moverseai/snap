@@ -12,8 +12,7 @@ robots: all
 # sharingLinks: #
 weight: 10
 showHero: true
-description: "GaussianAvatar: Towards Realistic Human Avatar Modeling
-from a Single Video via Animatable 3D Gaussians"
+description: "GaussianAvatar: Towards Realistic Human Avatar Modeling from a Single Video via Animatable 3D Gaussians"
 summary: TODO
 keywords: #
 type: '2024' # we use year as a type to list papers in the list view

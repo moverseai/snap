@@ -179,10 +179,16 @@
   weight = 37
 
 [[main]]
+  name = "NeurIPS 2022"
+  parent = "2022"
+  pageRef = "tags/neurips22"
+  weight = 38
+
+[[main]]
   name = "arXiv 2022"
   parent = "2022"
   pageRef = "tags/arxiv22"
-  weight = 38
+  weight = 39
 
 
 [[main]]
@@ -318,7 +324,7 @@
 [[main]]
   name = "3DV 2025"
   parent = "2025"
-  pageRef = "tags/cvpr25"
+  pageRef = "tags/3dv25"
   weight = 63
 
 [[main]]
@@ -332,6 +338,12 @@
   parent = "2025"
   pageRef = "tags/siggraph25"
   weight = 65
+
+[[main]]
+  name = "NeurIPS 2025"
+  parent = "2025"
+  pageRef = "tags/neurips25"
+  weight = 66
 
 [[main]]
   name = "TIP 2025"
