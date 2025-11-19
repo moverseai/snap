@@ -368,6 +368,18 @@
   pageRef = "tags/arxiv25"
   weight = 69
 
+
+[[main]]
+  name = "2026"
+  pageRef = "papers2026"
+  weight = 70
+
+[[main]]
+  name = "3DV 2026"
+  parent = "2026"
+  pageRef = "tags/3dv26"
+  weight = 63
+
 # [[main]]
   # name = "About"
   # pageRef = "about"
