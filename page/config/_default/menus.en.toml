@@ -314,6 +314,11 @@
   pageRef = "papers2025"
   weight = 60
 
+[[main]]
+  name = "CVPR 2025"
+  parent = "2025"
+  pageRef = "tags/cvpr25"
+  weight = 61
 
 [[main]]
   name = "ICCV 2025"
@@ -349,6 +354,12 @@
   name = "TIP 2025"
   parent = "2025"
   pageRef = "tags/tip25"
+  weight = 67
+
+[[main]]
+  name = "TVCG 2025"
+  parent = "2025"
+  pageRef = "tags/tvcg25"
   weight = 68
 
 [[main]]
