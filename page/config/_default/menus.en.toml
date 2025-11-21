@@ -304,81 +304,87 @@
   weight = 58
 
 [[main]]
+  name = "SIGGRAPH 2024"
+  parent = "2024"
+  pageRef = "tags/siggraph24"
+  weight = 59
+
+[[main]]
   name = "arXiv 2024"
   parent = "2024"
   pageRef = "tags/arxiv24"
-  weight = 59
+  weight = 60
 
 [[main]]
   name = "2025"
   pageRef = "papers2025"
-  weight = 60
+  weight = 61
 
 [[main]]
   name = "CVPR 2025"
   parent = "2025"
   pageRef = "tags/cvpr25"
-  weight = 61
+  weight = 62
 
 [[main]]
   name = "ICCV 2025"
   parent = "2025"
   pageRef = "tags/iccv25"
-  weight = 62
+  weight = 63
 
 [[main]]
   name = "3DV 2025"
   parent = "2025"
   pageRef = "tags/3dv25"
-  weight = 63
+  weight = 64
 
 [[main]]
   name = "EuroXR 2025"
   parent = "2025"
   pageRef = "tags/euroxr25"
-  weight = 64
+  weight = 65
 
 [[main]]
   name = "SIGGRAPH 2025"
   parent = "2025"
   pageRef = "tags/siggraph25"
-  weight = 65
+  weight = 66
 
 [[main]]
   name = "NeurIPS 2025"
   parent = "2025"
   pageRef = "tags/neurips25"
-  weight = 66
+  weight = 67
 
 [[main]]
   name = "TIP 2025"
   parent = "2025"
   pageRef = "tags/tip25"
-  weight = 67
+  weight = 68
 
 [[main]]
   name = "TVCG 2025"
   parent = "2025"
   pageRef = "tags/tvcg25"
-  weight = 68
+  weight = 69
 
 [[main]]
   name = "arXiv 2025"
   parent = "2025"
   pageRef = "tags/arxiv25"
-  weight = 69
+  weight = 70
 
 
 [[main]]
   name = "2026"
   pageRef = "papers2026"
-  weight = 70
+  weight = 71
 
 [[main]]
   name = "3DV 2026"
   parent = "2026"
   pageRef = "tags/3dv26"
-  weight = 63
+  weight = 72
 
 # [[main]]
   # name = "About"
