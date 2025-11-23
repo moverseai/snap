@@ -33,7 +33,7 @@ series_order: 2
 {{< keyword icon="email" >}} *3DV* 2026 {{< /keyword >}}
 {{< /keywordList >}}
 
-<!-- {{< github repo="user/repo" >}} -->
+<!-- {{< github repo="pengc02/pghm/" >}} -->
 
 ### Abstract
 {{< lead >}}
