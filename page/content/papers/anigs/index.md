@@ -25,7 +25,7 @@ series_order: 14
 
 ## `AniGS`: Animatable Gaussian Avatar from a Single Image with Inconsistent Gaussian Reconstruction
 
-> Lingteng Qiu, Shenhao Zhu, Qi Zuo, Xiaodong Gu1, Yuan Dong, Junfei Zhang, Chao Xu, Zhe Li, Weihao Yuan, Liefeng Bo, Guanying Chen, Zilong Dong
+> Lingteng Qiu, Shenhao Zhu, Qi Zuo, Xiaodong Gu, Yuan Dong, Junfei Zhang, Chao Xu, Zhe Li, Weihao Yuan, Liefeng Bo, Guanying Chen, Zilong Dong
 
 {{< keywordList >}}
 {{< keyword icon="tag" >}} Splats {{< /keyword >}}
