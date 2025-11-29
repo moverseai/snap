@@ -369,22 +369,33 @@
   weight = 69
 
 [[main]]
+  name = "ICLR 2025"
+  parent = "2025"
+  pageRef = "tags/iclr25"
+  weight = 70
+
+[[main]]
   name = "arXiv 2025"
   parent = "2025"
   pageRef = "tags/arxiv25"
-  weight = 70
+  weight = 71
 
+[[main]]
+  name = "SIGGRAPH Asia 2025"
+  parent = "2025"
+  pageRef = "tags/siggraph_asia25"
+  weight = 72
 
 [[main]]
   name = "2026"
   pageRef = "papers2026"
-  weight = 71
+  weight = 73
 
 [[main]]
   name = "3DV 2026"
   parent = "2026"
   pageRef = "tags/3dv26"
-  weight = 72
+  weight = 74
 
 # [[main]]
   # name = "About"
