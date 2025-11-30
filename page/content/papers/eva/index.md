@@ -22,7 +22,7 @@ series_order: 8
 
 ## `EVA`: Expressive Virtual Avatars from Multi-view Videos
 
-> Hendrik Junkawitsch, Guoxing Sun, Heming Zhu, Christian Theobalt, Marc Habermann1
+> Hendrik Junkawitsch, Guoxing Sun, Heming Zhu, Christian Theobalt, Marc Habermann
 
 {{< keywordList >}}
 {{< keyword icon="tag" >}} Skeleton {{< /keyword >}}
