@@ -31,7 +31,7 @@ series_order: 2
 {{< keyword icon="email" >}} *ICCV* 2025 {{< /keyword >}}
 {{< /keywordList >}}
 
-<!-- {{< github repo="liuyifan22/HumanGaussianGraph" >}} -->
+{{< github repo="Simon-Dcs/Human_Gaussian_Graph" >}}
 
 ### Abstract
 {{< lead >}}
